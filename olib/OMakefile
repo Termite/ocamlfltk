@@ -1,0 +1,58 @@
+########################################################################
+# The standard OMakefile.
+# You will usually need to modify this file for your project.
+
+########################################################################
+# Phony targets are scoped, so you probably want to declare them first.
+#
+
+#.PHONY: ofltklib
+
+################################################
+# Configuration.  You may want to modify any of these configuration
+# variables.
+#
+# Include path
+#
+# OCAMLINCLUDES +=
+#
+# Compile native or byte code? 
+#
+NATIVE_ENABLED = false
+BYTE_ENABLED = true
+
+#
+# Various options
+#
+OCAML_LIB_FLAGS = -custom clib/libofltk.a -cclib $"-lstdc++ -L/usr/local/lib -lfltk2 -lX11 -lXi -lm -lsupc++"
+#
+# OCAMLFLAGS    =
+# OCAMLCFLAGS   +=
+# OCAMLOPTFLAGS +=
+# OCAML_LINK_FLAGS +=
+# OCAML_BYTE_LINK_FLAGS +=
+# OCAML_NATIVE_LINK_FLAGS +=
+
+# Build an OCaml library
+
+LIB_FILES[] =
+	box
+	ask
+	ofltk
+#	valuator
+#	widget
+#	window
+#	box
+#	color
+#	draw
+#	run
+#	font
+#	labeltype
+
+#
+OLIB = ocamlfltk
+
+.DEFAULT: $(OCamlLibrary $(OLIB), $(LIB_FILES))
+
+
+

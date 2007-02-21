@@ -1,0 +1,48 @@
+########################################################################
+# The standard OMakefile.
+# You will usually need to modify this file for your project.
+
+########################################################################
+# Phony targets are scoped, so you probably want to declare them first.
+#
+
+#.PHONY: all install clean
+
+########################################################################
+# C configuration.
+################################################
+# Configuration.  You might want to modify any of these
+# configuration variables.
+#
+
+#CXXFLAGS += -march=athlon-xp -O3 -fomit-frame-pointer -mfpmath=sse -msse -mmmx -m3dnow -maccumulate-outgoing-args
+# ASFLAGS +=
+# LDFLAGS +=
+INCLUDES += /usr/local/include/ /usr/local/godi/lib/ocaml/std-lib
+
+################################################
+# Uncomment the following section if you want to build a C library
+# in the current directory.
+#
+
+CLIBFILES[] =
+   oinput
+   obox
+   ostatusbar
+   ogroup
+   ooutput
+   owidget
+   owindow
+   obutton
+   ovaluator
+   owizardgroup
+#   obox
+#   odraw
+#   ofont
+#   ofl
+
+CLIB = libofltk
+
+#
+.DEFAULT: $(StaticCLibrary $(CLIB), $(CLIBFILES))
+

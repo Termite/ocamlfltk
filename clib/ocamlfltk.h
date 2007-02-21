@@ -1,0 +1,68 @@
+#ifndef OCAMLFLTK_H 
+#define OCAMLFLTK_H 
+
+#include <iostream>
+
+extern "C" {
+#define CAML_NAME_SPACE
+#include "caml/mlvalues.h"
+#include "caml/alloc.h"
+#include "caml/memory.h"
+#include "caml/callback.h"
+#include <string.h>
+}
+
+namespace Ofltk {
+
+static const int draw_method = caml_hash_variant("draw");
+static const int handle_method = caml_hash_variant("handle");
+
+template<class widget, const char* name>
+class fltk_director: public widget {
+        const char* id;
+    protected:
+        ::value* ocaml_obj;
+
+    public:
+    fltk_director(::value* oclass, int x, int y, int w, int h, const char* t = 0)
+        : widget(x, y, w, h, t), ocaml_obj(oclass), id(name) 
+    { }
+
+    virtual ~fltk_director()
+    { }
+
+    void default_draw()
+    {
+        std::cout << "drawing a " << id << std::endl;
+        widget::draw();
+    }
+
+    virtual void draw()
+    {
+        caml_callback(caml_get_public_method(*ocaml_obj, draw_method), *ocaml_obj);
+    }
+
+    int default_handle(int e)
+    {
+        return widget::handle(e);
+    }
+
+    virtual int handle(int e)
+    {
+        //std::cout << id <<  "-handle event: " << e << std::endl;
+        return Int_val(caml_callback2(caml_get_public_method(*ocaml_obj, handle_method), *ocaml_obj, Val_int(e)));
+    }
+};
+
+// NEW_DIRECTOR(Widget) gives: 
+// char Widget_id[] = "Widget-director";
+// typedef fltk_director<fltk::Widget, Widget_id> Widget_d;
+//
+
+}
+// = #typ "-director";
+#define NEW_DIRECTOR(typ) extern char typ ## _id[];\
+                      typedef fltk_director<fltk::typ, typ##_id>  typ##_d;
+
+
+#endif

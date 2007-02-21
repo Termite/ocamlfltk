@@ -1,0 +1,43 @@
+# The standard OMakefile.
+# You will usually need to modify this file for your project.
+
+########################################################################
+# Phony targets are scoped, so you probably want to declare them first.
+#
+
+#.PHONY: all install clean
+
+########################################################################
+# Subdirectories.
+# You may want to include some subdirectories in this project.
+# If so, define the subdirectory targets and uncomment this section.
+#
+
+.SUBDIRS: clib olib
+
+#
+# Various options
+#
+OCAMLFLAGS    = 
+# OCAMLCFLAGS   +=
+# OCAMLOPTFLAGS +=
+# OCAML_LINK_FLAGS +=
+# OCAML_BYTE_LINK_FLAGS +=
+# OCAML_NATIVE_LINK_FLAGS +=
+OCAMLINCLUDES += olib
+
+# Build an OCaml program
+
+NATIVE_ENABLED = false
+BYTE_ENABLED = true
+
+PROGRAM = moin
+PRG_FILES = moin
+OCAML_LIBS = olib/ocamlfltk
+
+OCAML_CLIBS += clib/libofltk
+# OCAML_OTHER_LIBS +=
+OCamlProgram($(PROGRAM), $(PRG_FILES))
+
+.DEFAULT: moin 
+

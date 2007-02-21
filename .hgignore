@@ -1,0 +1,11 @@
+syntax: glob
+*.swp
+*~
+*.rej
+*.o
+*.a
+*.cmo
+*.cmi
+*.cma
+*.lock
+
