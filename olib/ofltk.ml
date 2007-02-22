@@ -91,9 +91,12 @@ external get_type: widget -> int = "widget_get_type";;
 external set_type: widget -> int -> unit = "widget_set_type";;
 external set_label: widget -> string -> unit = "widget_set_label";;
 external set_color: widget -> int32 -> unit = "widget_set_color";;
+external widget_set_box: widget -> Box.box -> unit = "widget_set_box";;
 
 external widget_relayout: widget -> unit = "widget_relayout";;
 external widget_draw: widget -> unit = "widget_draw";;
+external widget_set_vertical: widget -> unit = "widget_set_vertical";;
+external widget_set_horizontal: widget -> unit = "widget_set_horizontal";;
 external widget_handle: widget -> int -> int = "widget_handle";;
 (*external slider_handle: widget -> int -> int = "slider_handle";;*)
 (*external intinput_handle: widget -> int -> int = "intinput_handle";;*)
@@ -192,7 +195,6 @@ class virtual fltkbase x y w h title = object(self)
         print_endline ("allocating " ^ self#ct ^ " " ^ name);
         obj <- self#alloc name x y w h title
 end;;
-(*  05276-986708   *)
 
 class fWidget x y w h title = object(self)
   inherit fltkbase x y w h title
@@ -223,12 +225,15 @@ class fWidget x y w h title = object(self)
   method handle ev = widget_handle obj ev
   method redraw = redraw_widget obj
   method width = get_width obj
+  method set_vertical = widget_set_vertical obj
+  method set_horizontal = widget_set_horizontal obj
   method get_when = get_when obj
   method set_when n = set_when obj n
   method get_type = get_type obj
   method set_type n = set_type obj n
   method set_label l = set_label obj l
   method set_color c = set_color obj c
+  method set_box b = widget_set_box obj b
   method as_widget = (self :> fWidget)
   (*method setfont font size = set_font font size
   method labelsize = get_labelsize obj
@@ -305,7 +310,36 @@ class fWizardGroup x y w h label = object
     method prev_page = wizard_prev obj
 end;;
 
+external new_packedgroup: string -> int -> int -> int -> int -> string -> widget
+    = "new_packedgroup_bc" "new_packedgroup";;
+external new_bargroup: string -> int -> int -> int -> int -> string -> widget
+    = "new_bargroup_bc" "new_bargroup";;
+external packedgroup_get_spacing: widget -> int = "packedgroup_get_spacing";;
+external packedgroup_set_spacing: widget -> int -> unit = "packedgroup_set_spacing";;
+external bargroup_get_opened: widget -> bool = "bargroup_get_opened";;
+external bargroup_set_opened: widget -> bool -> bool = "bargroup_set_opened";;
+external bargroup_open: widget -> bool = "bargroup_open";;
+external bargroup_close: widget -> bool = "bargroup_close";;
 
+
+type packed_group_dir = Normal | AllVertical;;
+
+class fPackedGroup x y w h label = object
+    inherit fGroup ~x:x ~y:y w h label
+    method ct = "PackedGroup"
+    method private alloc = new_packedgroup
+    method set_spacing n = packedgroup_set_spacing obj n
+    method get_spacing = packedgroup_get_spacing obj
+end;;
+
+class fBarGroup x y w h label = object
+    inherit fGroup ~x:x ~y:y w h label
+    method ct = "BarGroup"
+    method private alloc = new_bargroup
+    method open_bar = bargroup_open obj
+    method close_bar = bargroup_close obj
+    method is_open = bargroup_get_opened obj
+end;;
 
 
 class fWindow ?(add=true) ?(x=0) ?(y=0) w h title = object(self)
