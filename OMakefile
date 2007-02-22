@@ -52,6 +52,12 @@ TAB_DEMO = tabdemo
 TAB_FILES = tabdemo
 OCamlProgram($(TAB_DEMO), $(TAB_FILES))
 
+SCROLL_DEMO = scrolldemo
+SCROLL_FILES = scrolldemo
+OCamlProgram($(SCROLL_DEMO), $(SCROLL_FILES))
+
+
+SCROLLDEMO: scrolldemo
 TABDEMO: tabdemo
 PACK: pack
 WIZARD: wizard
