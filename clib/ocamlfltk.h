@@ -16,6 +16,7 @@ namespace Ofltk {
 
 static const int draw_method = caml_hash_variant("draw");
 static const int handle_method = caml_hash_variant("handle");
+static const int layout_method = caml_hash_variant("layout");
 
 template<class widget, const char* name>
 class fltk_director: public widget {
@@ -55,7 +56,7 @@ class fltk_director: public widget {
 };
 
 // NEW_DIRECTOR(Widget) gives: 
-// char Widget_id[] = "Widget-director";
+// extern char Widget_id[];
 // typedef fltk_director<fltk::Widget, Widget_id> Widget_d;
 //
 
