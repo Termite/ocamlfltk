@@ -47,6 +47,19 @@ extern "C" {
         return new_widget(args[0],args[1],args[2],args[3],args[4],args[5]);
     }
 
+    CAMLprim value widget_hide(value widget)
+    {
+        CAMLparam1(widget);
+        ((ocaml_widget*)widget) -> hide();
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value widget_show(value widget)
+    {
+        CAMLparam1(widget);
+        ((ocaml_widget*)widget) -> show();
+        CAMLreturn(Val_unit);
+    }
 
     CAMLprim value redraw_widget(value widget)
     {

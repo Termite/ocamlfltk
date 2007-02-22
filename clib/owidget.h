@@ -44,6 +44,7 @@ class ocaml_widget {
         fltk::Widget* give_widget() { return dest_widget; }
 
         void hide() { dest_widget->hide(); }
+        virtual void show() { static_cast<Widget_d*>(dest_widget)->show(); }
         int w() { dest_widget->w(); }
         int h() { dest_widget->h(); }
         int flags() { dest_widget->flags(); }
