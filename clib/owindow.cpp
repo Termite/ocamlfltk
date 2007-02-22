@@ -38,21 +38,6 @@ extern "C" {
         CAMLreturn(Val_unit);
     }
 
-
-    CAMLprim value window_hide(value window)
-    {
-        CAMLparam1(window);
-        ((ocaml_widget*)window) -> hide();
-        CAMLreturn(Val_unit);
-    }
-
-    CAMLprim value window_show(value window)
-    {
-        CAMLparam1(window);
-        ((ocaml_window*)window) -> show();
-        CAMLreturn(Val_unit);
-    }
-
     static void widget_cb(fltk::Widget* widget, value* caml_class)
     {
         ocaml_widget* w = (ocaml_widget*) caml_class;

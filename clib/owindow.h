@@ -17,7 +17,8 @@ class ocaml_window : public ocaml_group {
             dest_widget = new Window_d(o_class, x, y, w, h, t);
         }
         virtual ~ocaml_window() {}
-        void show() { static_cast<fltk::Window*>(dest_widget)->show(); }
+
+        virtual void show() { static_cast<Window_d*>(dest_widget)->show(); }
 
         virtual void default_draw()
         {
