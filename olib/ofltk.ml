@@ -349,6 +349,7 @@ external tabgroup_set_value: widget -> int -> bool = "tabgroup_set_value";;
 class fTabGroup x y w h label = object
     inherit fGroup ~x:x ~y:y w h label
     method private alloc = new_tabgroup
+    method ct = "TabGroup"
     method set_value n = tabgroup_set_value obj n
     method get_value = tabgroup_get_value obj
 end;;
@@ -367,6 +368,8 @@ external scrollgroup_scroll_to: widget -> int -> int -> unit = "scrollgroup_scro
 
 class fScrollGroup x y w h label = object
     inherit fGroup ~x:x ~y:y w h label
+    method ct = "ScrollGroup"
+    method private alloc = new_scrollgroup
     method scrolltype t = scrollgroup_type obj t
     method xpos = scrollgroup_xpos obj
     method ypos = scrollgroup_ypos obj
