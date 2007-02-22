@@ -36,7 +36,7 @@ extern "C" {
     {
         CAMLparam2(sc, typ);
         ocaml_scrollgroup* b = (ocaml_scrollgroup*) sc;
-        b->set_type(Int_val(typ));
+        b->set_type(1 + Int_val(typ));
         CAMLreturn(Val_unit);
     }
 
