@@ -44,6 +44,11 @@ WIZARD_FILES = wizard
 
 OCamlProgram($(WIZARD_DEMO), $(WIZARD_FILES))
 
+PACK_DEMO = pack
+PACK_FILES = pack
+OCamlProgram($(PACK_DEMO), $(PACK_FILES))
+
+PACK: pack
 WIZARD: wizard
 .DEFAULT: moin 
 
