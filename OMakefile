@@ -48,6 +48,11 @@ PACK_DEMO = pack
 PACK_FILES = pack
 OCamlProgram($(PACK_DEMO), $(PACK_FILES))
 
+TAB_DEMO = tabdemo
+TAB_FILES = tabdemo
+OCamlProgram($(TAB_DEMO), $(TAB_FILES))
+
+TABDEMO: tabdemo
 PACK: pack
 WIZARD: wizard
 .DEFAULT: moin 

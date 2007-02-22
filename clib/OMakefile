@@ -29,6 +29,7 @@ CLIBFILES[] =
    oinput
    obox
    opackedgroup
+   otabgroup
    ostatusbar
    ogroup
    ooutput
