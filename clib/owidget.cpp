@@ -83,6 +83,27 @@ extern "C" {
         CAMLreturn(Val_unit);
     }
 
+    CAMLprim value widget_set_vertical(value widget)
+    {
+        CAMLparam1(widget);
+        ((ocaml_widget*) widget) -> set_vertical();
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value widget_set_horizontal(value widget)
+    {
+        CAMLparam1(widget);
+        ((ocaml_widget*) widget) -> set_horitontal();
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value widget_set_box(value widget, value box)
+    {
+        CAMLparam2(widget, box);
+        ((ocaml_widget*) widget)->set_box((fltk::Box*) box);
+        CAMLreturn(Val_unit);
+    }
+
     CAMLprim value widget_relayout(value widget)
     {
         CAMLparam1(widget);

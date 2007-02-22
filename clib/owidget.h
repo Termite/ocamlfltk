@@ -53,6 +53,9 @@ class ocaml_widget {
         uchar get_type() { return dest_widget->type(); }
         void set_type(uchar f) { dest_widget->type(f); }
         void relayout() { dest_widget->relayout(); }
+        void set_vertical() { dest_widget->set_vertical(); }
+        void set_horitontal() { dest_widget->set_horizontal(); }
+        void set_box(fltk::Box* b) { dest_widget->box(b); }
 
         void color(unsigned c) { dest_widget->color(c); }
         void copy_label(const char* l)
