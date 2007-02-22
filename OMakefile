@@ -39,5 +39,11 @@ OCAML_CLIBS += clib/libofltk
 # OCAML_OTHER_LIBS +=
 OCamlProgram($(PROGRAM), $(PRG_FILES))
 
+WIZARD_DEMO = wizard
+WIZARD_FILES = wizard
+
+OCamlProgram($(WIZARD_DEMO), $(WIZARD_FILES))
+
+WIZARD: wizard
 .DEFAULT: moin 
 
