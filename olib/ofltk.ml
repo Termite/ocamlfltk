@@ -11,8 +11,6 @@ external new_group: string -> int -> int -> int -> int -> string -> widget
 external group_begin: widget -> unit = "group_begin"
 (*external addw: widget -> 'a -> unit = "group_add"*)
 external group_end: widget -> unit = "group_end"
-external window_show: widget -> unit = "window_show";;
-external window_hide: widget -> unit = "window_hide";;
 external set_resizeable : widget -> widget -> unit = "group_set_resizable";;
 external window_draw: widget -> unit = "window_draw";;
 
@@ -83,6 +81,8 @@ let opened		  = state
 external new_widget: string -> int -> int -> int -> int -> string -> widget
     = "new_widget_bc" "new_widget"
 
+external widget_show: widget -> unit = "widget_show";;
+external widget_hide: widget -> unit = "widget_hide";;
 external get_width: widget -> int = "get_width";;
 external get_height: widget -> int = "get_height";;
 external get_when: widget -> int = "widget_get_when";;
@@ -98,8 +98,6 @@ external widget_draw: widget -> unit = "widget_draw";;
 external widget_set_vertical: widget -> unit = "widget_set_vertical";;
 external widget_set_horizontal: widget -> unit = "widget_set_horizontal";;
 external widget_handle: widget -> int -> int = "widget_handle";;
-(*external slider_handle: widget -> int -> int = "slider_handle";;*)
-(*external intinput_handle: widget -> int -> int = "intinput_handle";;*)
 external redraw_widget: widget -> unit = "redraw_widget";;
 
 external new_button: string -> int -> int -> int -> int -> string -> widget = 
@@ -224,6 +222,8 @@ class fWidget x y w h title = object(self)
   method draw = widget_draw obj
   method handle ev = widget_handle obj ev
   method redraw = redraw_widget obj
+  method show = widget_show obj
+  method hide = widget_hide obj
   method width = get_width obj
   method set_vertical = widget_set_vertical obj
   method set_horizontal = widget_set_horizontal obj
@@ -341,13 +341,42 @@ class fBarGroup x y w h label = object
     method is_open = bargroup_get_opened obj
 end;;
 
+external new_tabgroup: string -> int -> int -> int -> int -> string -> widget
+    = "new_tabgroup_bc" "new_tabgroup";;
+external tabgroup_get_value: widget -> int = "tabgroup_get_value";;
+external tabgroup_set_value: widget -> int -> bool = "tabgroup_set_value";;
+
+class fTabGroup x y w h label = object
+    inherit fGroup ~x:x ~y:y w h label
+    method private alloc = new_tabgroup
+    method set_value n = tabgroup_set_value obj n
+    method get_value = tabgroup_get_value obj
+end;;
+
+
+
+type scrolltype = Horizontal | Vertical | Both | Always | HorizontalAlways
+                | VerticalAlways | BothAlways;;
+
+external new_scrollgroup: string -> int -> int -> int -> int -> string -> widget
+    = "new_scrollgroup_bc" "new_scrollgroup";;
+external scrollgroup_xpos: widget -> int = "scrollgroup_xpos";;
+external scrollgroup_ypos: widget -> int = "scrollgroup_ypos";;
+external scrollgroup_type: widget -> scrolltype -> unit = "scrollgroup_type";;
+external scrollgroup_scroll_to: widget -> int -> int -> unit = "scrollgroup_scroll_to";;
+
+class fScrollGroup x y w h label = object
+    inherit fGroup ~x:x ~y:y w h label
+    method scrolltype t = scrollgroup_type obj t
+    method xpos = scrollgroup_xpos obj
+    method ypos = scrollgroup_ypos obj
+    method scroll_to x y = scrollgroup_scroll_to obj x y
+end;;
 
 class fWindow ?(add=true) ?(x=0) ?(y=0) w h title = object(self)
     inherit fGroup ~add ~x ~y w h title    
     method private alloc = new_window
     method ct = "window"
-    method show = window_show obj
-    method hide = window_hide obj
 end;;
 
 type button_typ = NormalButton | CheckButton | LightButton
@@ -506,12 +535,4 @@ class fOutput ?(otype = NormalOutput) x y w h label =
         | MultiLine -> new_multiline        
         | WordWrap -> new_wordwrap
     end;;
-
-
-external new_statusbar: string -> int -> int -> int -> int -> string -> widget
-    = "new_statusbar_bc" "new_statusbar";;
-
-external new_easy_statusbar: string -> int -> widget = "new_easy_statusbar";;
-
-
 
