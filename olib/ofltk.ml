@@ -269,6 +269,41 @@ class fGroup ?(add=false) ?(x=0) ?(y=0) w h title = object(self)
         if add = true then self#begin_add else self#wend
 end;;
 
+external new_menu: string -> int -> int -> int -> int -> string -> widget
+    = "new_menu_bc" "new_menu";;
+
+class fMenu x y w h label = object
+    inherit fGroup ~x:x ~y:y w h label
+    method ct = "Menu"
+    method private alloc = new_menu
+end;;
+
+external new_menubar: string -> int -> int -> int -> int -> string -> widget
+    = "new_menubar_bc" "new_menubar";;
+
+class fMenuBar x y w h label = object
+    inherit fMenu x y w h label
+    method ct = "MenuBar"
+    method private alloc = new_menubar
+end;;
+
+
+external new_item: string -> string -> widget = "new_item";;
+
+class fItem item = object
+    inherit fWidget 0 0 0 0 ""
+    method ct = "Item"
+    method private alloc = fun objname _ _ _ _ _ -> new_item objname item
+end;;
+
+external new_itemgroup: string -> string -> widget = "new_itemgroup";;
+
+class fItemGroup item = object
+    inherit fMenu 0 0 0 0 ""
+    method ct = "ItemGroup"
+    method private alloc = fun objname _ _ _ _ _ -> new_itemgroup objname item
+end;;
+
 
 external new_statusbar: string -> int -> int -> int -> int -> string -> widget
     = "new_statusbar_bc" "new_statusbar";;

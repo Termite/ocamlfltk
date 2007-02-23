@@ -29,6 +29,8 @@ CLIBFILES[] =
    oinput
    oscrollgroup
    odivider
+   omenu
+   oitem
    obox
    opackedgroup
    otabgroup
