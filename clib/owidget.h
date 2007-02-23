@@ -52,6 +52,8 @@ class ocaml_widget {
         uchar get_when() { return dest_widget->when(); }
         void set_when(uchar f) { dest_widget->when(f); }
         uchar get_type() { return dest_widget->type(); }
+        void tooltip(const char* t) { dest_widget->tooltip(t); }
+        const char* tooltip() { return dest_widget->tooltip(); }
         void set_type(uchar f) { dest_widget->type(f); }
         void relayout() { dest_widget->relayout(); }
         void set_vertical() { dest_widget->set_vertical(); }

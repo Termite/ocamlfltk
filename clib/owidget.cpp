@@ -68,17 +68,16 @@ extern "C" {
         CAMLreturn(Val_unit);
     }
 
-    CAMLprim value widget_clr_draw(value widget)
+    CAMLprim value widget_get_tooltip(value widget)
     {
         CAMLparam1(widget);
-        //((ocaml_widget*) widget) -> draw_virtual = 0;
-        CAMLreturn(Val_unit);
+        CAMLreturn(caml_copy_string(((ocaml_widget*) widget)->tooltip()));
     }
 
-    CAMLprim value widget_set_draw(value widget, value fkt)
+    CAMLprim value widget_set_tooltip(value widget, value tooltip)
     {
-        CAMLparam2(widget, fkt);
-        //((ocaml_widget*) widget) -> draw_virtual = caml_named_value(String_val(fkt));
+        CAMLparam2(widget, tooltip);
+        ((ocaml_widget*) widget)->tooltip(String_val(tooltip));
         CAMLreturn(Val_unit);
     }
 

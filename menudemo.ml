@@ -36,6 +36,7 @@ make_menu [
 
 bar#wend;
 let pop = new fPopupMenu 180 50 100 25 "&PopupMenu" in
+pop#set_tooltip "das sollte ein Popup sein";
 pop#begin_add;
 make_menu [
     "&File", [ I("&Load", None);
@@ -47,6 +48,7 @@ make_menu [
 ];
 pop#wend;
 let ch = new fChoice 180 90 100 25 "&choice" in
+ch#set_tooltip "eine kleine Choice";
 ch#begin_add;
 make_menu [
     "&File", [ I("&Load", None);
@@ -58,13 +60,14 @@ make_menu [
 ];
 ch#wend;
 let cy = new fCycleButton 110 130 100 25 "cycle" in
+cy#set_tooltip "was zum cyclen";
 cy#begin_add;
 let i1 = new fItem "cycle 1" in
 let i2 = new fItem "teil 2" in
 let i3 = new fItem "last" in
 cy#wend;
 
-
+print_endline ("cycle: " ^ cy#get_tooltip);
 
 win#wend;
 Gc.full_major();
