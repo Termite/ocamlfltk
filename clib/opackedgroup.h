@@ -22,15 +22,7 @@ namespace Ofltk {
 
         virtual ~ocaml_packedgroup() {}
 
-        virtual void default_draw()
-        {
-            static_cast<PackedGroup_d*>(dest_widget)->default_draw();
-        }
-
-        int default_handle(int ev)
-        {
-            return static_cast<PackedGroup_d*>(dest_widget)->default_handle(ev); 
-        }
+        DEF_DEFAULT(PackedGroup_d);
 
         int spacing() { return static_cast<PackedGroup_d*>(dest_widget)->spacing(); }
 
@@ -54,15 +46,7 @@ namespace Ofltk {
 
         virtual ~ocaml_bargroup() {}
 
-        virtual void default_draw()
-        {
-            static_cast<BarGroup_d*>(dest_widget)->default_draw();
-        }
-
-        int default_handle(int ev)
-        {
-            return static_cast<BarGroup_d*>(dest_widget)->default_handle(ev); 
-        }
+        DEF_DEFAULT(BarGroup_d);
 
         bool opened() { return static_cast<BarGroup_d*>(dest_widget)->opened(); }
 

@@ -29,15 +29,7 @@ namespace Ofltk {
                 return static_cast<TabGroup_d*>(dest_widget)->value(v);
             }
 
-            virtual void default_draw()
-            {
-                static_cast<TabGroup_d*>(dest_widget)->default_draw();
-            }
-
-            int default_handle(int ev)
-            {
-                return static_cast<TabGroup_d*>(dest_widget)->default_handle(ev); 
-            }
+            DEF_DEFAULT(TabGroup_d);
     };
 
 

@@ -20,18 +20,7 @@ class ocaml_window : public ocaml_group {
 
         virtual void show() { static_cast<Window_d*>(dest_widget)->show(); }
 
-        virtual void default_draw()
-        {
-
-            //std::cout << "window-default-draw" << std::endl;
-            static_cast<Window_d*>(dest_widget)->default_draw();
-        }
-
-        int default_handle(int ev)
-        {
-            //std::cout << "window-default-handle " << ev << std::endl;
-            return static_cast<Window_d*>(dest_widget)->default_handle(ev); 
-        }
+        DEF_DEFAULT(Window_d);
 
         
 };

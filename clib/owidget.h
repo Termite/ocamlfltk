@@ -69,11 +69,7 @@ class ocaml_widget {
             dest_widget->callback(cb, data);
         }
 
-        virtual void default_draw()
-        {
-            std::cout << "default draw" << std::endl;
-            static_cast<Widget_d*>(dest_widget)->default_draw();
-        }
+        DEF_DEFAULT(Widget_d);
 
         virtual void draw()
         {
@@ -85,10 +81,6 @@ class ocaml_widget {
             dest_widget->redraw();
         }
 
-        virtual int default_handle(int ev)
-        {
-            return static_cast<Widget_d*>(dest_widget)->default_handle(ev); 
-        }
 };
 
 NEW_DIRECTOR(InvisibleBox);
@@ -104,15 +96,7 @@ class ocaml_invisiblebox : public ocaml_widget {
 
         virtual ~ocaml_invisiblebox() {}
 
-        virtual void default_draw()
-        {
-            static_cast<InvisibleBox_d*>(dest_widget)->default_draw();
-        }
-
-        int default_handle(int ev)
-        {
-            return static_cast<InvisibleBox_d*>(dest_widget)->default_handle(ev); 
-        }
+        DEF_DEFAULT(InvisibleBox_d);
 };
 
 };

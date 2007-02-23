@@ -5,7 +5,7 @@
 # Phony targets are scoped, so you probably want to declare them first.
 #
 
-#.PHONY: all install clean
+.PHONY: demos
 
 ########################################################################
 # Subdirectories.
@@ -61,5 +61,6 @@ SCROLLDEMO: scrolldemo
 TABDEMO: tabdemo
 PACK: pack
 WIZARD: wizard
+demos: wizard tabdemo scrolldemo pack moin
 .DEFAULT: moin 
 

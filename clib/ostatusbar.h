@@ -63,15 +63,7 @@ class ocaml_statusbar : public ocaml_group {
 
         virtual ~ocaml_statusbar() {}
 
-        virtual void default_draw()
-        {
-            static_cast<StatusBarGroup_d*>(dest_widget)->default_draw();
-        }
-
-        int default_handle(int ev)
-        {
-            return static_cast<StatusBarGroup_d*>(dest_widget)->default_handle(ev); 
-        }
+        DEF_DEFAULT(StatusBarGroup_d);
 
         void set(const char* txt, fltk::StatusBarGroup::Position pos)
         {

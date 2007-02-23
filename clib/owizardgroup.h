@@ -20,15 +20,8 @@ namespace Ofltk {
 
         virtual ~ocaml_wizardgroup() {}
 
-        virtual void default_draw()
-        {
-            static_cast<WizardGroup_d*>(dest_widget)->default_draw();
-        }
+        DEF_DEFAULT(WizardGroup_d);
 
-        int default_handle(int ev)
-        {
-            return static_cast<WizardGroup_d*>(dest_widget)->default_handle(ev); 
-        }
         void next()
         {
             static_cast<WizardGroup_d*>(dest_widget)->next();

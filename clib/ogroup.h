@@ -19,15 +19,8 @@ class ocaml_group : public ocaml_widget {
         
         virtual ~ocaml_group() {}
 
-        virtual void default_draw()
-        {
-            static_cast<Group_d*>(dest_widget)->default_draw();
-        }
+        DEF_DEFAULT(Group_d);
 
-        int default_handle(int ev)
-        {
-            return static_cast<Group_d*>(dest_widget)->default_handle(ev); 
-        }
         void begin() { static_cast<fltk::Group*>(dest_widget)->begin(); }
         void end() { static_cast<fltk::Group*>(dest_widget)->end(); }
 

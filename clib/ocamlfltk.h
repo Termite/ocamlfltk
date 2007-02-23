@@ -65,5 +65,9 @@ class fltk_director: public widget {
 #define NEW_DIRECTOR(typ) extern char typ ## _id[];\
                       typedef fltk_director<fltk::typ, typ##_id>  typ##_d;
 
+#define DEF_DEFAULT(widget)\
+            virtual void default_draw() { static_cast<widget*>(dest_widget)->default_draw(); }\
+            virtual int default_handle(int ev) { return static_cast<widget*>(dest_widget)->default_handle(ev); }
+
 
 #endif

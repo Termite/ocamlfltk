@@ -23,15 +23,7 @@ class ocaml_output : public ocaml_input {
 
         virtual ~ocaml_output() {}
 
-        virtual void default_draw()
-        {
-            static_cast<Output_d*>(dest_widget)->default_draw();
-        }
-
-        int default_handle(int ev)
-        {
-            return static_cast<Output_d*>(dest_widget)->default_handle(ev); 
-        }
+        DEF_DEFAULT(Output_d);
 };
 
 class ocaml_multiline : public ocaml_output {
@@ -45,15 +37,7 @@ class ocaml_multiline : public ocaml_output {
 
         virtual ~ocaml_multiline() {}
 
-        virtual void default_draw()
-        {
-            static_cast<MultiLineOutput_d*>(dest_widget)->default_draw();
-        }
-
-        int default_handle(int ev)
-        {
-            return static_cast<MultiLineOutput_d*>(dest_widget)->default_handle(ev); 
-        }
+        DEF_DEFAULT(MultiLineOutput_d);
 };
 
 class ocaml_wordwrap : public ocaml_output {
@@ -67,15 +51,7 @@ class ocaml_wordwrap : public ocaml_output {
 
         virtual ~ocaml_wordwrap() {}
 
-        virtual void default_draw()
-        {
-            static_cast<WordwrapOutput_d*>(dest_widget)->default_draw();
-        }
-
-        int default_handle(int ev)
-        {
-            return static_cast<WordwrapOutput_d*>(dest_widget)->default_handle(ev); 
-        }
+        DEF_DEFAULT(WordwrapOutput_d);
 };
 
 

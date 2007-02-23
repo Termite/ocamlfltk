@@ -19,15 +19,7 @@ namespace Ofltk {
 
             virtual ~ocaml_scrollgroup() {}
 
-            virtual void default_draw()
-            {
-                static_cast<ScrollGroup_d*>(dest_widget)->default_draw();
-            }
-
-            int default_handle(int ev)
-            {
-                return static_cast<ScrollGroup_d*>(dest_widget)->default_handle(ev); 
-            }
+            DEF_DEFAULT(ScrollGroup_d);
 
             int xpos() { return static_cast<ScrollGroup_d*>(dest_widget)->xposition(); }
             int ypos() { return static_cast<ScrollGroup_d*>(dest_widget)->yposition(); }

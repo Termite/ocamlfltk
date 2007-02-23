@@ -47,15 +47,7 @@ class ocaml_button : public ocaml_widget {
             return static_cast<Button_d*>(dest_widget)->value(v);
         }
 
-        virtual void default_draw()
-        {
-            static_cast<Button_d*>(dest_widget)->default_draw();
-        }
-
-        int default_handle(int ev)
-        {
-            return static_cast<Button_d*>(dest_widget)->default_handle(ev); 
-        }
+        DEF_DEFAULT(Button_d);
 };
 
 template<class native, class parent>

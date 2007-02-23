@@ -25,15 +25,7 @@ class ocaml_input : public ocaml_widget {
 
         virtual ~ocaml_input() {}
 
-        virtual void default_draw()
-        {
-            static_cast<Input_d*>(dest_widget)->default_draw();
-        }
-
-        int default_handle(int ev)
-        {
-            return static_cast<Input_d*>(dest_widget)->default_handle(ev); 
-        }
+        DEF_DEFAULT(Input_d);
 
         const char* get_text()
         {

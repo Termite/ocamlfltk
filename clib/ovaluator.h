@@ -49,18 +49,7 @@ class ocaml_slider : public ocaml_valuator {
 
         virtual ~ocaml_slider() {}
 
-        virtual void default_draw()
-        {
-
-            //std::cout << "slider-default-draw" << std::endl;
-            static_cast<Slider_d*>(dest_widget)->default_draw();
-        }
-
-        int default_handle(int ev)
-        {
-            //std::cout << "slider-default-handle " << ev << std::endl;
-            return static_cast<Slider_d*>(dest_widget)->default_handle(ev); 
-        }
+        DEF_DEFAULT(Slider_d);
 
         void set_tick_size(int n)
         {
@@ -94,18 +83,7 @@ class ocaml_valueinput : public ocaml_valuator {
 
         virtual ~ocaml_valueinput() {}
 
-        virtual void default_draw()
-        {
-
-            //std::cout << "slider-default-draw" << std::endl;
-            static_cast<ValueInput_d*>(dest_widget)->default_draw();
-        }
-
-        int default_handle(int ev)
-        {
-            //std::cout << "slider-default-handle " << ev << std::endl;
-            return static_cast<ValueInput_d*>(dest_widget)->default_handle(ev); 
-        }
+        DEF_DEFAULT(ValueInput_d);
 
 };
 
@@ -119,18 +97,7 @@ class ocaml_valueoutput : public ocaml_valuator {
 
         virtual ~ocaml_valueoutput() {}
 
-        virtual void default_draw()
-        {
-
-            //std::cout << "slider-default-draw" << std::endl;
-            static_cast<ValueOutput_d*>(dest_widget)->default_draw();
-        }
-
-        int default_handle(int ev)
-        {
-            //std::cout << "slider-default-handle " << ev << std::endl;
-            return static_cast<ValueOutput_d*>(dest_widget)->default_handle(ev); 
-        }
+        DEF_DEFAULT(ValueOutput_d);
 
 };
 
