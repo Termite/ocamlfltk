@@ -247,6 +247,16 @@ class fWidget x y w h title = object(self)
 
 end;;
 
+
+external new_divider: string -> widget = "new_divider"
+
+class fDivider = object
+    inherit fWidget 0 0 0 0 ""
+    method private alloc = fun name _ _ _ _ _ -> new_divider name
+    method ct = "Divider"
+end;;
+
+
 class fGroup ?(add=false) ?(x=0) ?(y=0) w h title = object(self)
     inherit fWidget x y w h title
     method private alloc = new_group
