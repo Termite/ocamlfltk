@@ -278,6 +278,28 @@ class fMenu x y w h label = object
     method private alloc = new_menu
 end;;
 
+external new_choice: string -> int -> int -> int -> int -> string -> widget
+    = "new_choice_bc" "new_choice";;
+external new_cyclebutton: string -> int -> int -> int -> int -> string -> widget
+    = "new_cyclebutton_bc" "new_cyclebutton";;
+external new_popup: string -> int -> int -> int -> int -> string -> widget
+    = "new_popupmenu_bc" "new_popupmenu";;
+
+type submenu_type = Choice | CycleButton | PopupMenu
+
+class xMenu mtype x y w h label = object
+    inherit fMenu x y w h label
+    method private alloc = match mtype with
+    | Choice -> new_choice
+    | CycleButton -> new_cyclebutton
+    | PopupMenu -> new_popup
+end;;
+
+class fChoice = xMenu Choice;;
+class fCycleButton = xMenu CycleButton;;
+class fPopupMenu = xMenu PopupMenu;;
+
+
 external new_menubar: string -> int -> int -> int -> int -> string -> widget
     = "new_menubar_bc" "new_menubar";;
 

@@ -31,6 +31,7 @@ CLIBFILES[] =
    odivider
    omenu
    oitem
+   ochoices
    obox
    opackedgroup
    otabgroup
