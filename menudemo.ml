@@ -22,42 +22,34 @@ let rec make_menu groups =
 ;;
        
 
-let win = new fWindow ~x:0 ~y:0 600 400  "Pack Demo" in
-let bar = new fMenuBar 0 0 600 23 "" in
-bar#begin_add;
-make_menu [
-    "&File", [ I("&Load", None);
-    Divider;
-    Sub(["&Edit", [ I("Cut", None);
-                    I("Paste", None) ]]);
-    I("&Save", Some(fun() -> print_endline "Save!")) ];
-    
-];
+let demo_menu () =
+    make_menu [
+        "&File", [ I("&Load", None);
+        Divider;
+        Sub(["&Edit", [ I("Cut", None);
+        I("Paste", None) ]])];
 
+        "&Conf", [ I("&Save", Some(fun() -> print_endline "Save!"));
+        I("&hier", None); I("dort", None)]
+
+    ];;
+
+
+
+let win = new fWindow ~x:0 ~y:0 600 400  "Pack Demo" in
+let bar = new fMenuBar 0 0 600 25 "" in
+bar#begin_add;
+demo_menu();
 bar#wend;
 let pop = new fPopupMenu 180 50 100 25 "&PopupMenu" in
 pop#set_tooltip "das sollte ein Popup sein";
 pop#begin_add;
-make_menu [
-    "&File", [ I("&Load", None);
-    Divider;
-    Sub(["&Edit", [ I("Cut", None);
-                    I("Paste", None) ]]);
-    I("&Save", Some(fun() -> print_endline "Save!")) ];
-    
-];
+demo_menu();
 pop#wend;
 let ch = new fChoice 180 90 100 25 "&choice" in
 ch#set_tooltip "eine kleine Choice";
 ch#begin_add;
-make_menu [
-    "&File", [ I("&Load", None);
-    Divider;
-    Sub(["&Edit", [ I("Cut", None);
-                    I("Paste", None) ]]);
-    I("&Save", Some(fun() -> print_endline "Save!")) ];
-    
-];
+demo_menu();
 ch#wend;
 let cy = new fCycleButton 110 130 100 25 "cycle" in
 cy#set_tooltip "was zum cyclen";
