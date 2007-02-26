@@ -31,17 +31,11 @@ let add_group wiz text col =
 ;;
 
 
-let win = new fWindow 320 200  "hehe" in
-let wiz = new fWizardGroup 0 0 320 200 "" in
-wiz#begin_add;
-add_group wiz "hi" 0l;
-add_group wiz "do" 0x55555500l;
-add_group wiz "drei" 0xa0000000l;
-wiz#wend;
-(*
+let win = new fWindow ~x:1 ~y:500 320 200  "hehe" in
 let stat = new easyStatusBar in
 stat#child_box SBAR_RIGHT Box.thin_down_box; 
 stat#print "Hi, wie geht's?";
+win#begin_add;
 (*let down = new fButton ~btyp:RadioButton 50 60 50 20 "" in*)
 let radio = ref "" in
 let down = new myRadio 50 60 50 20 "radio" radio "Mensch!" in
@@ -64,7 +58,6 @@ up#callback (fun () ->
     slider#set_value_check (slider#get_value +. 1.0);
     inp#set_value slider#get_value);
 byby#callback (fun () -> win#hide);    
-*)
 win#wend;
 Gc.full_major();
 win#show;
