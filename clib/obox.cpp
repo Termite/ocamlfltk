@@ -2,6 +2,8 @@
 #include <fltk/Box.h>
 #include <fltk/ask.h>
 
+#include "osymbols.h"
+
 using namespace fltk;
 
 extern "C" {
@@ -44,7 +46,7 @@ extern "C" {
         boxes = caml_alloc_tuple(size);
         for (int i=0; i < size; ++i)
         {
-            Store_field(boxes, i, (value)f[i]);
+            Store_field(boxes, i, (value)(new Ofltk::ocaml_symbol(f[i])));
         }
         CAMLreturn(boxes);
     }    
