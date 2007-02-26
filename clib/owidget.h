@@ -28,10 +28,10 @@ class ocaml_widget {
         ::value* caml_obj;
 
     public:
-        ::value* callback_fkt;
+//        ::value* callback_fkt;
 
         ocaml_widget() 
-            : dest_widget(0), caml_obj(0), callback_fkt(0)
+            : dest_widget(0), caml_obj(0)
         {}
 
         ocaml_widget(::value* o_obj, int x, int y, int w, int h, const char* t = 0)

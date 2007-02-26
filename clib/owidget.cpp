@@ -5,6 +5,7 @@
 #include <fltk/Font.h>
 #include <fltk/draw.h>
 #include <fltk/ask.h>
+#include "osymbols.h"
 
 namespace Ofltk {
 
@@ -112,7 +113,7 @@ extern "C" {
     CAMLprim value widget_set_box(value widget, value box)
     {
         CAMLparam2(widget, box);
-        ((ocaml_widget*) widget)->set_box((fltk::Box*) box);
+        ((ocaml_widget*) widget)->set_box(((ocaml_symbol*)box)->dest_widget());
         CAMLreturn(Val_unit);
     }
 
