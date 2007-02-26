@@ -60,12 +60,15 @@ MENU_DEMO = menudemo
 MENU_FILES = menudemo
 OCamlProgram($(MENU_DEMO), $(MENU_FILES))
 
+OCamlProgram(boxdemo, boxdemo)
 
 MENUDEMO: menudemo
 SCROLLDEMO: scrolldemo
 TABDEMO: tabdemo
 PACK: pack
 WIZARD: wizard
-demos: wizard tabdemo scrolldemo pack moin menudemo
+BOXDEMO: boxdemo
+
+demos: wizard tabdemo scrolldemo pack moin menudemo boxdemo
 .DEFAULT: moin 
 
