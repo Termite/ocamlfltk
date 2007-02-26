@@ -38,6 +38,7 @@ OCAML_LIB_FLAGS = -custom clib/libofltk.a -cclib $"-lstdc++ -L/usr/local/lib -lf
 LIB_FILES[] =
 	box
 	ask
+	symbols
 	ofltk
 #	valuator
 #	widget
