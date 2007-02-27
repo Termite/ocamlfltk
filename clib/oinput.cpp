@@ -17,7 +17,7 @@ extern "C" {
     CAMLprim value input_get_text(value widget)
     {
         CAMLparam1(widget);
-        CAMLreturn(caml_copy_string(((ocaml_input*)widget)->get_text()));
+        CAMLreturn(copy_string(((ocaml_input*)widget)->get_text()));
     }
 
     CAMLprim value input_set_text(value widget, value txt)

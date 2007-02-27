@@ -72,7 +72,7 @@ extern "C" {
     CAMLprim value widget_get_tooltip(value widget)
     {
         CAMLparam1(widget);
-        CAMLreturn(caml_copy_string(((ocaml_widget*) widget)->tooltip()));
+        CAMLreturn(copy_string(((ocaml_widget*) widget)->tooltip()));
     }
 
     CAMLprim value widget_set_tooltip(value widget, value tooltip)

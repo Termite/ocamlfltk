@@ -4,7 +4,7 @@
 
 #include "osymbols.h"
 
-using namespace fltk;
+using namespace Ofltk;
 
 extern "C" {
 
@@ -14,35 +14,35 @@ extern "C" {
     {
         CAMLparam1(nix);
         CAMLlocal1(boxes);
-        Box* f[] = { 
-             UP_BOX,
-             DOWN_BOX,
-             THIN_UP_BOX,
-             THIN_DOWN_BOX,
-             ENGRAVED_BOX,
-             EMBOSSED_BOX,
-             BORDER_BOX,
-             FLAT_BOX,
-             HIGHLIGHT_UP_BOX,
-             HIGHLIGHT_DOWN_BOX,
-             ROUND_UP_BOX,
-             ROUND_DOWN_BOX,
-             DIAMOND_UP_BOX,
-             DIAMOND_DOWN_BOX,
-             NO_BOX,
-             SHADOW_BOX,
-             ROUNDED_BOX,
-             RSHADOW_BOX,
-             RFLAT_BOX,
-             OVAL_BOX,
-             OSHADOW_BOX,
-             OFLAT_BOX,
-             BORDER_FRAME,
-             FOCUS_FRAME,
-             PLASTIC_UP_BOX,
-             PLASTIC_DOWN_BOX
+        fltk::Box* f[] = { 
+            fltk::UP_BOX,
+            fltk::DOWN_BOX,
+            fltk::THIN_UP_BOX,
+            fltk::THIN_DOWN_BOX,
+            fltk::ENGRAVED_BOX,
+            fltk::EMBOSSED_BOX,
+            fltk::BORDER_BOX,
+            fltk::FLAT_BOX,
+            fltk::HIGHLIGHT_UP_BOX,
+            fltk::HIGHLIGHT_DOWN_BOX,
+            fltk::ROUND_UP_BOX,
+            fltk::ROUND_DOWN_BOX,
+            fltk::DIAMOND_UP_BOX,
+            fltk::DIAMOND_DOWN_BOX,
+            fltk::NO_BOX,
+            fltk::SHADOW_BOX,
+            fltk::ROUNDED_BOX,
+            fltk::RSHADOW_BOX,
+            fltk::RFLAT_BOX,
+            fltk::OVAL_BOX,
+            fltk::OSHADOW_BOX,
+            fltk::OFLAT_BOX,
+            fltk::BORDER_FRAME,
+            fltk::FOCUS_FRAME,
+            fltk::PLASTIC_UP_BOX,
+            fltk::PLASTIC_DOWN_BOX
             };
-        int size = sizeof(f) / sizeof(Box*);
+        int size = sizeof(f) / sizeof(fltk::Box*);
         boxes = caml_alloc_tuple(size);
         for (int i=0; i < size; ++i)
         {
@@ -55,7 +55,7 @@ extern "C" {
     {
         CAMLparam1(message);
         char* m = String_val(message);
-        CAMLreturn(Val_int(ask("%s", m)));
+        CAMLreturn(Val_int(fltk::ask("%s", m)));
     }
        
     CAMLprim value input_box(value default_str, value message)
@@ -63,7 +63,7 @@ extern "C" {
         CAMLparam2(default_str, message);
         CAMLlocal1(erg);
         char* m = String_val(message);
-        const char* answer = input("%s", String_val(default_str), m);
+        const char* answer = fltk::input("%s", String_val(default_str), m);
         if (answer == 0) 
         {
            erg = Val_int(0);
@@ -71,7 +71,7 @@ extern "C" {
         else
         {
            erg = caml_alloc_tuple(1);
-           Store_field(erg, 0, caml_copy_string(answer));
+           Store_field(erg, 0, copy_string(answer));
         }
         CAMLreturn(erg);
     }
