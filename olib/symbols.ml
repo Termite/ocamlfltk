@@ -3,10 +3,20 @@ type symbol;;
 type 'a symb = symbol;;
 type 'a draw_callback = symbol -> int * int * int * int -> unit;;
 
-external new_box: string -> string -> symbol = "make_symbol";;
+external new_box: string -> string -> symbol = "new_symbol";;
 external get_name: symbol -> string = "symbol_get_name";;
 external set_name: symbol -> string -> unit = "symbol_set_name";;
-external measure: symbol -> int*int = "symbol_measure";;
+external is_frame: symbol -> bool = "symbol_is_frame";;
+external measure: symbol -> int -> int -> int*int = "symbol_measure";;
+
+type flatboxes = [ `Box | `FlatBox ];;
+external new_flatbox: string -> string -> [`FlatBox] symb = "new_flatbox";;
+let new_flatbox = new_box
+
+type frameboxes = [`FrameBox | `Box ];;
+external new_framebox: string -> string ->
+        int -> int -> int -> int -> string -> 'a symb option -> [`FrameBox] symb
+        = "new_framebox_bc" "new_framebox";;
 
 let symbol_id = ref 1;;
 
@@ -18,6 +28,12 @@ let register fkt =
 ;;
 
 let make_box draw_funk name = new_box (register draw_funk) name ;;
+let make_flatbox draw_funk name = new_flatbox (register draw_funk) name ;;
+let make_framebox draw_funk name dx dy w h pattern down_box=
+    new_framebox (register draw_funk) name dx dy w h pattern down_box;;
+
+external get_data: symbol -> string = "framebox_get_data";;
+external set_data: symbol -> string -> unit = "framebox_set_data";;
 
 (*
 external dx: 'a symb -> int = "symbol_dx";;
