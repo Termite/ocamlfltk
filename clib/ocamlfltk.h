@@ -14,6 +14,11 @@ extern "C" {
 
 namespace Ofltk {
 
+inline value copy_string(const char* s)
+{
+    return ::caml_copy_string(s ? s : "");
+}
+
 static const int draw_method = caml_hash_variant("draw");
 static const int handle_method = caml_hash_variant("handle");
 static const int layout_method = caml_hash_variant("layout");

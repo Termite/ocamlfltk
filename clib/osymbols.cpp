@@ -37,7 +37,7 @@ extern "C" {
     {
         CAMLparam1(symbol);
         const char* n = ((ocaml_symbol*)symbol)->name();
-        CAMLreturn(caml_copy_string(n ? n : ""));
+        CAMLreturn(copy_string(n));
     }
 
     CAMLprim value symbol_is_frame(value symbol)
@@ -77,7 +77,7 @@ extern "C" {
     CAMLprim value framebox_get_data(value symbol)
     {
         CAMLparam1(symbol);
-        CAMLreturn(caml_copy_string(((ocaml_framebox*)symbol)->data()));
+        CAMLreturn(copy_string(((ocaml_framebox*)symbol)->data()));
     }
 
     CAMLprim value framebox_set_data(value symbol, value data)
