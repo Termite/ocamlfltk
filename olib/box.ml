@@ -1,4 +1,5 @@
-type box;;
+open Symbols;;
+type box = [`Box] symb;;
 
 external init_boxes: unit -> box array = "init_boxes";;
 

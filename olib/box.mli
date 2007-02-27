@@ -1,4 +1,6 @@
-type box;;
+open Symbols;;
+
+type box = [`Box] symb;;
 
 val up_box : box;;
 val down_box : box;;
