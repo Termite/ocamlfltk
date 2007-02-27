@@ -4,6 +4,7 @@
 #include "ocamlfltk.h"
 #include <fltk/Widget.h>
 #include <fltk/InvisibleBox.h>
+#include "osymbols.h"
 
 #define MAKE_NEW(widget) \
     CAMLprim value new_##widget(value name, value x, value y, value w, value h, value label)\
@@ -58,7 +59,10 @@ class ocaml_widget {
         void relayout() { dest_widget->relayout(); }
         void set_vertical() { dest_widget->set_vertical(); }
         void set_horitontal() { dest_widget->set_horizontal(); }
-        void set_box(fltk::Box* b) { dest_widget->box(b); }
+        virtual void set_box(fltk::Box* b) { dest_widget->box(b); }
+        virtual ocaml_symbol* get_box() { return new ocaml_symbol(dest_widget->box()); }
+        void labelsize(double s) { dest_widget->labelsize(s); }
+        double labelsize() { return dest_widget->labelsize(); }
 
         void color(unsigned c) { dest_widget->color(c); }
         void copy_label(const char* l)

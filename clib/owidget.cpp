@@ -117,10 +117,29 @@ extern "C" {
         CAMLreturn(Val_unit);
     }
 
+    CAMLprim value widget_get_box(value widget)
+    {
+        CAMLparam1(widget);
+        CAMLreturn((value)(((ocaml_widget*) widget)->get_box()));
+    }
+
     CAMLprim value widget_relayout(value widget)
     {
         CAMLparam1(widget);
         ((ocaml_widget*) widget) -> relayout();
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value widget_get_labelsize(value widget)
+    {
+        CAMLparam1(widget);
+        CAMLreturn(caml_copy_double(((ocaml_widget*) widget) -> labelsize()));
+    }
+
+    CAMLprim value widget_set_labelsize(value widget, value size)
+    {
+        CAMLparam2(widget, size);
+        ((ocaml_widget*) widget) -> labelsize(Double_val(size));
         CAMLreturn(Val_unit);
     }
 
