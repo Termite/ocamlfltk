@@ -3,6 +3,7 @@
 
 #include "ocamlfltk.h"
 #include <fltk/Symbol.h>
+#include <fltk/Box.h>
 
 namespace Ofltk {
 
@@ -32,9 +33,9 @@ class Symbol_d : public fltk::Symbol {
         if (!measure_method)
             fltk::Symbol::measure(w, h);
         else {             
-             value m = caml_callback(*measure_method, Val_unit);
-             w = Field(m,0);
-             h = Field(m,1);
+             value m = caml_callback2(*measure_method, Val_int(w), Val_int(h));
+             w = Int_val(Field(m,0));
+             h = Int_val(Field(m,1));
         }
     }
 
@@ -67,17 +68,132 @@ class ocaml_symbol {
         {
             dest->measure(w, h);
         }
-        void name(const char* n) { dest->name(n); }
-        const char* name(void) { return dest->name(); }
-        int dx() { return dest->dx(); }
-        int dy() { return dest->dy(); }
-        int dw() { return dest->dw(); }
-        int dh() { return dest->dh(); }
+        virtual void name(const char* n) { dest->name(n); }
+        virtual const char* name(void) { return dest->name(); }
+        virtual int dx() { return dest->dx(); }
+        virtual int dy() { return dest->dy(); }
+        virtual int dw() { return dest->dw(); }
+        virtual int dh() { return dest->dh(); }
+        virtual bool is_frame() { return dest->is_frame(); }
+
+};
+
+/**********************************************************************************/
+/*                                     FlatBox                                    */
+/**********************************************************************************/
+
+
+class FlatBox_d : public fltk::FlatBox {
+    value* _draw_method;
+    value* fills_rect_method;
+    value* is_frame_method;
+    value* inset_method;
+    value* measure_method;
+
+    public:
+    FlatBox_d(value* dm, const char* name)
+        : FlatBox(name), _draw_method(dm), fills_rect_method(0)
+          , is_frame_method(0), inset_method(0), measure_method(0)
+    {}
+
+    virtual ~FlatBox_d() {}
+
+    virtual void _draw(const fltk::Rectangle& r) const
+    {
+        value args[] = {  Val_int(r.x()), Val_int(r.y()), Val_int(r.w()), Val_int(r.h()) };
+        caml_callbackN(*_draw_method, 4, args);
+    }
+
+    virtual void measure(int&w, int& h)
+    {
+        if (!measure_method)
+            fltk::Symbol::measure(w, h);
+        else {             
+             value m = caml_callback2(*measure_method, Val_int(w), Val_int(h));
+             w = Int_val(Field(m,0));
+             h = Int_val(Field(m,1));
+        }
+    }
+
 
 };
 
 
+class ocaml_flatbox : public ocaml_symbol {
 
+    public:
+        ocaml_flatbox() : ocaml_symbol() {}
+        ocaml_flatbox(fltk::FlatBox* s) : ocaml_symbol(s) {}
+
+        ocaml_flatbox(value* dm, const char* name)        
+        {
+            dest = new FlatBox_d(dm, name);
+        }
+        virtual ~ocaml_flatbox() {}
+
+
+};
+
+
+/**********************************************************************************/
+/*                                     FrameBox                                   */
+/**********************************************************************************/
+
+class FrameBox_d : public fltk::FrameBox {
+    value* _draw_method;
+    value* fills_rect_method;
+    value* is_frame_method;
+    value* inset_method;
+    value* measure_method;
+
+    public:
+    FrameBox_d(value* dm, const char* name, int dx, int dy, int dw, int dh,
+            const char* pattern, fltk::Box* down = 0)
+        : FrameBox(name, dx, dy, dw, dh, pattern, down)
+          , _draw_method(dm), fills_rect_method(0)
+          , is_frame_method(0), inset_method(0), measure_method(0)
+    {}
+
+    virtual ~FrameBox_d() {}
+
+    virtual void _draw(const fltk::Rectangle& r) const
+    {
+        value args[] = {  Val_int(r.x()), Val_int(r.y()), Val_int(r.w()), Val_int(r.h()) };
+        caml_callbackN(*_draw_method, 4, args);
+    }
+
+    virtual void measure(int&w, int& h)
+    {
+        if (!measure_method)
+            fltk::Symbol::measure(w, h);
+        else {             
+             value m = caml_callback2(*measure_method, Val_int(w), Val_int(h));
+             w = Int_val(Field(m,0));
+             h = Int_val(Field(m,1));
+        }
+    }
+
+
+};
+
+
+class ocaml_framebox : public ocaml_symbol {
+
+    public:
+        ocaml_framebox() : ocaml_symbol() {}
+        ocaml_framebox(fltk::FrameBox* s) : ocaml_symbol(s) {}
+
+        ocaml_framebox(value* dm, const char* name, int x, int y, int w, int h,
+                const char* pattern, ocaml_symbol* box)
+        {
+            dest = new FrameBox_d(dm, name, x, y, w, h, pattern, box->dest_widget());
+        }
+        virtual ~ocaml_framebox() {}
+
+        virtual const char* data() { return static_cast<FrameBox_d*>(dest)->data(); }
+        virtual void data(const char* d) { static_cast<FrameBox_d*>(dest)->data(d); }
+
+};
 
 }
 #endif
