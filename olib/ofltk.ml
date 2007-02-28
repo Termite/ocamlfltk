@@ -77,6 +77,9 @@ let resize_fill		  = 0x00800000
 let opened		  = state
 
 
+type when_enum = WhenNever | WhenChanged | WhenRelease | WhenReleaseAlways
+               | WhenEnterKey | WhenEnterKeyAlways
+;;
 
 external new_widget: string -> int -> int -> int -> int -> string -> widget
     = "new_widget_bc" "new_widget"
