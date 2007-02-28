@@ -9,12 +9,13 @@ val set_name: 'a symb -> string -> unit;;
 external is_frame: 'a symb -> bool = "symbol_is_frame";;
 external measure: 'a symb -> int -> int -> int*int = "symbol_measure";;
 
+val symbol_iter: ([`Box] symb -> unit) -> unit;;
 
 type flatboxes = [ `Box | `FlatBox ];;
-val make_flatbox: [< flatboxes] draw_callback -> string -> [`FlatBox] symb;;
+val make_flatbox: ?draw:[< flatboxes] draw_callback option -> string -> [`FlatBox] symb;;
 
 type frameboxes = [`FrameBox | `Box ];;
-val make_framebox: [< frameboxes] draw_callback -> string ->
+val make_framebox: ?draw:[< frameboxes] draw_callback option -> string ->
         int -> int -> int -> int -> string -> 'a symb option -> [`FrameBox] symb;;
 
 val get_data: [`FrameBox] symb -> string;;

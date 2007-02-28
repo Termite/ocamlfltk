@@ -70,8 +70,8 @@ extern "C" {
         }
         else
         {
-           erg = caml_alloc_tuple(1);
-           Store_field(erg, 0, copy_string(answer));
+           erg = caml_alloc_small(1,0);
+           Field(erg, 0) = caml_copy_string(answer);
         }
         CAMLreturn(erg);
     }

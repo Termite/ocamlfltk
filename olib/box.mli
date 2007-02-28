@@ -1,6 +1,5 @@
-open Symbols;;
 
-type box = [`Box] symb;;
+type box = [`Box] Symbols.symb;;
 
 val up_box : box;;
 val down_box : box;;
