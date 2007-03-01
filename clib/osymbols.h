@@ -49,8 +49,7 @@ class ocaml_symbol {
 
     public:
         ocaml_symbol() : dest(0) {}
-        ocaml_symbol(fltk::Symbol* s) : dest(s)
-        { }
+        ocaml_symbol(fltk::Symbol* s) : dest(s) { }
 
         ocaml_symbol(value* dm, const char* name)        
         {
@@ -58,7 +57,7 @@ class ocaml_symbol {
         }
         virtual ~ocaml_symbol() {}
 
-        fltk::Symbol* dest_widget() { return dest; }
+        fltk::Symbol* dest_symbol() { return dest; }
 
         virtual void _draw(const fltk::Rectangle& r)
         {
@@ -195,7 +194,7 @@ class ocaml_framebox : public ocaml_symbol {
         ocaml_framebox(value* dm, const char* name, int x, int y, int w, int h,
                 const char* pattern, ocaml_symbol* box)
         {
-            dest = new FrameBox_d(dm, name, x, y, w, h, pattern, box->dest_widget());
+            dest = new FrameBox_d(dm, name, x, y, w, h, pattern, box->dest_symbol());
         }
         virtual ~ocaml_framebox() {}
 
@@ -258,7 +257,7 @@ class ocaml_highlightbox : public ocaml_flatbox {
 
         ocaml_highlightbox(value* dm, const char* name, ocaml_symbol* box) 
         {
-            dest = new HighlightBox_d(dm, name, box->dest_widget());
+            dest = new HighlightBox_d(dm, name, box->dest_symbol());
         }
         virtual ~ocaml_highlightbox() {}
 

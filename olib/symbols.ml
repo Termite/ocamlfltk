@@ -4,9 +4,11 @@ external inspect: 'a -> unit = "inspect_block";;
 
 type symbol;;
 type 'a symb = symbol;;
-type 'a draw_callback = symbol -> int * int * int * int -> unit;;
+type symbol_types = [
+    `Box | `Image | `xpmImage | `FrameBox | `FlatBox | `MultiImage
+];;
 
-type 'a ptr = Ok of 'a | Null
+type 'a draw_callback = symbol -> int * int * int * int -> unit;;
 
 external new_box: string -> string -> symbol = "new_symbol";;
 external get_name: symbol -> string = "symbol_get_name";;
@@ -69,19 +71,17 @@ let register fkt =
 
 let make_box draw_funk name = new_box (register draw_funk) name ;;
 
-let make_flatbox ?(draw=None) name =
-    match draw with
-    | None ->  new_flatbox None name
-    | Some f -> new_flatbox (Some (register f)) name
+
+let register_opt fkt = match fkt with
+    | None -> None
+    | Some f -> Some (register f)
 ;;
+
+let make_flatbox ?(draw=None) name = new_flatbox (register_opt draw) name;;    
 
 
 let make_framebox ?(draw=None) name dx dy w h pattern down_box=
-    let _draw = match draw with
-    | None -> None
-    | Some f -> Some (register f)
-    in
-    new_framebox _draw name dx dy w h pattern down_box;;
+    new_framebox (register_opt draw) name dx dy w h pattern down_box;;
 
 external get_data: symbol -> string = "framebox_get_data";;
 external set_data: symbol -> string -> unit = "framebox_set_data";;
@@ -94,8 +94,6 @@ external dh: 'a symb -> int = "symbol_dh";;
 external draw: symbol -> int*int*int*int -> unit = "symbol_draw";;
 external is_frame: symbol -> bool = "symbol_is_frame";;
 
-
-
 external make_flatbox: string -> 'a draw_callback -> symbol = "make_flatbox";;
 external make_highlightbox: string ->'a draw_callback -> symbol = "make_highlightbox";;
 
@@ -106,6 +104,24 @@ external xbm_fetch: symbol -> string -> bool* symbol = "xbm_fetch";;
 
 external make_xbm: string -> 'a draw_callback -> symbol = "make_xbm";;
 *)
+
+external new_xpmimage: string option -> string array -> string option -> symbol = "new_xpmimage";; 
+
+let make_xpmimage ?(draw=None) ?name data =
+    new_xpmimage (register_opt draw) data name
+;;
+
+
+external new_multiimage: string option -> symbol -> symbol = "new_multiimage";;
+external add_image: symbol -> int -> symbol -> unit = "add_image";;
+
+let make_multiimage ?(draw=None) image0 =
+    new_multiimage (register_opt draw) image0
+;;
+
+let add_to_multi multi images =
+    List.iter (fun (flags,symbol) -> add_image multi flags symbol) images
+;;
 
 
 

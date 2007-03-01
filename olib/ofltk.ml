@@ -98,6 +98,8 @@ external get_labelsize: widget -> float = "widget_get_labelsize";;
 external set_color: widget -> int32 -> unit = "widget_set_color";;
 external widget_set_box: widget -> Box.box -> unit = "widget_set_box";;
 external widget_get_box: widget -> Box.box = "widget_get_box";;
+external widget_get_image: widget -> Box.box = "widget_get_image";;
+external widget_set_image: widget -> 'a Symbols.symb -> unit = "widget_set_image";;
 
 external widget_relayout: widget -> unit = "widget_relayout";;
 external widget_draw: widget -> unit = "widget_draw";;
@@ -247,6 +249,9 @@ class fWidget x y w h title = object(self)
   method get_tooltip = widget_get_tooltip obj
   method set_box b = widget_set_box obj b
   method get_box = widget_get_box obj
+  method get_image = widget_get_image obj
+  method set_image: 'a.  (([> `Box] as 'a) Symbols.symb) -> unit =
+      fun box -> widget_set_image obj box
   method as_widget = (self :> fWidget)
   (*method setfont font size = set_font font size
   method labelsize = get_labelsize obj

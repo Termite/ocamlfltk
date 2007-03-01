@@ -63,6 +63,11 @@ class ocaml_widget {
         virtual ocaml_symbol* get_box() { return new ocaml_symbol(dest_widget->box()); }
         void labelsize(double s) { dest_widget->labelsize(s); }
         double labelsize() { return dest_widget->labelsize(); }
+        void image(ocaml_symbol* s) { dest_widget->image(s->dest_symbol());}
+        ocaml_symbol* image()
+        {
+            return new ocaml_symbol(const_cast<fltk::Symbol*>(dest_widget->image()));
+        }
 
         void color(unsigned c) { dest_widget->color(c); }
         void copy_label(const char* l)

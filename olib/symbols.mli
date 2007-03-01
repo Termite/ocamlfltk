@@ -1,7 +1,12 @@
 type 'a symb;;
 
+type symbol_types = [
+    `Box | `Image | `xpmImage | `FrameBox | `FlatBox | `MultiImage
+];;
+
 type 'a draw_callback = 'a symb -> int * int * int * int -> unit;;
 
+external inspect: 'a -> unit = "inspect_block";;
 (* base *)
 val make_box: [`Box] draw_callback -> string -> [`Box] symb;;
 val get_name: 'a symb -> string;;
@@ -36,4 +41,11 @@ val make_xbm: string -> 'a draw_callback -> [`XbmImage] symb;;
 val xbm_fetch: [`XbmImage] symb -> string -> bool * [`Image] symb;; 
 
 *)
+val make_xpmimage: ?draw:[< `Box | `Image | `xpmImage ] draw_callback option ->
+    ?name: string -> string array -> [`xpmImage  | `Box ] symb;;
 
+
+val make_multiimage: ?draw:[< `Box | `MultiImage] draw_callback option -> 'a symb ->
+    [`MultiImage] symb;;
+
+val add_to_multi: [`MultiImage] symb -> (int * 'a symb) list -> unit;;

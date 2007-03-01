@@ -29,6 +29,9 @@ CLIBFILES[] =
    oinput
    oscrollgroup
    osymbols
+   oimage
+   oxpmimage
+   omultiimage
    odivider
    omenu
    oitem

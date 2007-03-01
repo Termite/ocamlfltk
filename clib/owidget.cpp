@@ -110,10 +110,23 @@ extern "C" {
         CAMLreturn(Val_unit);
     }
 
+    CAMLprim value widget_set_image(value widget, value image)
+    {
+        CAMLparam2(widget, image);
+        ((ocaml_widget*) widget)->image(((ocaml_symbol*)image));
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value widget_get_image(value widget)
+    {
+        CAMLparam1(widget);
+        CAMLreturn((value)(((ocaml_widget*) widget)->image()));
+    }
+
     CAMLprim value widget_set_box(value widget, value box)
     {
         CAMLparam2(widget, box);
-        ((ocaml_widget*) widget)->set_box(((ocaml_symbol*)box)->dest_widget());
+        ((ocaml_widget*) widget)->set_box(((ocaml_symbol*)box)->dest_symbol());
         CAMLreturn(Val_unit);
     }
 

@@ -42,7 +42,7 @@ extern "C" {
     CAMLprim value statusbar_child_box(value widget, value box, value pos)
     {
        CAMLparam3(widget, box, pos);
-       ((ocaml_statusbar*) widget)->child_box(((ocaml_symbol*) box)->dest_widget(), fltk::StatusBarGroup::Position(Int_val(pos)));
+       ((ocaml_statusbar*) widget)->child_box(((ocaml_symbol*) box)->dest_symbol(), fltk::StatusBarGroup::Position(Int_val(pos)));
        CAMLreturn(Val_unit);
     }
 
