@@ -1,4 +1,4 @@
-type box = [ `Box ] Symbols.symb;;
+type box = Symbol.symbol Symbol.sym;; 
 
 external init_boxes: unit -> box array = "init_boxes";;
 

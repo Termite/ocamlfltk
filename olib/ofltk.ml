@@ -96,10 +96,10 @@ external set_label: widget -> string -> unit = "widget_set_label";;
 external set_labelsize: widget -> float -> unit = "widget_set_labelsize";;
 external get_labelsize: widget -> float = "widget_get_labelsize";;
 external set_color: widget -> int32 -> unit = "widget_set_color";;
-external widget_set_box: widget -> Box.box -> unit = "widget_set_box";;
-external widget_get_box: widget -> Box.box = "widget_get_box";;
-external widget_get_image: widget -> Box.box = "widget_get_image";;
-external widget_set_image: widget -> 'a Symbols.symb -> unit = "widget_set_image";;
+external widget_set_box: widget -> [> Symbol.symbol] Symbol.sym -> unit = "widget_set_box";;
+external widget_get_box: widget -> Symbol.symbol Symbol.sym = "widget_get_box";;
+external widget_get_image: widget -> Symbol.symbol Symbol.sym = "widget_get_image";;
+external widget_set_image: widget -> [> Symbol.symbol] Symbol.sym -> unit = "widget_set_image";;
 
 external widget_relayout: widget -> unit = "widget_relayout";;
 external widget_draw: widget -> unit = "widget_draw";;
@@ -247,10 +247,11 @@ class fWidget x y w h title = object(self)
   method set_color c = set_color obj c
   method set_tooltip t = widget_set_tooltip obj t
   method get_tooltip = widget_get_tooltip obj
-  method set_box b = widget_set_box obj b
+  method set_box : 'a. ([> Symbol.symbol] as 'a) Symbol.sym -> unit =
+      fun box -> widget_set_box obj box
   method get_box = widget_get_box obj
   method get_image = widget_get_image obj
-  method set_image: 'a.  (([> `Box] as 'a) Symbols.symb) -> unit =
+  method set_image : 'a. ([> Symbol.symbol] as 'a) Symbol.sym -> unit =
       fun box -> widget_set_image obj box
   method as_widget = (self :> fWidget)
   (*method setfont font size = set_font font size
@@ -353,8 +354,8 @@ external new_easy_statusbar: string -> int -> widget = "new_easy_statusbar";;
 type statusbar_pos = SBAR_LEFT | SBAR_CENTER | SBAR_RIGHT;;
 external statusbar_set_text: widget -> statusbar_pos -> string -> unit =
             "statusbar_set_text";; 
-external statusbar_child_box: widget -> Box.box -> statusbar_pos -> unit =
-            "statusbar_child_box";;
+external statusbar_child_box: widget -> [>Symbol.symbol] Symbol.sym -> statusbar_pos ->
+    unit = "statusbar_child_box";;
 
 type statusbar = Default | Height of int | Special of int*int*int*int*string
 
@@ -366,7 +367,8 @@ class f_StatusBar typ =
     in
     object 
     inherit fGroup ~x:x ~y:y w h l
-    method child_box pos box = statusbar_child_box obj box pos
+    method child_box: 'a. statusbar_pos -> ([> Symbol.symbol] as 'a) Symbol.sym -> unit=
+        fun pos box -> statusbar_child_box obj box pos
     method print ?(pos=SBAR_RIGHT) text = statusbar_set_text obj pos text
     method format_text : 'a. statusbar_pos -> ('a, unit,string, unit) format4 -> 'a =
         fun pos form -> Printf.ksprintf (statusbar_set_text obj pos) form

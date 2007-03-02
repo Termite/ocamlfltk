@@ -1,5 +1,5 @@
 open Ofltk;;
-open Symbols;;
+open Symbol;;
 
 
 let file_small2 = [|
@@ -31,7 +31,7 @@ let file_small2 = [|
 
 let file_xpm = make_xpmimage ~name:"Bildchen" file_small2 in
 let win = new fWindow ~x:1 ~y:500 320 200  "hehe" in
-let up = new fButton 150 60 50 20 "up" in
+let up = new fButton 150 60 50 31 "up" in
 up#set_image file_xpm;
 win#wend;
 Gc.full_major();

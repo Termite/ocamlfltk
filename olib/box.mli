@@ -1,5 +1,5 @@
 
-type box = [`Box] Symbols.symb;;
+type box = Symbol.symbol Symbol.sym;;
 
 val up_box : box;;
 val down_box : box;;
