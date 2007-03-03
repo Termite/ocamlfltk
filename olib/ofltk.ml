@@ -81,6 +81,13 @@ type when_enum = WhenNever | WhenChanged | WhenRelease | WhenReleaseAlways
                | WhenEnterKey | WhenEnterKeyAlways
 ;;
 
+external int_of_when: when_enum -> int = "%identity";;
+
+let when2int flag =
+    let tab = [| 0; 1; 4; 6; 8; 10 |] in
+    tab.(int_of_when flag)
+;;
+
 external new_widget: string -> int -> int -> int -> int -> string -> widget
     = "new_widget_bc" "new_widget"
 
@@ -237,8 +244,25 @@ class fWidget x y w h title = object(self)
   method width = get_width obj
   method set_vertical = widget_set_vertical obj
   method set_horizontal = widget_set_horizontal obj
-  method get_when = get_when obj
-  method set_when n = set_when obj n
+  method get_when =
+      let n = ref (get_when obj) in
+      let l = ref [] in
+      if !n land 10 = 10 then (
+          n := !n - 10;
+          l := WhenEnterKeyAlways :: !l
+      );
+      if !n land 8 = 8 then (
+          l := WhenEnterKey :: !l
+      );
+      if !n land 4 = 4 then (
+          l := WhenRelease :: !l
+      );
+      if !n land 1 = 1 then l := WhenChanged :: !l;
+      !l
+
+  method set_when flags =
+      let n = List.fold_left (fun erg flag -> erg lor (when2int flag)) 0 flags in
+      set_when obj n
   method get_type = get_type obj
   method set_type n = set_type obj n
   method set_label l = set_label obj l
