@@ -2,7 +2,7 @@ type -'a sym;;
 
 type symbol = [`Box];;
     type flatbox = [symbol | `Flatbox]
-        type highlight = [flatbox | `HighlightBox]
+        type highlightbox = [flatbox | `HighlightBox]
 
     type framebox = [symbol | `Framebox]
 
@@ -33,9 +33,16 @@ val iter_symbol: (symbol sym -> unit) -> unit;;
 val map_symbol: (symbol sym -> 'a) -> 'a list;;
 
 val make_flatbox: ?draw: [<flatbox] draw_callback option -> string -> flatbox sym;;
+val make_highlightbox: ?draw: [<highlightbox] draw_callback option -> string ->
+    [>symbol] sym -> highlightbox sym;;
+(*
+val make_tiledimage: ?draw: [<tiledimage] draw_callback option -> [>symbol] sym ->
+        tiledimage sym;;
+*)
 val make_framebox: ?draw: [<framebox] draw_callback option -> string ->
     int -> int -> int -> int -> string -> [>symbol] sym option -> framebox sym;;
 val make_xpmimage: ?draw: [<xpmimage] draw_callback option -> ?name:string ->
     string array -> xpmimage sym;;
+
 
 

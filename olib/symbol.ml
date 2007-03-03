@@ -5,7 +5,7 @@ type 'a draw_callback = box -> int*int*int*int -> unit;;
 
 type symbol = [`Box];;
     type flatbox = [symbol | `Flatbox]
-        type highlight = [flatbox | `HighlightBox]
+        type highlightbox = [flatbox | `HighlightBox]
 
     type framebox = [symbol | `Framebox]
 
@@ -40,6 +40,7 @@ let register_opt fkt = match fkt with
 
 external new_symbol: string -> string -> box = "new_symbol";;
 external new_flatbox: string option -> string -> box = "new_flatbox";;
+external new_highlightbox: string option -> string -> box -> highlightbox sym = "new_highlightbox";;
 external new_framebox: string option -> string ->
         int -> int -> int -> int -> string -> box option -> box 
         = "new_framebox_bc" "new_framebox";;
@@ -73,9 +74,12 @@ let map_symbol fkt =
 
 let make_symbol draw name = new_symbol (register draw) name;;
 let make_flatbox ?(draw=None) name = new_flatbox (register_opt draw) name;;
+(*
+let make_tiledimage ?(draw=None) otherbox = new_tiledimage (register_opt draw) otherbox;;
+*)
 let make_framebox ?(draw=None) name dx dy w h pattern down_box=
     new_framebox (register_opt draw) name dx dy w h pattern down_box;;
-let make_xpmimage ?(draw=None) ?name data =
-    new_xpmimage (register_opt draw) data name
-;;
+let make_xpmimage ?(draw=None) ?name data = new_xpmimage (register_opt draw) data name ;;
+let make_highlightbox ?(draw=None) name otherbox = 
+    new_highlightbox (register_opt draw) name otherbox;;
 
