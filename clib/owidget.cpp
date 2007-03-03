@@ -21,7 +21,7 @@ extern "C" {
     CAMLprim value get_null_widget(value nix)
     {
         CAMLparam1(nix);
-        CAMLreturn((value) NULL);
+        CAMLreturn(Val_int(0));
     }
 
 
