@@ -58,6 +58,7 @@ class ocaml_symbol {
         virtual ~ocaml_symbol() {}
 
         fltk::Symbol* dest_symbol() { return dest; }
+        const fltk::Symbol& symbol() { return *dest; } 
 
         virtual void _draw(const fltk::Rectangle& r)
         {
