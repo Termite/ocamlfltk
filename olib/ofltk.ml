@@ -1,4 +1,8 @@
+open Flags;;
 type widget;;
+
+type 'a image = 'a Symbol.sym constraint 'a = [>Symbol.symbol]
+type symbol = Symbol.symbol Symbol.sym;;
 
 external get_null_widget: unit -> widget = "get_null_widget";;
 
@@ -26,55 +30,7 @@ let callback window (fkt: unit -> unit) =
 ;;
 
 
-open Printf ;;
-type flags = int;;
-
-let no_flags		= 0x00000000
-let align_top		  = 0x00000001
-let align_bottom		  = 0x00000002
-let align_left		  = 0x00000004
-let align_right		  = 0x00000008
-let align_center		  = 0x00000010
-let align_inside		  = 0x00000020
-let align_clip		  = 0x00000040
-let align_wrap		  = 0x00000080
-let align_mask		  = 0x000000ff
-let align_positionmask      = 0x0000000f
-let align_topleft		  = (align_top lor align_left)
-let align_bottomleft	  = (align_bottom lor align_left)
-let align_topright	  = (align_top lor align_right)
-let align_bottomright	  = (align_bottom lor align_right)
-let align_centerleft	  = (align_center lor align_left)
-let align_centerright	  = (align_center lor align_right)
-let align_inside_top	  = (align_inside lor align_top)
-let align_inside_bottom	  = (align_inside lor align_bottom)
-let align_inside_left	  = (align_inside lor align_left)
-let align_inside_topleft	  = (align_inside lor align_topleft)
-let align_inside_bottomleft = (align_inside lor align_bottomleft)
-let align_inside_right	  = (align_inside lor align_right)
-let align_inside_topright	  = (align_inside lor align_topright)
-let align_inside_bottomright= (align_inside lor align_bottomright)
-let align_menu		  = (align_inside_left lor align_clip)
-let align_browser		  = align_menu
-let inactive		  = 0x00000100
-let output		  = 0x00000200
-let state			  = 0x00000400
-let selected		  = 0x00000800
-let invisible		  = 0x00001000
-let highlight		  = 0x00002000
-let changed		  = 0x00004000
-let copied_label		  = 0x00008000
-let raw_label		  = 0x00010000
-let layout_vertical	  = 0x00020000
-let tab_to_focus		  = 0x00040000
-let click_to_focus	  = 0x00080000
-let inactive_r		  = 0x00100000
-let focused		  = 0x00200000
-let pushed		  = 0x00400000
-let resize_none		  = 0
-let resize_fit		  = 0x01000000
-let resize_fill		  = 0x00800000
-let opened		  = state
+let printf = Printf.printf ;;
 
 
 type when_enum = WhenNever | WhenChanged | WhenRelease | WhenReleaseAlways
@@ -103,10 +59,14 @@ external set_label: widget -> string -> unit = "widget_set_label";;
 external set_labelsize: widget -> float -> unit = "widget_set_labelsize";;
 external get_labelsize: widget -> float = "widget_get_labelsize";;
 external set_color: widget -> int32 -> unit = "widget_set_color";;
+(*
 external widget_set_box: widget -> [> Symbol.symbol] Symbol.sym -> unit = "widget_set_box";;
 external widget_get_box: widget -> Symbol.symbol Symbol.sym = "widget_get_box";;
-external widget_get_image: widget -> Symbol.symbol Symbol.sym = "widget_get_image";;
-external widget_set_image: widget -> [> Symbol.symbol] Symbol.sym -> unit = "widget_set_image";;
+*)
+external widget_set_box: widget -> 'a image -> unit = "widget_set_box";;
+external widget_get_box: widget -> symbol = "widget_get_box";;
+external widget_get_image: widget -> symbol = "widget_get_image";;
+external widget_set_image: widget -> 'a image -> unit = "widget_set_image";;
 
 external widget_relayout: widget -> unit = "widget_relayout";;
 external widget_draw: widget -> unit = "widget_draw";;
@@ -271,11 +231,11 @@ class fWidget x y w h title = object(self)
   method set_color c = set_color obj c
   method set_tooltip t = widget_set_tooltip obj t
   method get_tooltip = widget_get_tooltip obj
-  method set_box : 'a. ([> Symbol.symbol] as 'a) Symbol.sym -> unit =
+  method set_box : 'a. 'a image -> unit =
       fun box -> widget_set_box obj box
   method get_box = widget_get_box obj
   method get_image = widget_get_image obj
-  method set_image : 'a. ([> Symbol.symbol] as 'a) Symbol.sym -> unit =
+  method set_image : 'a. 'a image -> unit =
       fun box -> widget_set_image obj box
   method as_widget = (self :> fWidget)
   (*method setfont font size = set_font font size
@@ -378,7 +338,7 @@ external new_easy_statusbar: string -> int -> widget = "new_easy_statusbar";;
 type statusbar_pos = SBAR_LEFT | SBAR_CENTER | SBAR_RIGHT;;
 external statusbar_set_text: widget -> statusbar_pos -> string -> unit =
             "statusbar_set_text";; 
-external statusbar_child_box: widget -> [>Symbol.symbol] Symbol.sym -> statusbar_pos ->
+external statusbar_child_box: widget -> 'a image -> statusbar_pos ->
     unit = "statusbar_child_box";;
 
 type statusbar = Default | Height of int | Special of int*int*int*int*string
@@ -391,7 +351,7 @@ class f_StatusBar typ =
     in
     object 
     inherit fGroup ~x:x ~y:y w h l
-    method child_box: 'a. statusbar_pos -> ([> Symbol.symbol] as 'a) Symbol.sym -> unit=
+    method child_box: 'a. statusbar_pos -> 'a image -> unit=
         fun pos box -> statusbar_child_box obj box pos
     method print ?(pos=SBAR_RIGHT) text = statusbar_set_text obj pos text
     method format_text : 'a. statusbar_pos -> ('a, unit,string, unit) format4 -> 'a =
