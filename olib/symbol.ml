@@ -39,6 +39,8 @@ let register_opt fkt = match fkt with
 ;;
 
 external new_symbol: string -> string -> box = "new_symbol";;
+external new_multiimage: string option -> box -> box = "new_multiimage";;
+external add_to_multiimage: box -> int -> box -> unit = "add_to_multiimage";;
 external new_flatbox: string option -> string -> box = "new_flatbox";;
 external new_highlightbox: string option -> string -> box -> highlightbox sym = "new_highlightbox";;
 external new_framebox: string option -> string ->
@@ -50,6 +52,11 @@ external set_name: box -> string -> unit = "symbol_set_name";;
 external is_frame: box -> bool = "symbol_is_frame";;
 external measure: box -> int -> int -> int*int = "symbol_measure";;
 external native_symbol_iter: int -> (int * box) option = "symbol_iter";;
+
+let add_to_multiimage multiimage images =
+    List.iter (fun (flag, image) ->
+        add_to_multiimage multiimage flag image) images
+;;
 
 let iter_symbol fkt =
     let rec next n =
@@ -73,6 +80,7 @@ let map_symbol fkt =
 
 
 let make_symbol draw name = new_symbol (register draw) name;;
+let make_multiimage ?(draw=None) image0 = new_multiimage (register_opt draw) image0;;
 let make_flatbox ?(draw=None) name = new_flatbox (register_opt draw) name;;
 (*
 let make_tiledimage ?(draw=None) otherbox = new_tiledimage (register_opt draw) otherbox;;
