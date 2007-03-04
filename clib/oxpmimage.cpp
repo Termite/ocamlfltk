@@ -18,7 +18,8 @@ extern "C" {
         value* draw = Is_block(_draw) 
             ? caml_named_value(String_val(Field(_draw,0)))
             : 0;
-        ocaml_xpmimage* s = new ocaml_xpmimage(draw, d, String_val(name));
+        char* n = Is_block(name) ? String_val(Field(name,0)) : 0;
+        ocaml_xpmimage* s = new ocaml_xpmimage(draw, d, n);
         CAMLreturn((value) s);
     }
 
