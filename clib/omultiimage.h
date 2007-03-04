@@ -45,7 +45,6 @@ class MultiImage_d : public fltk::MultiImage {
         }
     }
 
-
 };
 
 
@@ -55,6 +54,10 @@ class ocaml_multiimage : public ocaml_symbol {
         ocaml_multiimage() : ocaml_symbol() {}
         ocaml_multiimage(fltk::Symbol* s) : ocaml_symbol(s) {}
 
+        ocaml_multiimage(value* dm)        
+        {
+            dest = new MultiImage_d(dm);
+        }
         ocaml_multiimage(value* dm, ocaml_symbol* image0)        
         {
             dest = new MultiImage_d(dm, *(image0->dest_symbol()));
@@ -63,7 +66,7 @@ class ocaml_multiimage : public ocaml_symbol {
 
         virtual void add(int flags, ocaml_symbol* image)
         {
-           static_cast<MultiImage_d*>(dest)->add(flags, *(image->dest_symbol()));   
+           static_cast<MultiImage_d*>(dest)->add(flags, image->symbol());   
         }
 
 
