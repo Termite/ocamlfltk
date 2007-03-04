@@ -36,6 +36,7 @@ OCAML_LIB_FLAGS = -custom clib/libofltk.a -cclib $"-lstdc++ -L/usr/local/lib -lf
 # Build an OCaml library
 
 LIB_FILES[] =
+	flags
 	box
 	ask
 	symbol
