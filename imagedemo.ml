@@ -196,14 +196,12 @@ let fold1 = make_xpmimage folder_small in
 let fold2 = make_xpmimage folder_small2 in
 let fold3 = make_xpmimage folder_small3 in
 
-let push_release_img = make_multiimage fold2 in
-add_to_multiimage push_release_img [ Flags.pushed, fold3 ];
+let push_release_img = make_multiimage fold2 [ Flags.pushed, fold3 ] in
 
-let push_release_hlt_i = make_multiimage fold2 in
-add_to_multiimage push_release_hlt_i [ Flags.highlight, fold1; Flags.pushed, fold3];
+let push_release_hlt_i = make_multiimage fold2 [ Flags.highlight, fold1; Flags.pushed, fold3] in
 
 let win = new fWindow ~x:1 ~y:500 320 200  "hehe" in
-let up = new fButton 150 60 50 31 "push/release img" in
+let up = new fButton ~btyp:HighlightButton 150 60 50 31 "push/release img" in
 up#set_image push_release_hlt_i;
 
 win#wend;

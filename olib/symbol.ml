@@ -80,7 +80,12 @@ let map_symbol fkt =
 
 
 let make_symbol draw name = new_symbol (register draw) name;;
-let make_multiimage ?(draw=None) image0 = new_multiimage (register_opt draw) image0;;
+let make_multiimage ?(draw=None) image0 more_images= 
+    let m = new_multiimage (register_opt draw) image0 in
+    add_to_multiimage m more_images;
+    m
+;;
+
 let make_flatbox ?(draw=None) name = new_flatbox (register_opt draw) name;;
 (*
 let make_tiledimage ?(draw=None) otherbox = new_tiledimage (register_opt draw) otherbox;;

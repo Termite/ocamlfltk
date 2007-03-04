@@ -33,9 +33,8 @@ val iter_symbol: (symbol sym -> unit) -> unit;;
 val map_symbol: (symbol sym -> 'a) -> 'a list;;
 
 val make_flatbox: ?draw: [<flatbox] draw_callback option -> string -> flatbox sym;;
-val make_multiimage: ?draw: [<multiimage] draw_callback option -> [> symbol] sym -> multiimage sym;;
-val make_multiimage2: ?draw: [<multiimage] draw_callback option -> [> symbol]
-sym -> Flags.flags -> [>symbol] sym -> multiimage sym;;
+val make_multiimage: ?draw: [<multiimage] draw_callback option -> [> symbol] sym
+-> (Flags.flags * [>symbol] sym) list -> multiimage sym;;
 val add_to_multiimage: multiimage sym -> (Flags.flags * [>symbol] sym) list -> unit;;
 val make_highlightbox: ?draw: [<highlightbox] draw_callback option -> string ->
     [>symbol] sym -> highlightbox sym;;
