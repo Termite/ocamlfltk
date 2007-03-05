@@ -23,4 +23,19 @@ extern "C" {
         CAMLreturn(Val_unit);
     }
 
+    CAMLprim value multiimage_current_image(value multiimage)
+    {
+        CAMLparam1(multiimage);
+        CAMLreturn((value)(((ocaml_multiimage*)multiimage)->current_image()));
+    }
+
+    CAMLprim value multiimage_release(value multiimage)
+    {
+        CAMLparam1(multiimage);
+        ((ocaml_multiimage*)multiimage)->release();
+        CAMLreturn(Val_unit);
+    }
+
+
+
 }

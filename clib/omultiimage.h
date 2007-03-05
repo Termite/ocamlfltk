@@ -68,7 +68,14 @@ class ocaml_multiimage : public ocaml_symbol {
         {
            static_cast<MultiImage_d*>(dest)->add(flags, image->symbol());   
         }
+        
+        const ocaml_symbol* current_image()
+        {
+           const fltk::Symbol* s = static_cast<MultiImage_d*>(dest)->current_image();
+           return new ocaml_symbol(const_cast<fltk::Symbol*>(s));
+        }
 
+        void release() { static_cast<MultiImage_d*>(dest)->release(); }
 
 };
 
