@@ -171,7 +171,51 @@ class virtual fltkbase x y w h title = object(self)
         obj <- self#alloc name x y w h title
 end;;
 
+(*
+class type widget_type = object
+    method all_set : Flags.flags list -> bool
+    method any_set : Flags.flags list -> bool
+    method as_widget : widget_type
+    method callback : (unit -> unit) -> unit
+    method clr_flags : Flags.flags list -> unit
+    method ct : string
+    method draw : unit
+    method get_box : symbol
+    method get_image : symbol
+    method get_labelsize : float
+    method get_tooltip : string
+    method get_type : int
+    method get_when : when_enum list
+    method handle : int -> int
+    method height : int
+    method hide : unit
+    method inv_flags : Flags.flags list -> unit
+    method is_set : Flags.flags -> int
+    method obj : widget
+    method redraw : unit
+    method relayout : unit
+    method set_box : 'a. 'a image -> unit
+    method set_color : int32 -> unit
+    method set_flags : Flags.flags list -> unit
+    method set_horizontal : unit
+    method set_image : 'a. 'a image -> unit
+    method set_label : string -> unit
+    method set_labelsize : float -> unit
+    method set_tooltip : string -> unit
+    method set_type : int -> unit
+    method set_vertical : unit
+    method set_when : when_enum list -> unit
+    method show : unit
+    method width : int
+  end
+ *)
+
 class fWidget x y w h title = object(self)
+(*    
+  val mutable wis = ([] : fWidget list)
+  method add: 'a. ( < as_widget: #fWidget; ..> as 'a) -> unit =
+      fun widget -> wis <- widget#as_widget :: wis
+*)      
   inherit fltkbase x y w h title
   method private alloc = new_widget
   method ct = "widget"
