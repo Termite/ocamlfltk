@@ -36,6 +36,8 @@ val make_flatbox: ?draw: [<flatbox] draw_callback option -> string -> flatbox sy
 val make_multiimage: ?draw: [<multiimage] draw_callback option -> [> symbol] sym
 -> (Flags.flags * [>symbol] sym) list -> multiimage sym;;
 val add_to_multiimage: multiimage sym -> (Flags.flags * [>symbol] sym) list -> unit;;
+val current_image: multiimage sym -> symbol sym;;
+val release: multiimage sym -> unit;;
 val make_highlightbox: ?draw: [<highlightbox] draw_callback option -> string ->
     [>symbol] sym -> highlightbox sym;;
 (*

@@ -41,6 +41,9 @@ let register_opt fkt = match fkt with
 external new_symbol: string -> string -> box = "new_symbol";;
 external new_multiimage: string option -> box -> box = "new_multiimage";;
 external add_to_multiimage: box -> int -> box -> unit = "add_to_multiimage";;
+external current_image: box -> box = "multiimage_current_image";;
+external release: box -> unit = "multiimage_release";;
+external release: box -> unit = "multiimage_release";;
 external new_flatbox: string option -> string -> box = "new_flatbox";;
 external new_highlightbox: string option -> string -> box -> highlightbox sym = "new_highlightbox";;
 external new_framebox: string option -> string ->
