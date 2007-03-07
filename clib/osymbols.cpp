@@ -182,6 +182,7 @@ extern "C" {
                 for (i=0;i<size/Double_wosize;i++)  printf("  %g", Double_field(v,i));
                 printf("\n");
                 break;
+            case Custom_tag: printf("custom type\n"); break;
             case Abstract_tag : printf("abstract type\n"); break;
             case Object_tag : printf("object type\n"); 
                               for (i=2; i<size; i++) print_block(Field(v,i), m+4);
