@@ -31,7 +31,7 @@ class fltk_director: public widget {
 
     public:
     fltk_director(::value* oclass, int x, int y, int w, int h, const char* t = 0)
-        : widget(x, y, w, h, t), ocaml_obj(oclass), id(name) 
+        : widget(x, y, w, h, t), id(name), ocaml_obj(oclass)
     { }
 
     virtual ~fltk_director()

@@ -15,8 +15,8 @@ namespace Ofltk {
         public:
         Item_d(::value* oclass, const char* label=0)
             : fltk::Item(label)
-              , ocaml_obj(oclass)
               , id("Item-director") 
+              , ocaml_obj(oclass)
         { }
 
         virtual ~Item_d()
@@ -68,8 +68,8 @@ namespace Ofltk {
         public:
         ItemGroup_d(::value* oclass, const char* label=0)
             : fltk::ItemGroup(label)
-              , ocaml_obj(oclass)
               , id("ItemGroup-director") 
+              , ocaml_obj(oclass)
         { }
 
         virtual ~ItemGroup_d()

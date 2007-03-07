@@ -4,6 +4,7 @@
 #include "ocamlfltk.h"
 #include <fltk/Widget.h>
 #include <fltk/InvisibleBox.h>
+#include "orect.h"
 #include "osymbols.h"
 
 #define MAKE_NEW(widget) \
@@ -22,74 +23,75 @@
 namespace Ofltk {
 
 NEW_DIRECTOR(Widget);
+           
+#define dest_ptr  static_cast<fltk::Widget*>(dest_widget) 
 
-class ocaml_widget {
+class ocaml_widget : public ocaml_rect {
     protected:
-        fltk::Widget* dest_widget;
         ::value* caml_obj;
 
     public:
-//        ::value* callback_fkt;
 
         ocaml_widget() 
-            : dest_widget(0), caml_obj(0)
-        {}
+            : caml_obj(0)
+        {
+            dest_widget = 0;
+        }
 
         ocaml_widget(::value* o_obj, int x, int y, int w, int h, const char* t = 0)
-            : dest_widget(new Widget_d(o_obj, x, y, w, h, t)), caml_obj(o_obj)
-        {
+            :  caml_obj(o_obj)
+        {      
+            dest_widget = new Widget_d(o_obj, x, y, w, h, t);
         }
 
         virtual ~ocaml_widget() {}
 
-        fltk::Widget* give_widget() { return dest_widget; }
+        fltk::Widget* give_widget() { return static_cast<fltk::Widget*>(dest_widget); }
 
-        void hide() { dest_widget->hide(); }
-        virtual void show() { static_cast<Widget_d*>(dest_widget)->show(); }
-        int w() { dest_widget->w(); }
-        int h() { dest_widget->h(); }
-        int flags() { dest_widget->flags(); }
-        void flags(int f) { dest_widget->flags(f); }
-        uchar get_when() { return dest_widget->when(); }
-        void set_when(uchar f) { dest_widget->when(f); }
-        uchar get_type() { return dest_widget->type(); }
-        void tooltip(const char* t) { dest_widget->tooltip(t); }
-        const char* tooltip() { return dest_widget->tooltip(); }
-        void set_type(uchar f) { dest_widget->type(f); }
-        void relayout() { dest_widget->relayout(); }
-        void set_vertical() { dest_widget->set_vertical(); }
-        void set_horitontal() { dest_widget->set_horizontal(); }
-        virtual void set_box(fltk::Box* b) { dest_widget->box(b); }
-        virtual ocaml_symbol* get_box() { return new ocaml_symbol(dest_widget->box()); }
-        void labelsize(double s) { dest_widget->labelsize(s); }
-        double labelsize() { return dest_widget->labelsize(); }
-        void image(ocaml_symbol* s) { dest_widget->image(s->dest_symbol());}
+        void hide() { dest_ptr->hide(); }
+        virtual void show() { static_cast<Widget_d*>(dest_ptr)->show(); }
+        int flags() { return dest_ptr->flags(); }
+        void flags(int f) { dest_ptr->flags(f); }
+        uchar get_when() { return dest_ptr->when(); }
+        void set_when(uchar f) { dest_ptr->when(f); }
+        uchar get_type() { return dest_ptr->type(); }
+        void tooltip(const char* t) { dest_ptr->tooltip(t); }
+        const char* tooltip() { return dest_ptr->tooltip(); }
+        void set_type(uchar f) { dest_ptr->type(f); }
+        void relayout() { dest_ptr->relayout(); }
+        void set_vertical() { dest_ptr->set_vertical(); }
+        void set_horitontal() { dest_ptr->set_horizontal(); }
+        virtual void set_box(fltk::Box* b) { dest_ptr->box(b); }
+        virtual ocaml_symbol* get_box() { return new ocaml_symbol(dest_ptr->box()); }
+        void labelsize(double s) { dest_ptr->labelsize(s); }
+        double labelsize() { return dest_ptr->labelsize(); }
+        void image(ocaml_symbol* s) { dest_ptr->image(s->dest_symbol());}
         ocaml_symbol* image()
         {
-            return new ocaml_symbol(const_cast<fltk::Symbol*>(dest_widget->image()));
+            return new ocaml_symbol(const_cast<fltk::Symbol*>(dest_ptr->image()));
         }
 
-        void color(unsigned c) { dest_widget->color(c); }
+        void color(unsigned c) { dest_ptr->color(c); }
         void copy_label(const char* l)
         {
-            dest_widget->copy_label(l);
+            dest_ptr->copy_label(l);
         }
 
         void callback(fltk::Callback* cb, void* data)
         {
-            dest_widget->callback(cb, data);
+            dest_ptr->callback(cb, data);
         }
 
         DEF_DEFAULT(Widget_d);
 
         virtual void draw()
         {
-            dest_widget->draw();            
+            dest_ptr->draw();            
         }
 
         virtual void redraw()
         {
-            dest_widget->redraw();
+            dest_ptr->redraw();
         }
 
 };

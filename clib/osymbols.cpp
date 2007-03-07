@@ -158,10 +158,11 @@ extern "C" {
 
     static void print_block (value v,int m) 
     {
-        int size, i;
+        unsigned int size ;
+        unsigned int i;
         margin(m);
         if (Is_long(v)) 
-        { printf("immediate value (%d)\n", Long_val(v));  return; };
+        { printf("immediate value (%d)\n", Int_val(v));  return; };
         printf ("memory block: size=%d  -  ", size=Wosize_val(v));
         switch (Tag_val(v))
         {

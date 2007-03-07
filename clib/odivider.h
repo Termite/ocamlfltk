@@ -14,8 +14,8 @@ namespace Ofltk {
         public:
         Divider_d(::value* oclass)
             : fltk::Divider()
-              , ocaml_obj(oclass)
               , id("Divider-director") 
+              , ocaml_obj(oclass)
         { }
 
         virtual ~Divider_d()

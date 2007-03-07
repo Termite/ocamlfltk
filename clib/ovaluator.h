@@ -35,7 +35,7 @@ class ocaml_valuator : public ocaml_widget {
         void set_maximum(double v) { static_cast<fltk::Valuator*>(dest_widget)->maximum(v); }
         void set_range(double a, double b) { static_cast<fltk::Valuator*>(dest_widget)->range(a,b); }
         void set_step(double v) { static_cast<fltk::Valuator*>(dest_widget)->step(v); }
-        int  new_value(double v){ static_cast<fltk::Valuator*>(dest_widget)->value(v);}
+        int  new_value(double v){ return static_cast<fltk::Valuator*>(dest_widget)->value(v);}
 
 };
 

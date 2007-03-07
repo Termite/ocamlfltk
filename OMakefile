@@ -62,6 +62,7 @@ OCamlProgram($(MENU_DEMO), $(MENU_FILES))
 
 OCamlProgram(boxdemo, boxdemo)
 OCamlProgram(imagedemo, imagedemo)
+OCamlProgram(mondemo, mondemo)
 
 MENUDEMO: menudemo
 SCROLLDEMO: scrolldemo
@@ -70,6 +71,7 @@ PACK: pack
 WIZARD: wizard
 BOXDEMO: boxdemo
 IMAGEDEMO: imagedemo	
+MONDEMO: mondemo	
 
 demos: wizard tabdemo scrolldemo pack moin menudemo boxdemo
 .DEFAULT: moin 

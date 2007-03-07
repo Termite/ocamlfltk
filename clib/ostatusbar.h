@@ -13,11 +13,11 @@ class StatusBarGroup_d: public fltk::StatusBarGroup {
 
     public:
     StatusBarGroup_d(::value* oclass, int x, int y, int w, int h, const char* t = 0)
-        : fltk::StatusBarGroup(x, y, w, h, t), ocaml_obj(oclass), id("StatusBarGroup") 
+        : fltk::StatusBarGroup(x, y, w, h, t), id("StatusBarGroup"), ocaml_obj(oclass) 
     { }
 
     StatusBarGroup_d(::value* oclass, int h = 24)
-        : fltk::StatusBarGroup(h), ocaml_obj(oclass), id("StatusBarGroup") 
+        : fltk::StatusBarGroup(h), id("StatusBarGroup"), ocaml_obj(oclass) 
     { }
 
     virtual ~StatusBarGroup_d()

@@ -52,7 +52,7 @@ namespace Ofltk {
 
         bool opened(int i)
         {
-            static_cast<BarGroup_d*>(dest_widget)->opened(bool(i));
+            return static_cast<BarGroup_d*>(dest_widget)->opened(bool(i));
         }
         bool open() { return static_cast<BarGroup_d*>(dest_widget)->open(); }
         bool close() { return static_cast<BarGroup_d*>(dest_widget)->close(); }
