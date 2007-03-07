@@ -16,6 +16,7 @@
 #
 
 #CXXFLAGS += -march=athlon-xp -O3 -fomit-frame-pointer -mfpmath=sse -msse -mmmx -m3dnow -maccumulate-outgoing-args
+CXXFLAGS += -Wall
 # ASFLAGS +=
 # LDFLAGS +=
 INCLUDES += /usr/local/include/ /usr/local/godi/lib/ocaml/std-lib
@@ -26,6 +27,7 @@ INCLUDES += /usr/local/include/ /usr/local/godi/lib/ocaml/std-lib
 #
 
 CLIBFILES[] =
+   omonitor
    oinput
    oscrollgroup
    osymbols

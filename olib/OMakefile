@@ -36,18 +36,14 @@ OCAML_LIB_FLAGS = -custom clib/libofltk.a -cclib $"-lstdc++ -L/usr/local/lib -lf
 # Build an OCaml library
 
 LIB_FILES[] =
+	monitor
 	flags
 	box
 	ask
 	symbol
 	ofltk
-#	valuator
-#	widget
-#	window
-#	box
 #	color
 #	draw
-#	run
 #	font
 #	labeltype
 
