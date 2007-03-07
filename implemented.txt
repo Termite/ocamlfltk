@@ -1,0 +1,92 @@
+Classes:                            implemented
+------------------------------------------------
+CreatedWindow 
+Cursor
+Font 
+GSave 
+Guard 
+ImageType 
+List 
+    StringList 
+MenuSection 
+Mutex 
+    RecursiveMutex 
+    SignalMutex 
+Preferences 
+Preferences::Name 
+Rectangle                                -
+    Monitor..............................- 
+    Widget                               x
+        Button                           x
+            CheckButton                  x
+                LightButton              x
+                RadioButton              x
+            HighlightButton              x
+            RepeatButton                 x
+            ReturnButton                 x
+            ToggleButton                 x
+        ClockOutput......................- 
+            Clock                        -
+        Divider                          x
+        Group                            x
+            Menu                         x
+               Browser                   -
+                  MultiBrowser           -
+               Choice 
+               CycleButton 
+               ItemGroup                 x
+               PopupMenu 
+            PackedGroup..................x
+            ScrollGroup                  x
+            StatusBarGroup               x
+            TabGroup                     x
+            TextDisplay..................-
+                TextEditor               -
+            Window                       x
+                GlWindow                 -
+                   GlutWindow            -
+                MenuWindow               x
+                    Tooltip              x
+                ShapedWindow             -
+            WizardGroup                  x
+        Input............................x 
+            NumericInput                 x
+                FloatInput               x
+                    IntInput             x
+            Output                       x
+                MultiLineOutput          x
+                WordwrapOutput           x
+        InvisibleBox                     x
+        Item                             x
+            RadioItem                    -
+            ToggleItem                   -
+        Valuator........................ x
+            Adjuster                     -
+            Dial                         -
+                FillDial                 -
+                LineDial                 -
+            Slider                       x
+                FillSlider               -
+                Scrollbar                -
+                ValueSlider              -
+            ThumbWheel                   -
+            ValueInput                   x
+            ValueOutput                  x
+ShortcutAssignment                       -
+Style                                    -
+    NamedStyle                           -
+StyleSet                                 -
+Symbol.................................. x
+    FlatBox                              x
+        HighlightBox                     x
+    FrameBox                             x
+    Image                                x
+        SharedImage                      x
+            gifImage                     x
+            xpmFileImage                 x
+        xbmImage                         x
+        xpmImage                         x
+    MultiImage                           x
+    TiledImage                           -
+TabGroupPager                            -
+TextBuffer                               -
