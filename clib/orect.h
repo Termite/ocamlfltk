@@ -20,7 +20,8 @@ class ocaml_rect {
     ocaml_rect() : dest_widget(0) {}
     virtual ~ocaml_rect()
     {
-        delete dest_widget;
+        std::cout << "ocaml_rectangle destroyed" << std::endl;
+        //delete dest_widget;
     }
 
     int x() const { return dest_widget->x(); }
