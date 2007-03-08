@@ -10,6 +10,10 @@ namespace Ofltk {
         public:
         ocaml_monitor() : ocaml_rect()
         { }
+        virtual ~ocaml_monitor()
+        {
+            std::cout << "monitor destroyed" << std::endl;
+        }
         ocaml_monitor(const fltk::Monitor& m) : ocaml_rect()
         {
             dest_widget =const_cast<fltk::Monitor*>(&m);
@@ -24,6 +28,8 @@ namespace Ofltk {
         float dpi_x() const { return static_cast<fltk::Monitor*>(dest_widget)->dpi_x(); }
         float dpi_y() const { return static_cast<fltk::Monitor*>(dest_widget)->dpi_y(); }
         float dpi() const   { return static_cast<fltk::Monitor*>(dest_widget)->dpi(); }
+        fltk::Rectangle* work() { return &(static_cast<fltk::Monitor*>(dest_widget)->work);}
+
     };
 
 }
