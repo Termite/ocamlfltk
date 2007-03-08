@@ -30,7 +30,6 @@ let add_group wiz text col =
     g#wend;
 ;;
 
-
 let win = new fWindow ~x:1 ~y:500 320 200  "hehe" in
 let stat = new easyStatusBar in
 stat#child_box SBAR_RIGHT Box.thin_down_box; 
@@ -63,5 +62,4 @@ Gc.full_major();
 win#show;
 Gc.full_major();
 run();
-Gc.full_major();
 
