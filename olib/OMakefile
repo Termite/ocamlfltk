@@ -43,9 +43,8 @@ LIB_FILES[] =
 	ask
 	symbol
 	ofltk
+	draw
 #	color
-#	draw
-#	font
 #	labeltype
 
 #

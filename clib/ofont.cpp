@@ -96,5 +96,37 @@ extern "C" {
         CAMLreturn(erg);
     }
 
+    CAMLprim value get_fonts(value x)
+    {
+        CAMLparam1(x);
+        CAMLlocal1(erg);
+        static fltk::Font* const fonts[] = {
+            fltk::HELVETICA,
+            fltk::HELVETICA_BOLD,
+            fltk::HELVETICA_ITALIC,
+            fltk::HELVETICA_BOLD_ITALIC,
+            fltk::COURIER,
+            fltk::COURIER_BOLD,
+            fltk::COURIER_ITALIC,
+            fltk::COURIER_BOLD_ITALIC,
+            fltk::TIMES,
+            fltk::TIMES_BOLD,
+            fltk::TIMES_ITALIC,
+            fltk::TIMES_BOLD_ITALIC,
+            fltk::SYMBOL_FONT,
+            fltk::SCREEN_FONT,
+            fltk::SCREEN_BOLD_FONT,
+            fltk::ZAPF_DINGBATS
+        };
+        unsigned n = sizeof(fonts) / sizeof(fltk::Font*);
+        std::cout << "fontsize " << n << std::endl;
+        erg = caml_alloc_tuple(n);
+        for (unsigned i=0; i < n; i++)
+        {
+            Store_field(erg, i, (value) (fonts[i]));
+        }
+        CAMLreturn(erg);
+    }
+
 
 }

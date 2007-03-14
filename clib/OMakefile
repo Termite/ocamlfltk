@@ -28,6 +28,7 @@ INCLUDES += /usr/local/include/ /usr/local/godi/lib/ocaml/std-lib
 
 CLIBFILES[] =
    ofont
+   odraw
    omonitor
    oinput
    oscrollgroup
