@@ -42,6 +42,7 @@ LIB_FILES[] =
 	box
 	ask
 	symbol
+	style
 	ofltk
 	draw
 #	color

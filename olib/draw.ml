@@ -1,3 +1,4 @@
+type color = Int32.t;;
 
 (* Transformations *)
 external push_matrix: unit -> unit = "push_matrix";;
@@ -9,6 +10,13 @@ external translate_i: int -> int -> unit = "translate_i";;
 external rotate: float -> unit = "rotate";;
 external concat: int->int->int->int->int->int -> unit = "concat_bc" "concat";;
 external load_identity: unit -> unit = "load_identity";;
+external transform_f: float -> float -> float * float = "tranform_f";;
+external transform_distance: float -> float -> float * float = "tranform_distance";;
+external transform_i: int -> int -> int * int = "tranform_i";;
+external transform_rect: int -> int -> int -> int ->
+    int * int * int * int = "tranform_rect";;
+
+
 (*
 (* Clipping *)
 external push_clip: int -> int -> int -> int -> unit = "push_clip";;
@@ -78,6 +86,8 @@ let drawtext text ?bytes x y =
 
 
 
+
+(* Functions *)
 let solid	    = 0;;
 let dash	    = 1;;
 let dot	        = 2;;
@@ -91,6 +101,21 @@ let cap_square	= 0x300;;
 let join_miter	= 0x1000;;
 let join_round	= 0x2000;;
 let join_bevel	= 0x3000;;
+
+external setcolor: color -> unit = "setcolor";;
+external setcolor_alpha: color -> float -> unit = "setcolor_alpha";;
+external getcolor: unit -> color = "getcolor";;
+external setbgcolor: color -> unit = "setbgcolor";;
+external getbgcolor: unit -> color = "getbgcolor";;
+external set_drawstyle: style -> int -> unit = "drawstyle";;
+external get_drawstyle: unit -> style = "get_drawstyle";;
+external set_drawflags: int -> int = "set_drawflags";;
+external get_drawflags: unit -> int = "get_drawflags";;
+external set_linestyle: int -> float -> string = "set_linestyle";;
+external get_linestyle: unit -> int = "get_linestyle";;
+external get_linewidth: unit -> float = "get_linewidth";;
+external get_linedashes: unit -> string = "get_linedashes";;
+
 
 
 

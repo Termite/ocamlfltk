@@ -74,7 +74,8 @@ BOXDEMO: boxdemo
 IMAGEDEMO: imagedemo
 MONDEMO: mondemo
 FONTDEMO: fontdemo	
+STYLEDEMO: $(OCamlProgram styledemo, styledemo)
 
-demos: wizard tabdemo scrolldemo pack moin menudemo boxdemo
+demos: wizard tabdemo scrolldemo pack moin menudemo boxdemo styledemo
 .DEFAULT: moin 
 
