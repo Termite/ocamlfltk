@@ -44,6 +44,16 @@ let when2int flag =
     tab.(int_of_when flag)
 ;;
 
+let rec flags_of_bits flags bits res =
+    match flags with
+    | [] -> res
+    | (value, name) :: rest ->
+            if bits land value = value then
+                flags_of_bits rest (bits - value) (name :: res)
+            else
+                flags_of_bits rest bits res
+;;
+
 external new_widget: string -> int -> int -> int -> int -> string -> widget
     = "new_widget_bc" "new_widget"
 
@@ -59,6 +69,10 @@ external set_label: widget -> string -> unit = "widget_set_label";;
 external set_labelsize: widget -> float -> unit = "widget_set_labelsize";;
 external get_labelsize: widget -> float = "widget_get_labelsize";;
 external set_color: widget -> int32 -> unit = "widget_set_color";;
+external get_labelsize: widget -> float = "widget_get_labelsize";;
+external get_labelfont: widget -> Font.font = "widget_get_labelfont";;
+external set_labelsize: widget -> float -> unit = "widget_get_labelsize";;
+external set_labelfont: widget -> Font.font -> unit = "widget_get_labelfont";;
 (*
 external widget_set_box: widget -> [> Symbol.symbol] Symbol.sym -> unit = "widget_set_box";;
 external widget_get_box: widget -> Symbol.symbol Symbol.sym = "widget_get_box";;
@@ -249,20 +263,14 @@ class fWidget x y w h title = object(self)
   method set_vertical = widget_set_vertical obj
   method set_horizontal = widget_set_horizontal obj
   method get_when =
-      let n = ref (get_when obj) in
-      let l = ref [] in
-      if !n land 10 = 10 then (
-          n := !n - 10;
-          l := WhenEnterKeyAlways :: !l
-      );
-      if !n land 8 = 8 then (
-          l := WhenEnterKey :: !l
-      );
-      if !n land 4 = 4 then (
-          l := WhenRelease :: !l
-      );
-      if !n land 1 = 1 then l := WhenChanged :: !l;
-      !l
+      let f = flags_of_bits [
+          (10, WhenEnterKeyAlways);
+          (8, WhenEnterKey);
+          (6, WhenReleaseAlways);
+          (4, WhenRelease);
+          (1, WhenChanged) ] (get_when obj) []
+      in
+      if f = [] then [WhenNever] else f
 
   method set_when flags =
       let n = List.fold_left (fun erg flag -> erg lor (when2int flag)) 0 flags in
@@ -282,9 +290,11 @@ class fWidget x y w h title = object(self)
   method set_image : 'a. 'a image -> unit =
       fun box -> widget_set_image obj box
   method as_widget = (self :> fWidget)
-  (*method setfont font size = set_font font size
+(*  method setfont font size = set_font font size*)
   method labelsize = get_labelsize obj
-  method labelfont = get_labelfont obj*)
+  method labelfont = get_labelfont obj
+  method set_labelsize size = set_labelsize obj size
+  method set_labelfont font = set_labelfont obj font
   method height = get_height obj
   (*method conf = conf_label*)
   method callback (fkt: unit->unit) = 

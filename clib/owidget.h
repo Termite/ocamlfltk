@@ -63,6 +63,8 @@ class ocaml_widget : public ocaml_rect {
         void set_horitontal() { dest_ptr->set_horizontal(); }
         virtual void set_box(fltk::Box* b) { dest_ptr->box(b); }
         virtual ocaml_symbol* get_box() { return new ocaml_symbol(dest_ptr->box()); }
+        void labelfont(fltk::Font* s) { dest_ptr->labelfont(s); }
+        fltk::Font* labelfont() { return dest_ptr->labelfont(); }
         void labelsize(double s) { dest_ptr->labelsize(s); }
         double labelsize() { return dest_ptr->labelsize(); }
         void image(ocaml_symbol* s) { dest_ptr->image(s->dest_symbol());}

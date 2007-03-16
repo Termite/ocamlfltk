@@ -180,17 +180,10 @@ extern "C" {
         ((ocaml_widget*) widget) -> set_when(Int_val(when));
         CAMLreturn(Val_unit);
     }
-/*
     CAMLprim value widget_set_labelfont(value widget, value font)
     {
         CAMLparam2(widget, font);
-        ((ocaml_widget*) widget)->labelfont((Font*) font);
-        CAMLreturn(Val_unit);
-    }
-    CAMLprim value widget_set_labelsize(value widget, value size)
-    {
-        CAMLparam2(widget, size);
-        ((ocaml_widget*) widget)->labelsize(Double_val(size));
+        ((ocaml_widget*) widget)->labelfont((fltk::Font*) font);
         CAMLreturn(Val_unit);
     }
 
@@ -200,12 +193,7 @@ extern "C" {
         CAMLreturn((value)((ocaml_widget*) widget)->labelfont());
     }
 
-    CAMLprim value widget_get_labelsize(value widget)
-    {
-        CAMLparam1(widget);
-        CAMLreturn(caml_copy_double(((ocaml_widget*) widget)->labelsize()));
-    }
-
+/*
     CAMLprim value widget_labeltype(value widget, value typ)
     {
         CAMLparam2(widget, typ);
