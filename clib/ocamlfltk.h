@@ -10,6 +10,8 @@ extern "C" {
 #include "caml/memory.h"
 #include "caml/callback.h"
 #include <string.h>
+
+#define Float_val(x)    (float(Double_val(x)))    
 }
 
 namespace Ofltk {

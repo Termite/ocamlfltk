@@ -17,30 +17,39 @@ external transform_rect: int -> int -> int -> int ->
     int * int * int * int = "tranform_rect";;
 
 
-(*
 (* Clipping *)
-external push_clip: int -> int -> int -> int -> unit = "push_clip";;
-external clipout:   int -> int -> int -> int -> unit = "clipout";;
-external pop_clip: unit -> unit = "pop_clip";;
-external push_no_clip: unit -> unit = "push_no_clip";;
-external not_clipped: int -> int -> int -> int -> bool = "not_clipped";;
-external intersect_with_clip: int -> int -> int -> int -> int = "intersect_with_clip";;
+external push_clip: int -> int -> int -> int -> unit = "style_push_clip";;
+external clipout:   int -> int -> int -> int -> unit = "style_clipout";;
+external pop_clip: unit -> unit = "style_pop_clip";;
+external push_no_clip: unit -> unit = "style_push_no_clip";;
+external not_clipped: int -> int -> int -> int -> bool = "style_not_clipped";;
+
+type clipped =
+    | NoIntersect of int*int*int*int
+    | Equal of int*int*int*int 
+    | Partially of int*int*int*int
+;;
+
+external intersect_with_clip: int -> int -> int -> int -> clipped
+    = "style_intersect_with_clip";;
 
 (* Path construction *)
 
 external newpath: unit -> unit = "newpath";;
-external addvertex_f: float -> float = "addvertex_f";;
-external addvertex_i: int -> int = "addvertex_i";;
-external addvertices_f: float array = "addvertices_f";;
-external addvertices_i: int array = "addvertices_i";;
+external addvertex_f: float -> float -> unit = "addvertex_f";;
+external addvertex_i: int -> int -> unit = "addvertex_i";;
+external addvertices_f: float array -> unit = "addvertices_f";;
+external addvertices_i: int array -> unit = "addvertices_i";;
 external addvertices_transformed: (int*int) array -> unit = "addvertices_transformed";;
 external addcurve: float -> float -> float -> float -> float -> float -> float -> float 
-    -> unit = "addcurve";;
-external addarc: float -> float -> float -> float -> float -> float -> unit = "addcurve";;
+    -> unit = "addcurve_bc" "addcurve";;
+external addarc: float -> float -> float -> float -> float -> float -> unit
+    = "addarc_bc" "addarc";;
 external addpie: int -> int -> int -> int -> float -> float-> unit = "addpie";;
 external addchord: int -> int -> int -> int -> float -> float-> unit = "addchord";;
 external closepath: unit -> unit = "closepath";;
 
+(*
 (* Shapes & Lines *)
 
 external strokepath: unit -> unit = "strokepath";;
