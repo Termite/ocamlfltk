@@ -31,6 +31,20 @@ extern "C" {
         CAMLreturn(Val_int(r));
     }
 
+    CAMLprim value window_set_doublebuffer(value window)
+    {
+        CAMLparam1(window);
+        ((ocaml_window*) window)->set_double_buffer();
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value window_clear_doublebuffer(value window)
+    {
+        CAMLparam1(window);
+        ((ocaml_window*) window)->clear_double_buffer();
+        CAMLreturn(Val_unit);
+    }
+
     CAMLprim value window_draw(value widget)
     {
         CAMLparam1(widget);

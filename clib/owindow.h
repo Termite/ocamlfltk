@@ -19,6 +19,15 @@ class ocaml_window : public ocaml_group {
         virtual ~ocaml_window() {}
 
         virtual void show() { static_cast<Window_d*>(dest_widget)->show(); }
+        virtual void set_double_buffer()
+        { 
+            static_cast<Window_d*>(dest_widget)->set_double_buffer();
+        }
+
+        virtual void clear_double_buffer()
+        { 
+            static_cast<Window_d*>(dest_widget)->clear_double_buffer();
+        }
 
         DEF_DEFAULT(Window_d);
 

@@ -17,6 +17,8 @@ external group_begin: widget -> unit = "group_begin"
 external group_end: widget -> unit = "group_end"
 external set_resizeable : widget -> widget -> unit = "group_set_resizable";;
 external window_draw: widget -> unit = "window_draw";;
+external window_set_doublebuffer: widget -> unit = "window_set_doublebuffer";;
+external window_clear_doublebuffer: widget -> unit = "window_clear_doublebuffer";;
 
 external set_window_cb: widget -> string -> unit = "set_window_cb";;
 
@@ -260,6 +262,7 @@ class fWidget x y w h title = object(self)
   method show = widget_show obj
   method hide = widget_hide obj
   method width = get_width obj
+  method height = get_height obj
   method set_vertical = widget_set_vertical obj
   method set_horizontal = widget_set_horizontal obj
   method get_when =
@@ -295,7 +298,6 @@ class fWidget x y w h title = object(self)
   method labelfont = get_labelfont obj
   method set_labelsize size = set_labelsize obj size
   method set_labelfont font = set_labelfont obj font
-  method height = get_height obj
   (*method conf = conf_label*)
   method callback (fkt: unit->unit) = 
       let name = "widgetcb" ^ (string_of_int (Oo.id self)) in
@@ -505,6 +507,8 @@ class fWindow ?(add=true) ?(x=0) ?(y=0) w h title = object(self)
     inherit fGroup ~add ~x ~y w h title    
     method private alloc = new_window
     method ct = "window"
+    method set_doublebuffer = window_set_doublebuffer obj
+    method clear_doublebuffer = window_clear_doublebuffer obj
 end;;
 
 type button_typ = NormalButton | CheckButton | LightButton
