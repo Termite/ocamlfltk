@@ -49,13 +49,12 @@ external addpie: int -> int -> int -> int -> float -> float-> unit = "addpie";;
 external addchord: int -> int -> int -> int -> float -> float-> unit = "addchord";;
 external closepath: unit -> unit = "closepath";;
 
-(*
 (* Shapes & Lines *)
 
 external strokepath: unit -> unit = "strokepath";;
 external fillpath:   unit -> unit = "fillpath";;
 external fillstrokepath: unit -> unit = "fillstrokepath";;
-external fillrect: int -> int -> int -> int i-> unit = "fillrect";;
+external fillrect: int -> int -> int -> int -> unit = "fillrect";;
 external strokerect: int -> int -> int -> int -> unit = "strokerect";;
 external drawline_i: int -> int -> int -> int -> unit = "drawline_i";;
 external drawline_f: float -> float -> float -> float -> unit = "drawline_f";;
@@ -64,17 +63,18 @@ external drawpoint_f: float -> float -> unit = "drawpoint_f";;
 
 (* Text *)
 
-external setfont: font -> float -> unit = "setfont";;
+external setfont: Font.font -> float -> unit = "setfont";;
 external setfont_name: string -> float -> unit = "setfont_name";;
 external get_encoding: unit -> string = "get_encoding";;
 external set_encoding: string -> unit = "set_encoding";;
-external getfont: unit -> font = "getfont";;
+external getfont: unit -> Font.font = "getfont";;
 external getsize: unit -> float = "getsize";;
-external getwidth: string -> float = "getwidth";;
+external getwidth: string -> float = "draw_getwidth";;
 external drawtext_transformed: string -> int -> float -> float -> unit = 
     "drawtext_transformed";;
 external drawtext: string -> float -> float -> unit = "drawtext";;
 external drawsubtext: string -> int -> float -> float -> unit = "drawsubtext";;
+(*
 (*
  * 
 external drawtextrect: string -> int -> int -> int -> int -> int -> unit =

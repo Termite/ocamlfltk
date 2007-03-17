@@ -321,6 +321,132 @@ extern "C" {
     }
 
     /* Shapes and Lines */ 
+
+    CAMLprim value strokepath(value n)
+    {
+        CAMLparam1(n);
+        fltk::strokepath();
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value fillpath(value n)
+    {
+        CAMLparam1(n);
+        fltk::fillpath();
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value fillstrokepath(value color)
+    {
+        CAMLparam1(color);
+        fltk::fillstrokepath(Int32_val(color));
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value fillrect(value x, value y, value w, value h) 
+    {
+        CAMLparam4(x, y, w, h);
+        fltk::fillrect(Int_val(x), Int_val(y), Int_val(w), Int_val(h));  
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value strokerect(value x, value y, value w, value h) 
+    {
+        CAMLparam4(x, y, w, h);
+        fltk::strokerect(Int_val(x), Int_val(y), Int_val(w), Int_val(h));  
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value drawline(value x, value y, value x1, value y1) 
+    {
+        CAMLparam4(x, y, x1, y1);
+        fltk::drawline(Int_val(x), Int_val(y), Int_val(x1), Int_val(y1));  
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value drawline_f(value x, value y, value x1, value y1) 
+    {
+        CAMLparam4(x, y, x1, y1);
+        fltk::drawline(Float_val(x), Float_val(y), Float_val(x1), Float_val(y1));  
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value drawpoint_f(value x, value y) 
+    {
+        CAMLparam2(x, y);
+        fltk::drawpoint(Float_val(x), Float_val(y));  
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value drawpoint(value x, value y) 
+    {
+        CAMLparam2(x, y);
+        fltk::drawpoint(Int_val(x), Int_val(y));  
+        CAMLreturn(Val_unit);
+    }
+
+    /* Text */
+
+    CAMLprim value setfont(value font, value size) 
+    {
+        CAMLparam2(font, size);
+        fltk::setfont((fltk::Font*) font, Float_val(size));
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value setfont_name(value font, value size) 
+    {
+        CAMLparam2(font, size);
+        fltk::setfont(String_val(font), Float_val(size));
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value get_encoding(value n) 
+    {
+        CAMLparam1(n);
+        CAMLreturn(caml_copy_string(fltk::get_encoding()));
+    }
+
+    CAMLprim value set_encoding(value n) 
+    {
+        CAMLparam1(n);
+        fltk::set_encoding(String_val(n));
+        CAMLreturn(n);
+    }
+
+    CAMLprim value get_font(value n) 
+    {
+        CAMLparam1(n);
+        CAMLreturn((value)(fltk::getfont()));
+    }
+
+    CAMLprim value get_size(value n) 
+    {
+        CAMLparam1(n);
+        CAMLreturn(caml_copy_double(fltk::getsize()));
+    }
+
+    CAMLprim value draw_getwidth(value n) 
+    {
+        CAMLparam1(n);
+        CAMLreturn(caml_copy_double(fltk::getwidth(String_val(n))));
+    }
+
+    CAMLprim value drawtext(value text, value x, value y) 
+    {
+        CAMLparam3(text, x, y);
+        fltk::drawtext(String_val(text), Float_val(x), Float_val(y));
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value drawsubtext(value text, value len, value x, value y) 
+    {
+        CAMLparam4(text, len, x, y);
+        fltk::drawtext(String_val(text), Int_val(len), Float_val(x), Float_val(y));
+        CAMLreturn(Val_unit);
+    }
+
+
 }
 }
 
