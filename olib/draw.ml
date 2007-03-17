@@ -74,12 +74,8 @@ external drawtext_transformed: string -> int -> float -> float -> unit =
     "drawtext_transformed";;
 external drawtext: string -> float -> float -> unit = "drawtext";;
 external drawsubtext: string -> int -> float -> float -> unit = "drawsubtext";;
-(*
-(*
- * 
 external drawtextrect: string -> int -> int -> int -> int -> int -> unit =
-    "drawtextrect_bc" "drawtextrect";;
-*)
+    "drawtext_rect_bc" "drawtext_rect";;
 (*
 external drawtext_x: (string -> int -> float -> float -> unit)
     -> (string -> int -> float)
@@ -88,7 +84,7 @@ external drawtext_x: (string -> int -> float -> float -> unit)
 *)
 
 let drawtext text ?bytes x y =
-    match len with
+    match bytes with
     | None -> drawtext text x y
     | Some n -> drawsubtext text n x y
 ;;
@@ -116,16 +112,13 @@ external setcolor_alpha: color -> float -> unit = "setcolor_alpha";;
 external getcolor: unit -> color = "getcolor";;
 external setbgcolor: color -> unit = "setbgcolor";;
 external getbgcolor: unit -> color = "getbgcolor";;
-external set_drawstyle: style -> int -> unit = "drawstyle";;
-external get_drawstyle: unit -> style = "get_drawstyle";;
+external set_drawstyle: [>Style.normal] Style.style -> int -> unit = "drawstyle";;
+external get_drawstyle: unit ->  [>Style.normal] Style.style = "get_drawstyle";;
 external set_drawflags: int -> int = "set_drawflags";;
 external get_drawflags: unit -> int = "get_drawflags";;
-external set_linestyle: int -> float -> string = "set_linestyle";;
+external set_linestyle: int -> ?width:float -> string option -> unit = "set_linestyle";;
 external get_linestyle: unit -> int = "get_linestyle";;
 external get_linewidth: unit -> float = "get_linewidth";;
 external get_linedashes: unit -> string = "get_linedashes";;
 
 
-
-
-*)

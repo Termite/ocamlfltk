@@ -446,6 +446,109 @@ extern "C" {
         CAMLreturn(Val_unit);
     }
 
+    CAMLprim value drawtext_rect(value str, value x, value y, value w, value h, value f)
+    {
+        CAMLparam5(str, x, y, w, h);
+        CAMLxparam1(f);
+        fltk::drawtext(String_val(str),
+                fltk::Rectangle(Int_val(x),Int_val(y),Int_val(w),Int_val(h)),
+                       Int_val(f));
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value drawtext_rect_bc(value* argv, int n)
+    {
+        return drawtext_rect(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5]);
+    }
+
+    /* Functions */
+
+    CAMLprim value setcolor(value n) 
+    {
+        CAMLparam1(n);
+        fltk::setcolor(Int32_val(n));
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value setcolor_alpha(value c, value alpha) 
+    {
+        CAMLparam2(c, alpha);
+        fltk::setcolor_alpha(Int32_val(c), Float_val(alpha));
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value getcolor(value n) 
+    {
+        CAMLparam1(n);
+        CAMLreturn(caml_copy_int32(fltk::getcolor()));
+    }
+
+    CAMLprim value setbgcolor(value n) 
+    {
+        CAMLparam1(n);
+        fltk::setbgcolor(Int32_val(n));
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value getbgcolor(value n) 
+    {
+        CAMLparam1(n);
+        CAMLreturn(caml_copy_int32(fltk::getbgcolor()));
+    }
+
+    CAMLprim value drawstyle(value style, value flags) 
+    {
+        CAMLparam2(style, flags);
+        fltk::drawstyle( (fltk::Style*)style, Int_val(flags));
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value get_drawstyle(value n) 
+    {
+        CAMLparam1(n);
+        CAMLreturn((value)(fltk::drawstyle()));
+    }
+
+    CAMLprim value set_drawflags(value flags) 
+    {
+        CAMLparam1(flags);
+        fltk::drawflags(Int_val(flags));
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value get_drawflags(value n) 
+    {
+        CAMLparam1(n);
+        CAMLreturn(Val_int(fltk::drawflags()));
+    }
+
+    CAMLprim value set_linestyle(value style, value width, value dashes) 
+    {
+        CAMLparam3(style, width, dashes);
+        float w = Is_long(width) ? 0.0 : Float_val(Field(width,0));
+        char* d = Is_long(dashes) ? 0 : String_val(Field(dashes,0));
+        fltk::line_style(Int_val(style), w, d);
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value get_linestyle(value n) 
+    {
+        CAMLparam1(n);
+        CAMLreturn(Val_int(fltk::line_style()));
+    }
+
+    CAMLprim value get_linewidth(value n) 
+    {
+        CAMLparam1(n);
+        CAMLreturn(caml_copy_double(fltk::line_width()));
+    }
+
+    CAMLprim value get_linedashes(value n) 
+    {
+        CAMLparam1(n);
+        CAMLreturn(caml_copy_string(fltk::line_dashes()));
+    }
+
 
 }
 }

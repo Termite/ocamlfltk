@@ -16,6 +16,8 @@ class myRadio x y w h t var value = object(self)
     method callback fkt = chef#callback (fun () -> var := value; fkt ())
 end;;
         
+external inspect: 'a -> unit = "inspect_block";;
+
 
 let add_group wiz text col =
     let g = new fGroup ~x:0 ~y:0 320 200 "" in
