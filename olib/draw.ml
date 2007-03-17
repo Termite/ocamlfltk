@@ -36,11 +36,11 @@ external intersect_with_clip: int -> int -> int -> int -> clipped
 (* Path construction *)
 
 external newpath: unit -> unit = "newpath";;
-external addvertex_f: float -> float -> unit = "addvertex_f";;
-external addvertex_i: int -> int -> unit = "addvertex_i";;
-external addvertices_f: float array -> unit = "addvertices_f";;
-external addvertices_i: int array -> unit = "addvertices_i";;
-external addvertices_transformed: (int*int) array -> unit = "addvertices_transformed";;
+external addvertex_f: float -> float -> unit = "add_vertex_f";;
+external addvertex_i: int -> int -> unit = "add_vertex_i";;
+external addvertices_f: float array -> unit = "add_vertices_f";;
+external addvertices_i: int array -> unit = "add_vertices_i";;
+external addvertices_transformed: (int*int) array -> unit = "add_vertices_transformed";;
 external addcurve: float -> float -> float -> float -> float -> float -> float -> float 
     -> unit = "addcurve_bc" "addcurve";;
 external addarc: float -> float -> float -> float -> float -> float -> unit
@@ -53,7 +53,7 @@ external closepath: unit -> unit = "closepath";;
 
 external strokepath: unit -> unit = "strokepath";;
 external fillpath:   unit -> unit = "fillpath";;
-external fillstrokepath: unit -> unit = "fillstrokepath";;
+external fillstrokepath: color -> unit = "fillstrokepath";;
 external fillrect: int -> int -> int -> int -> unit = "fillrect";;
 external strokerect: int -> int -> int -> int -> unit = "strokerect";;
 external drawline_i: int -> int -> int -> int -> unit = "drawline_i";;
@@ -63,8 +63,8 @@ external drawpoint_f: float -> float -> unit = "drawpoint_f";;
 
 (* Text *)
 
-external setfont: Font.font -> float -> unit = "setfont";;
-external setfont_name: string -> float -> unit = "setfont_name";;
+external setfont: Font.font -> float -> unit = "draw_setfont";;
+(*external setfont_name: string -> float -> unit = "draw_setfont_name";;*)
 external get_encoding: unit -> string = "get_encoding";;
 external set_encoding: string -> unit = "set_encoding";;
 external getfont: unit -> Font.font = "getfont";;
@@ -74,7 +74,7 @@ external drawtext_transformed: string -> int -> float -> float -> unit =
     "drawtext_transformed";;
 external drawtext: string -> float -> float -> unit = "drawtext";;
 external drawsubtext: string -> int -> float -> float -> unit = "drawsubtext";;
-external drawtextrect: string -> int -> int -> int -> int -> int -> unit =
+external drawtext_rect: string -> int -> int -> int -> int -> int -> unit =
     "drawtext_rect_bc" "drawtext_rect";;
 (*
 external drawtext_x: (string -> int -> float -> float -> unit)

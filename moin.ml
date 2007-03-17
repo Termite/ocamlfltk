@@ -1,64 +1,60 @@
 open Printf;;
 open Ofltk;;
 
-class myButton x y w h t = object(self)
-    inherit fButton x y w h t as chef
-    method draw = print_endline "myButton Draw"; chef#draw
-end;; 
+open Draw;;
 
-class myWin w h t = object(self)
-    inherit fWindow w h t as chef
-    method draw = print_endline "nix..."; chef#draw
+class shape_widget x y w h title = object(self)
+    inherit fWidget x y w h title
+    val pi = 4.0 *. (atan 1.0)
+    val mutable _sides = 3
+    method sides = _sides
+    method set_sides n = if n <> _sides then
+        begin
+            _sides <- n;
+            self#redraw
+        end
+           
+    method draw =
+        setcolor Color.black;
+        let w = self#width in
+        let h = self#height in
+        fillrect 0 0 w h;
+        push_matrix ();
+        scale_xy (float w /. 2.0) (float h /. 2.0);
+        translate_i 1 1;
+        setcolor 0x8098b000l;
+        let f = 2.0 *. pi /. (float _sides) in
+        for i=0 to _sides do
+            let ang = float i *. f in
+            addvertex_f (cos ang) (sin ang)
+        done;
+        fillstrokepath Color.white;
+        pop_matrix ();
+        setfont self#labelfont self#labelsize;
+        setcolor Color.white;
+        let ang = f in
+        drawtext_rect "widget text" 0 0 w h Flags.align_wrap
 end;;
 
-class myRadio x y w h t var value = object(self)
-    inherit fButton ~btyp:RadioButton x y w h t as chef
-    method callback fkt = chef#callback (fun () -> var := value; fkt ())
-end;;
-        
-external inspect: 'a -> unit = "inspect_block";;
 
 
-let add_group wiz text col =
-    let g = new fGroup ~x:0 ~y:0 320 200 "" in
-    g#begin_add;
-    let b1 = new fButton 20 25 (320-25) 25 ">> next" in
-    b1#callback  (fun () -> wiz#next_page);
-    let b2 = new fButton 20 55 (320-25) 25 "<< prev" in
-    b2#callback  (fun () -> wiz#prev_page);
-    let w = new fWidget 10 100 300 90 "" in
-    w#set_color col;
-    w#set_label text;
-    g#wend;
-;;
-
-let win = new fWindow ~x:1 ~y:500 320 200  "hehe" in
+let win = new fWindow ~x:0 ~y:0 300 330  "hehe" in
+let sw = new shape_widget 10 10 270 270 "" in
+win#resizable sw;
 let stat = new easyStatusBar in
 stat#child_box SBAR_RIGHT Box.thin_down_box; 
 stat#print "Hi, wie geht's?";
 win#begin_add;
-(*let down = new fButton ~btyp:RadioButton 50 60 50 20 "" in*)
-let radio = ref "" in
-let down = new myRadio 50 60 50 20 "radio" radio "Mensch!" in
-let up = new fButton ~btyp:CheckButton 150 60 50 20 "up" in
-let byby = new fButton ~btyp:RadioButton 250 60 50 20 "exit" in
-let slider = new fSlider 10 35 300 20 "" in
-let inp = new fValueInput 10 10 100 20 "" in
-inp#range (-10.0) 10.0;
-inp#set_step 1.0;
-slider#range (-10.0) 10.0;
-slider#set_step 1.0;
-slider#set_value 0.0;
-slider#callback (fun () -> inp#set_value slider#get_value);
-down#callback (fun () ->
-    printf "downvalue: %b\n%!" down#value;
-    slider#set_value_check (slider#get_value -. 1.0);
-    inp#set_value slider#get_value);
-up#callback (fun () ->
-    printf "radio: %s\n%!" !radio;
-    slider#set_value_check (slider#get_value +. 1.0);
-    inp#set_value slider#get_value);
-byby#callback (fun () -> win#hide);    
+let sl = new fSlider 50 285 (win#width - 60) 30 "Sides:" in
+sl#clr_flags [Flags.align_mask];
+sl#set_flags [Flags.align_left];
+sl#set_value (float sw#sides);
+sl#set_step 1.0;
+sl#range 3.0 40.0;
+sl#callback (fun () -> sw#set_sides (int_of_float sl#get_value);
+        stat#format_text SBAR_RIGHT "%d sides" sw#sides
+    );
+
 win#wend;
 Gc.full_major();
 win#show;

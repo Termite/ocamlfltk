@@ -387,19 +387,21 @@ extern "C" {
 
     /* Text */
 
-    CAMLprim value setfont(value font, value size) 
+    CAMLprim value draw_setfont(value font, value size) 
     {
         CAMLparam2(font, size);
         fltk::setfont((fltk::Font*) font, Float_val(size));
         CAMLreturn(Val_unit);
     }
 
-    CAMLprim value setfont_name(value font, value size) 
+/*
+    CAMLprim value draw_setfont_name(value font, value size) 
     {
         CAMLparam2(font, size);
         fltk::setfont(String_val(font), Float_val(size));
         CAMLreturn(Val_unit);
     }
+*/
 
     CAMLprim value get_encoding(value n) 
     {
