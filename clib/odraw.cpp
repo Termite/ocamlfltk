@@ -129,35 +129,35 @@ extern "C" {
 
     /* Clipping */
 
-    CAMLprim value push_clip(value x, value y, value w, value h)
+    CAMLprim value draw_push_clip(value x, value y, value w, value h)
     {
         CAMLparam4(x,y,w,h);
         fltk::push_clip(Int_val(x), Int_val(y), Int_val(w), Int_val(h));
         CAMLreturn(Val_unit);
     }
 
-    CAMLprim value clip_out(value x, value y, value w, value h)
+    CAMLprim value draw_clipout(value x, value y, value w, value h)
     {
         CAMLparam4(x,y,w,h);
         fltk::clipout(fltk::Rectangle(Int_val(x), Int_val(y), Int_val(w), Int_val(h)));
         CAMLreturn(Val_unit);
     }
 
-    CAMLprim value pop_clip(value h)
+    CAMLprim value draw_pop_clip(value h)
     {
         CAMLparam1(h);
         fltk::pop_clip();
         CAMLreturn(Val_unit);
     }
 
-    CAMLprim value push_no_clip(value h)
+    CAMLprim value draw_push_no_clip(value h)
     {
         CAMLparam1(h);
         fltk::push_no_clip();
         CAMLreturn(Val_unit);
     }
 
-    CAMLprim value not_clipped(value x, value y, value w, value h)
+    CAMLprim value draw_not_clipped(value x, value y, value w, value h)
     {
         CAMLparam4(x,y,w,h);
         CAMLreturn(Val_int(fltk::not_clipped(fltk::Rectangle(Int_val(x), Int_val(y), Int_val(w), Int_val(h)))));
