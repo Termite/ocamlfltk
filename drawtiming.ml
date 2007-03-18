@@ -55,8 +55,7 @@ class testWindow t = object(self)
             setcolor Color.gray75;
             fillrect 0 0 w h;
             pop_clip()
-        end;
-        print_endline "gedrawed!"
+            end
 
     initializer
         if t land 1 <> 0 then self#set_doublebuffer else self#clear_doublebuffer
@@ -71,9 +70,14 @@ let _ =
     let w = new testWindow test in
     let dt = Run.get_time_secs () in
     w#show;
-    while w#damage <> 0 do ignore (Run.wait()) done;
+    while w#damage <> 0 do
+        printf "damage %d\n" w#damage;
+        printf "wait: %d\n%!" (Run.wait())
+    done; 
+    print_endline "gewartet";
     for i=0 to iter do
         w#redraw;
+        ignore (Run.check())
     done;
     let dt = Run.get_time_secs () -. dt in
     printf "time elapsed = %4.6f secs\n%!" dt;
