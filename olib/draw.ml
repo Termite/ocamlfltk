@@ -18,11 +18,11 @@ external transform_rect: int -> int -> int -> int ->
 
 
 (* Clipping *)
-external push_clip: int -> int -> int -> int -> unit = "style_push_clip";;
-external clipout:   int -> int -> int -> int -> unit = "style_clipout";;
-external pop_clip: unit -> unit = "style_pop_clip";;
-external push_no_clip: unit -> unit = "style_push_no_clip";;
-external not_clipped: int -> int -> int -> int -> bool = "style_not_clipped";;
+external push_clip: int -> int -> int -> int -> unit = "draw_push_clip";;
+external clipout:   int -> int -> int -> int -> unit = "draw_clipout";;
+external pop_clip: unit -> unit = "draw_pop_clip";;
+external push_no_clip: unit -> unit = "draw_push_no_clip";;
+external not_clipped: int -> int -> int -> int -> bool = "draw_not_clipped";;
 
 type clipped =
     | NoIntersect of int*int*int*int
@@ -45,8 +45,10 @@ external addcurve: float -> float -> float -> float -> float -> float -> float -
     -> unit = "addcurve_bc" "addcurve";;
 external addarc: float -> float -> float -> float -> float -> float -> unit
     = "addarc_bc" "addarc";;
-external addpie: int -> int -> int -> int -> float -> float-> unit = "addpie";;
-external addchord: int -> int -> int -> int -> float -> float-> unit = "addchord";;
+external addpie: int -> int -> int -> int -> float -> float-> unit
+    = "addpie_bc" "addpie";;
+external addchord: int -> int -> int -> int -> float -> float-> unit
+    = "addchord_bc" "addchord";;
 external closepath: unit -> unit = "closepath";;
 
 (* Shapes & Lines *)
