@@ -1,6 +1,7 @@
 syntax: glob
 Session.vim
 *.run
+*.opt
 *.swp
 *.swo
 *~
@@ -8,7 +9,9 @@ Session.vim
 *.o
 *.a
 *.cmo
+*.cmx
 *.cmi
 *.cma
+*.cmxa
 *.lock
 
