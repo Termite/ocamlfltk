@@ -71,8 +71,7 @@ let _ =
     let dt = Run.get_time_secs () in
     w#show;
     while w#damage <> 0 do
-        printf "damage %d\n" w#damage;
-        printf "wait: %d\n%!" (Run.wait())
+        ignore (Run.wait())
     done; 
     print_endline "gewartet";
     for i=0 to iter do
