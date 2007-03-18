@@ -86,6 +86,7 @@ external widget_set_image: widget -> 'a image -> unit = "widget_set_image";;
 
 external widget_relayout: widget -> unit = "widget_relayout";;
 external widget_draw: widget -> unit = "widget_draw";;
+external widget_damage: widget -> int = "widget_damage";;
 external widget_set_vertical: widget -> unit = "widget_set_vertical";;
 external widget_set_tooltip : widget -> string -> unit = "widget_set_tooltip ";;
 external widget_get_tooltip : widget -> string = "widget_get_tooltip ";;
@@ -509,6 +510,7 @@ class fWindow ?(add=true) ?(x=0) ?(y=0) w h title = object(self)
     method ct = "window"
     method set_doublebuffer = window_set_doublebuffer obj
     method clear_doublebuffer = window_clear_doublebuffer obj
+    method damage = widget_damage obj
 end;;
 
 type button_typ = NormalButton | CheckButton | LightButton

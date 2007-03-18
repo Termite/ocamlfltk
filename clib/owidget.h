@@ -55,6 +55,7 @@ class ocaml_widget : public ocaml_rect {
         uchar get_when() { return dest_ptr->when(); }
         void set_when(uchar f) { dest_ptr->when(f); }
         uchar get_type() { return dest_ptr->type(); }
+        uchar damage() { return dest_ptr->damage(); }
         void tooltip(const char* t) { dest_ptr->tooltip(t); }
         const char* tooltip() { return dest_ptr->tooltip(); }
         void set_type(uchar f) { dest_ptr->type(f); }
