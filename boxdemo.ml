@@ -1,6 +1,6 @@
 open Printf;;
 open Ofltk;;
-open Symbols
+open Symbol;;
 
 let w = 150;;
 let h = 50;;
@@ -22,7 +22,7 @@ let bt =
 let win = new fWindow ~x:0 ~y:0 (4 * w) (rows * h) "Box Demo" in
 win#set_color 12l;
 print_endline "all symbols:";
-Symbols.symbol_iter (fun s -> print_endline (get_name s));
+Symbol.iter_symbol(fun s -> print_endline (get_name s));
 
 List.iter bt [
     "up_box", Box.up_box, false;
@@ -41,6 +41,6 @@ win#wend;
 Gc.full_major();
 win#show;
 Gc.full_major();
-run();
+Run.run();
 Gc.full_major();
 

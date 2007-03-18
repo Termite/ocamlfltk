@@ -25,6 +25,6 @@ win#wend;
 Gc.full_major();
 win#show;
 Gc.full_major();
-run();
+Run.run();
 Gc.full_major();
 
