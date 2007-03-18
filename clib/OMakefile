@@ -27,6 +27,8 @@ INCLUDES += /usr/local/include/ /usr/local/godi/lib/ocaml/std-lib
 #
 
 CLIBFILES[] =
+   orun
+   oevent
    ofont
    odraw
    ostyle

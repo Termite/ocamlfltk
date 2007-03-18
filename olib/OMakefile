@@ -18,8 +18,8 @@
 #
 # Compile native or byte code? 
 #
-NATIVE_ENABLED = true
-BYTE_ENABLED = false
+NATIVE_ENABLED = false
+BYTE_ENABLED = true
 
 #
 # Various options
@@ -37,6 +37,7 @@ OCAML_BYTE_LINK_FLAGS += -custom
 # Build an OCaml library
 
 LIB_FILES[] =
+	event
 	run
 	color
 	font

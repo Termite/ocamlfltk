@@ -90,7 +90,7 @@ external widget_set_vertical: widget -> unit = "widget_set_vertical";;
 external widget_set_tooltip : widget -> string -> unit = "widget_set_tooltip";;
 external widget_get_tooltip : widget -> string = "widget_get_tooltip";;
 external widget_set_horizontal: widget -> unit = "widget_set_horizontal";;
-external widget_handle: widget -> int -> int = "widget_handle";;
+external widget_handle: widget -> Event.event_type -> Event.event_type = "widget_handle";;
 external redraw_widget: widget -> unit = "redraw_widget";;
 
 external new_button: string -> int -> int -> int -> int -> string -> widget = 
