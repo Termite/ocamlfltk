@@ -28,15 +28,15 @@ OCAMLINCLUDES += olib
 
 # Build an OCaml program
 
-NATIVE_ENABLED = false
-BYTE_ENABLED = true
+NATIVE_ENABLED = true
+BYTE_ENABLED = false
 
 PROGRAM = moin
 PRG_FILES = moin
 OCAML_LIBS = olib/ocamlfltk
 
 OCAML_CLIBS += clib/libofltk
-# OCAML_OTHER_LIBS +=
+OCAML_OTHER_LIBS = unix
 OCamlProgram($(PROGRAM), $(PRG_FILES))
 
 WIZARD_DEMO = wizard
@@ -75,7 +75,8 @@ IMAGEDEMO: imagedemo
 MONDEMO: mondemo
 FONTDEMO: fontdemo	
 STYLEDEMO: $(OCamlProgram styledemo, styledemo)
+DRAWTIMING: $(OCamlProgram drawtiming, drawtiming)	
 
-demos: wizard tabdemo scrolldemo pack moin menudemo boxdemo styledemo
+demos: wizard tabdemo scrolldemo pack moin menudemo boxdemo styledemo drawtiming
 .DEFAULT: moin 
 
