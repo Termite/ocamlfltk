@@ -59,5 +59,6 @@ win#wend;
 Gc.full_major();
 win#show;
 Gc.full_major();
-run();
+printf "time: %f\n%!" (Run.get_time_secs());
+Run.run();
 
