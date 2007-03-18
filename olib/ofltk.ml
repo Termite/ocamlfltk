@@ -6,7 +6,6 @@ type symbol = Symbol.symbol Symbol.sym;;
 
 external get_null_widget: unit -> widget = "get_null_widget";;
 
-external run: unit -> int = "app_run" ;;
 
 external new_window: string -> int -> int -> int -> int -> string -> widget
     = "new_window_bc" "new_window";;
@@ -88,8 +87,8 @@ external widget_relayout: widget -> unit = "widget_relayout";;
 external widget_draw: widget -> unit = "widget_draw";;
 external widget_damage: widget -> int = "widget_damage";;
 external widget_set_vertical: widget -> unit = "widget_set_vertical";;
-external widget_set_tooltip : widget -> string -> unit = "widget_set_tooltip ";;
-external widget_get_tooltip : widget -> string = "widget_get_tooltip ";;
+external widget_set_tooltip : widget -> string -> unit = "widget_set_tooltip";;
+external widget_get_tooltip : widget -> string = "widget_get_tooltip";;
 external widget_set_horizontal: widget -> unit = "widget_set_horizontal";;
 external widget_handle: widget -> int -> int = "widget_handle";;
 external redraw_widget: widget -> unit = "redraw_widget";;
