@@ -25,13 +25,6 @@ extern "C" {
     }
 
 
-    CAMLprim value app_run(value nix)
-    {
-        CAMLparam1(nix);
-
-        CAMLreturn(Val_int(fltk::run()));
-    }
-    
     /* ============================================================ */
 
     CAMLprim value new_widget(value name, value x, value y, value w, value h, value label)
