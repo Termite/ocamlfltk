@@ -132,7 +132,7 @@ extern "C" {
     CAMLprim value widget_damage(value widget)
     {
         CAMLparam1(widget);
-        CAMLreturn(Int_val(((ocaml_widget*) widget)->damage()));
+        CAMLreturn(Val_int(((ocaml_widget*) widget)->damage()));
     }
 
     CAMLprim value widget_relayout(value widget)
