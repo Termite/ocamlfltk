@@ -327,6 +327,8 @@ end;;
 
 external group_children: widget -> int = "group_children";;
 external group_get_child: widget -> int -> widget = "group_get_child";;
+external group_insert: widget -> widget -> int -> unit = "group_insert";;
+external group_insert_before: widget -> widget -> widget -> unit = "group_insert_before";;
 
 class fGroup ?(add=false) ?(x=0) ?(y=0) w h title = object(self)
     inherit fWidget x y w h title
@@ -339,7 +341,11 @@ class fGroup ?(add=false) ?(x=0) ?(y=0) w h title = object(self)
 
     method wend = group_end obj
     method begin_add = group_begin obj
-    method resizable: 'a. (< obj: widget; ..> as 'a) -> unit = 
+    method insert: 'a. (#fWidget as 'a) -> int -> unit =
+        fun widget idx -> group_insert obj widget#obj idx 
+    method insert_before: 'a 'b.  (#fWidget as 'a) -> (#fWidget as 'b) -> unit =
+        fun widget before -> group_insert_before obj widget#obj before#obj 
+    method resizable: 'a. (#fWidget as 'a) -> unit = 
         fun widget -> set_resizeable obj widget#obj
     initializer 
         if add = true then self#begin_add else self#wend
@@ -616,10 +622,12 @@ class fValueOutput x y w h label = object
     method private alloc = new_valueoutput
 end;;
 
+external new_input: string -> int -> int -> int -> int -> string -> widget
+    = "new_input_bc" "new_input";;
+external new_numinput: string -> int -> int -> int -> int -> string -> widget
+    = "new_numinput_bc" "new_numinput";;
 external new_intinput: string -> int -> int -> int -> int -> string -> widget
     = "new_intinput_bc" "new_intinput";;
-
-
 external new_floatinput: string -> int -> int -> int -> int -> string -> widget
     = "new_floatinput_bc" "new_floatinput";;
 
@@ -633,14 +641,14 @@ external input_set_text: widget -> string -> bool = "input_set_text";;
 
 class fInput x y w h label = object(self)
     inherit fWidget x y w h label
-    method private alloc = dummy_alloc
+    method private alloc = new_input
     method set_text txt = input_set_text obj txt
     method get_text = input_get_text obj
 end;;
 
 class fNumInput x y w h label = object(self)
     inherit fInput x y w h label
-    method private alloc = dummy_alloc
+    method private alloc = new_numinput
     method set_int v = set_value_i obj v
     method set_float v = set_value_f obj v
 end;;
