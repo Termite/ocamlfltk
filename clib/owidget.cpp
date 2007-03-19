@@ -227,6 +227,18 @@ extern "C" {
        CAMLreturn(Val_int(((ocaml_rect*) rect)-> h()));
     }
 
+    CAMLprim value get_x(value rect)
+    {
+       CAMLparam1(rect);
+       CAMLreturn(Val_int(((ocaml_rect*) rect)-> x()));
+    }
+
+    CAMLprim value get_y(value rect)
+    {
+       CAMLparam1(rect);
+       CAMLreturn(Val_int(((ocaml_rect*) rect)-> y()));
+    }
+
 /*
     CAMLprim value set_widget_callback(value widget, value fkt)
     {
