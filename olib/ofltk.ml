@@ -328,7 +328,7 @@ end;;
 external group_children: widget -> int = "group_children";;
 external group_get_child: widget -> int -> widget = "group_get_child";;
 external group_insert: widget -> widget -> int -> unit = "group_insert";;
-external group_insert_before: widget -> widget -> widget -> unit = "group_insert_before";;
+external group_insert_before: widget -> widget -> widget option -> unit = "group_insert_before";;
 
 class fGroup ?(add=false) ?(x=0) ?(y=0) w h title = object(self)
     inherit fWidget x y w h title
@@ -343,8 +343,10 @@ class fGroup ?(add=false) ?(x=0) ?(y=0) w h title = object(self)
     method begin_add = group_begin obj
     method insert: 'a. (#fWidget as 'a) -> int -> unit =
         fun widget idx -> group_insert obj widget#obj idx 
-    method insert_before: 'a 'b.  (#fWidget as 'a) -> (#fWidget as 'b) -> unit =
-        fun widget before -> group_insert_before obj widget#obj before#obj 
+    method insert_before: 'a 'b.  (#fWidget as 'a) -> (#fWidget as 'b) option -> unit =
+        fun widget before -> match before with
+        | None ->   group_insert_before obj widget#obj None 
+        | Some w -> group_insert_before obj widget#obj (Some w#obj)
     method resizable: 'a. (#fWidget as 'a) -> unit = 
         fun widget -> set_resizeable obj widget#obj
     initializer 

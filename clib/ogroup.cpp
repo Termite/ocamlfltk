@@ -68,7 +68,8 @@ extern "C" {
     CAMLprim value group_insert_before(value group, value widget, value before)
     {
       CAMLparam3(group, widget, before);
-      ((ocaml_group*) group)->insert((ocaml_widget*)widget, (ocaml_widget*)before);
+      ocaml_widget* w = Is_long(before) ? 0 : (ocaml_widget*) Field(before,0);
+      ((ocaml_group*) group)->insert((ocaml_widget*)widget, w);
       CAMLreturn(Val_unit);
     }
 

@@ -47,7 +47,7 @@ class ocaml_group : public ocaml_widget {
         void insert(ocaml_widget* w, ocaml_widget* before)
         {
             static_cast<fltk::Group*>(dest_widget)->insert(*(w->give_widget()), 
-                    before->give_widget());
+                    before ? before->give_widget() : 0);
         }
         
 };
