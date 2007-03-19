@@ -14,6 +14,10 @@ using namespace Ofltk;
 
 extern "C" {
 
+    MAKE_NEW(input);
+    MAKE_NEW(numinput);
+
+
     CAMLprim value input_get_text(value widget)
     {
         CAMLparam1(widget);
