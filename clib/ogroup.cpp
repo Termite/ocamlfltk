@@ -58,4 +58,18 @@ extern "C" {
       CAMLreturn((value)w);
     }
 
+    CAMLprim value group_insert(value group, value widget, value idx)
+    {
+      CAMLparam3(group, widget, idx);
+      ((ocaml_group*) group)->insert((ocaml_widget*)widget, Int_val(idx));
+      CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value group_insert_before(value group, value widget, value before)
+    {
+      CAMLparam3(group, widget, before);
+      ((ocaml_group*) group)->insert((ocaml_widget*)widget, (ocaml_widget*)before);
+      CAMLreturn(Val_unit);
+    }
+
 }

@@ -38,6 +38,17 @@ class ocaml_group : public ocaml_widget {
         {
              return new ocaml_widget(static_cast<fltk::Group*>(dest_widget)->child(n));
         }
+
+        void insert(ocaml_widget* w, int index)
+        {
+            static_cast<fltk::Group*>(dest_widget)->insert(*(w->give_widget()), index);
+        }
+        
+        void insert(ocaml_widget* w, ocaml_widget* before)
+        {
+            static_cast<fltk::Group*>(dest_widget)->insert(*(w->give_widget()), 
+                    before->give_widget());
+        }
         
 };
 
