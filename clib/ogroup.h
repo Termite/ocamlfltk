@@ -34,9 +34,9 @@ class ocaml_group : public ocaml_widget {
             return static_cast<fltk::Group*>(dest_widget)->children();
         }
 
-        virtual fltk::Widget* child(int n)
+        virtual ocaml_widget* child(int n)
         {
-             return static_cast<fltk::Group*>(dest_widget)->child(n);
+             return new ocaml_widget(static_cast<fltk::Group*>(dest_widget)->child(n));
         }
         
 };

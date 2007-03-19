@@ -54,7 +54,8 @@ extern "C" {
     CAMLprim value group_get_child(value group, value n)
     {
       CAMLparam2(group, n);
-      CAMLreturn((value)(((ocaml_group*)group)->child(Int_val(n))));
+      ocaml_widget* w = ((ocaml_group*)group)->child(Int_val(n));
+      CAMLreturn((value)w);
     }
 
 }
