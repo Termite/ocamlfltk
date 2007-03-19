@@ -45,4 +45,16 @@ extern "C" {
        CAMLreturn(Val_unit);
     }
 
+    CAMLprim value group_children(value group)
+    {
+      CAMLparam1(group);
+      CAMLreturn(Val_int(((ocaml_group*)group)->children()));
+    }
+
+    CAMLprim value group_get_child(value group, value n)
+    {
+      CAMLparam2(group, n);
+      CAMLreturn((value)(((ocaml_group*)group)->child(Int_val(n))));
+    }
+
 }
