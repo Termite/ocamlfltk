@@ -57,6 +57,7 @@ let rec flags_of_bits flags bits res =
 
 external new_widget: string -> int -> int -> int -> int -> string -> widget
     = "new_widget_bc" "new_widget"
+external make_objwidget: string -> widget -> widget = "make_objwidget";;
 
 external widget_show: widget -> unit = "widget_show";;
 external widget_hide: widget -> unit = "widget_hide";;
@@ -183,7 +184,7 @@ class virtual fltkbase x y w h title = object(self)
     initializer
         let name = "obj" ^ (string_of_int (Oo.id self)) in
         Callback.register name self;
-        print_endline ("allocating " ^ self#ct ^ " " ^ name);
+        (* print_endline ("allocating " ^ self#ct ^ " " ^ name); *)
         obj <- self#alloc name x y w h title
 end;;
 
@@ -306,84 +307,10 @@ class fWidget x y w h title = object(self)
 
 end;;
 
-class objWidget obj = object(self)
-(*    
-  val mutable wis = ([] : fWidget list)
-  method add: 'a. ( < as_widget: #fWidget; ..> as 'a) -> unit =
-      fun widget -> wis <- widget#as_widget :: wis
-*)      
-  inherit fltkbase 0 0 0 0 "" 
-  method private alloc = (fun _ _ _ _ _ _ -> obj) 
-  method ct = "owidget"
-  method set_flags (f:flags list) =
-      printf "setting flags %d\n%!" (or_flags 0 f);
-      let flags = or_flags (get_flags obj) f in
-      set_flags obj flags
-
-  method clr_flags (f:flags list) =
-      printf "clearing flags %d\n%!" (or_flags 0 f);
-      let flags = get_flags obj land (lnot (or_flags 0 f)) in
-      set_flags obj flags
-
-  method inv_flags (f: flags list) = 
-      let flags = get_flags obj lxor (or_flags 0 f) in
-      set_flags obj flags
-
-  method is_set (f: flags) = get_flags obj land f
-  method any_set (f: flags list) = get_flags obj land (or_flags 0 f) <> 0
-  method all_set (f: flags list) =
-      let flags = or_flags 0 f in
-      get_flags obj land flags = flags
-      
-  method relayout = widget_relayout obj
-  method draw = widget_draw obj
-  method handle ev = widget_handle obj ev
-  method redraw = redraw_widget obj
-  method show = widget_show obj
-  method hide = widget_hide obj
-  method width = get_width obj
-  method height = get_height obj
-  method set_vertical = widget_set_vertical obj
-  method set_horizontal = widget_set_horizontal obj
-  method get_when =
-      let f = flags_of_bits [
-          (10, WhenEnterKeyAlways);
-          (8, WhenEnterKey);
-          (6, WhenReleaseAlways);
-          (4, WhenRelease);
-          (1, WhenChanged) ] (get_when obj) []
-      in
-      if f = [] then [WhenNever] else f
-
-  method set_when flags =
-      let n = List.fold_left (fun erg flag -> erg lor (when2int flag)) 0 flags in
-      set_when obj n
-  method get_type = get_type obj
-  method set_type n = set_type obj n
-  method set_label l = set_label obj l
-  method set_labelsize s = set_labelsize obj s
-  method get_labelsize = get_labelsize obj
-  method set_color c = set_color obj c
-  method set_tooltip t = widget_set_tooltip obj t
-  method get_tooltip = widget_get_tooltip obj
-  method set_box : 'a. 'a image -> unit =
-      fun box -> widget_set_box obj box
-  method get_box = widget_get_box obj
-  method get_image = widget_get_image obj
-  method set_image : 'a. 'a image -> unit =
-      fun box -> widget_set_image obj box
-  method as_widget = (self :> fWidget)
-(*  method setfont font size = set_font font size*)
-  method labelsize = get_labelsize obj
-  method labelfont = get_labelfont obj
-  method set_labelsize size = set_labelsize obj size
-  method set_labelfont font = set_labelfont obj font
-  (*method conf = conf_label*)
-  method callback (fkt: unit->unit) = 
-      let name = "widgetcb" ^ (string_of_int (Oo.id self)) in
-      Callback.register name fkt;
-      set_callback obj name
-
+class objWidget ptr = object(self)
+  inherit fWidget 0 0 0 0 ""
+  method private alloc = (fun name _ _ _ _ _ -> make_objwidget name ptr) 
+  method ct = "objwidget"
 end;;
 
 external new_divider: string -> widget = "new_divider"
