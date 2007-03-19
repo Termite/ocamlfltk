@@ -38,6 +38,11 @@ class ocaml_widget : public ocaml_rect {
             dest_widget = 0;
         }
 
+        ocaml_widget(fltk::Widget* w)
+        {
+            dest_widget = w;
+        }
+
         ocaml_widget(::value* o_obj, int x, int y, int w, int h, const char* t = 0)
             :  caml_obj(o_obj)
         {      
@@ -47,9 +52,10 @@ class ocaml_widget : public ocaml_rect {
         virtual ~ocaml_widget() {}
 
         fltk::Widget* give_widget() { return static_cast<fltk::Widget*>(dest_widget); }
+        void store_obj(value* o) { caml_obj = o; }
 
         void hide() { dest_ptr->hide(); }
-        virtual void show() { static_cast<Widget_d*>(dest_ptr)->show(); }
+        virtual void show() { dest_ptr->show(); }
         int flags() { return dest_ptr->flags(); }
         void flags(int f) { dest_ptr->flags(f); }
         uchar get_when() { return dest_ptr->when(); }

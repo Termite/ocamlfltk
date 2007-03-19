@@ -41,6 +41,14 @@ extern "C" {
         return new_widget(args[0],args[1],args[2],args[3],args[4],args[5]);
     }
 
+    CAMLprim value make_objwidget(value name, value widget)
+    {
+        CAMLparam2(name, widget);
+        value* ocaml_obj = caml_named_value(String_val(name));
+        ((ocaml_widget*) widget)->store_obj(ocaml_obj);
+        CAMLreturn(widget);
+    }
+
     CAMLprim value widget_hide(value widget)
     {
         CAMLparam1(widget);
@@ -210,13 +218,13 @@ extern "C" {
     CAMLprim value get_width(value rect)
     {
        CAMLparam1(rect);
-       CAMLreturn(Val_int(((ocaml_widget*) rect)-> w()));
+       CAMLreturn(Val_int(((ocaml_rect*) rect)-> w()));
     }
 
     CAMLprim value get_height(value rect)
     {
        CAMLparam1(rect);
-       CAMLreturn(Val_int(((ocaml_widget*) rect)-> h()));
+       CAMLreturn(Val_int(((ocaml_rect*) rect)-> h()));
     }
 
 /*
