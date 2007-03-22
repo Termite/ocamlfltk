@@ -18,9 +18,10 @@
 #
 # Various options
 #
+OCAMLC = ocamlcp
 OCAMLFLAGS    = 
 # OCAMLCFLAGS   +=
-# OCAMLOPTFLAGS +=
+OCAMLOPTFLAGS += -inline 100
 # OCAML_LINK_FLAGS +=
 # OCAML_BYTE_LINK_FLAGS +=
 # OCAML_NATIVE_LINK_FLAGS +=
@@ -29,7 +30,7 @@ OCAMLINCLUDES += olib
 # Build an OCaml program
 
 NATIVE_ENABLED = true
-BYTE_ENABLED = false
+BYTE_ENABLED = true
 
 PROGRAM = moin
 PRG_FILES = moin
@@ -76,7 +77,8 @@ MONDEMO: mondemo
 FONTDEMO: fontdemo	
 STYLEDEMO: $(OCamlProgram styledemo, styledemo)
 DRAWTIMING: $(OCamlProgram drawtiming, drawtiming)	
+NAVIGATION: $(OCamlProgram navigation, navigation)	
 
-demos: wizard tabdemo scrolldemo pack moin menudemo boxdemo styledemo drawtiming
+demos: wizard tabdemo scrolldemo pack moin menudemo boxdemo styledemo drawtiming navigation
 .DEFAULT: moin 
 
