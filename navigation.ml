@@ -11,7 +11,7 @@ let map_childs fn group =
 ;;
 
 let populate (window : fWindow) height width =
-    let log = open_in "log" in
+    let log = Scanf.Scanning.from_file "log" in
     let grid = 25 in
     let m_y = height / grid + 1 in
     let m_x = width / grid + 1 in
@@ -20,10 +20,10 @@ let populate (window : fWindow) height width =
     let inp = ref (new_input "" 0 0 10 10 "") in
     let in2 = ref (new fInput 0 0 10 10 "") in
     for i=0 to 9999 do
-            let x = (Scanf.fscanf log "%d" (fun n -> n)) in
-            let y = (Scanf.fscanf log "%d" (fun n -> n)) in
-            let w = (Scanf.fscanf log "%d" (fun n -> n)) in
-            let h = (Scanf.fscanf log "%d" (fun n -> n)) in
+            let x = (Scanf.bscanf log "%d\n" (fun n -> n)) in
+            let y = (Scanf.bscanf log "%d\n" (fun n -> n)) in
+            let w = (Scanf.bscanf log "%d\n" (fun n -> n)) in
+            let h = (Scanf.bscanf log "%d\n" (fun n -> n)) in
             let x = x mod m_x * grid in
             let y = y mod m_y * grid in
             let w = w mod m_x * grid in
@@ -73,7 +73,6 @@ let populate (window : fWindow) height width =
             )
             else incr cont; 
     done;
-    close_in log;
     !in2, !k
 ;;
 
