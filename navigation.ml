@@ -10,21 +10,15 @@ let map_childs fn group =
     !e
 ;;
 
-
-exception Break;;
-let _ =
+let populate (window : fWindow) height width =
     let log = open_in "log" in
-    let k = ref 0 in
-    let inp = new fInput 0 0 50 20 "" in
-    Random.init 12345;
-    let width = 600 and height = 300 and grid = 25 in
-    let window = new fWindow (1+width) (1+height) Sys.argv.(0) in
-    window#wend;
+    let grid = 25 in
     let m_y = height / grid + 1 in
     let m_x = width / grid + 1 in
+    let k = ref 0 in
     let cont = ref 0 in
     let inp = ref (new_input "" 0 0 10 10 "") in
-    let in2 = ref (new fButton 0 0 10 10 "") in
+    let in2 = ref (new fInput 0 0 10 10 "") in
     for i=0 to 9999 do
             let x = (Scanf.fscanf log "%d" (fun n -> n)) in
             let y = (Scanf.fscanf log "%d" (fun n -> n)) in
@@ -70,7 +64,7 @@ let _ =
                         (*printf "continued: %d\n" !cont;*)
                         cont := 0;
 (*                        inp := new_input "" 0 0 10 10 "";*)
-                        in2 := new fButton x y w h "";
+                        in2 := new fInput x y w h "";
 
                         (*                    let s = Symbol.make_flatbox "box" in ()*)
                         (*printf "endcoord: %d ,%d k:%d\n%!" (x+w) (y+h) !k;*)
@@ -79,14 +73,24 @@ let _ =
             )
             else incr cont; 
     done;
+    close_in log;
+    !in2, !k
+;;
+
+exception Break;;
+let _ =
+    Random.init 12345;
+    let width = 600 and height = 300 in
+    let window = new fWindow (1+width) (1+height) Sys.argv.(0) in
+    window#wend;
+    let inp, k = populate window height width in
     print_endline "done";
     window#resizable window;
     print_endline "done 1";
     print_endline "done 2";
-    close_in log;
     print_endline "done 3";
     Run.run ();
-    printf "inp:%d, k: %d\n%!" (get_width !inp) !k;
+    printf "inp:%d, k: %d\n%!" inp#width k;
     print_endline "done 4";
             
 
