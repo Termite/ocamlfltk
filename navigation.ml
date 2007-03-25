@@ -11,6 +11,7 @@ let map_childs fn group =
 ;;
 
 let populate (window : fWindow) height width =
+    let wo = window#obj in
     let log = Scanf.Scanning.from_file "log" in
     let grid = 25 in
     let m_y = height / grid + 1 in
@@ -40,12 +41,13 @@ let populate (window : fWindow) height width =
             let h, y = if h < y then y-h, h else h-y, y in
             if not (w < grid || h < grid || w < h) then (
                     let j = ref None in
-                    let n = ref 0 in
-                    let go_on = ref true in 
-                    while !n < window#children && !go_on = true do
-                        let o = window#child !n in
-                        if x < o#xpos + o#width && x + w > o#xpos &&
-                           y < o#ypos + o#height && y + h > o#ypos
+                    let n = ref 1 in
+                    let go_on = ref true in
+                    while !n < window#children && !go_on = true do                        
+(*                        let o = group_get_child wo !n in*)
+                        let o = (window#child !n)#obj in
+                        if x < (get_x o) + (get_width o) && x + w > (get_x o) &&
+                           y < (get_y o) + (get_height o) && y + h > (get_y o)
                         then (
                             (*printf "%d mal gesucht\n%!" n;*)
                             go_on := false;
@@ -53,7 +55,7 @@ let populate (window : fWindow) height width =
                         ) else (
                             cont := 0;
                             if !j == None && 
-                                (y < o#ypos || y = o#ypos && x < o#xpos) then (
+                                (y < (get_y o) || y = (get_y o) && x < (get_x o)) then (
                                     j := Some o
                             )
                         );
@@ -73,24 +75,19 @@ let populate (window : fWindow) height width =
             )
             else incr cont; 
     done;
-    !in2, !k
+    !k
 ;;
 
 exception Break;;
 let _ =
     Random.init 12345;
     let width = 600 and height = 300 in
-    let window = new fWindow (1+width) (1+height) Sys.argv.(0) in
+    let window = new fWindow (width) (height) Sys.argv.(0) in
     window#wend;
-    let inp, k = populate window height width in
+    let k = populate window height width in
     print_endline "done";
     window#resizable window;
-    print_endline "done 1";
-    print_endline "done 2";
-    print_endline "done 3";
+    window#show;
     Run.run ();
-    printf "inp:%d, k: %d\n%!" inp#width k;
-    print_endline "done 4";
-            
-
+    printf "k: %d\n%!" k;
 

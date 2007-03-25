@@ -18,6 +18,21 @@ using namespace Ofltk;
 
 extern "C" {
     
+
+    CAMLprim value output_ptr(value a)
+    {
+        CAMLparam1(a);
+        std::cout << "p: " << (void*)a << std::endl;
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value cmp_pointer(value a, value b)
+    {
+        CAMLparam2(a,b);
+        //std::cout << "a: " << (void*)a << " b: " << (void*)b << std::endl;
+        CAMLreturn(Val_int((void*)a == (void*)b));
+    }
+
     CAMLprim value get_null_widget(value nix)
     {
         CAMLparam1(nix);

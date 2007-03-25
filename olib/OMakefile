@@ -18,15 +18,17 @@
 #
 # Compile native or byte code? 
 #
-NATIVE_ENABLED = false
+NATIVE_ENABLED = true
 BYTE_ENABLED = true
 
 #
 # Various options
 #
-#OCAMLFLAGS    = -principal 
+#OCAMLCFLAGS    = -p a 
+OCAMLOPTFLAGS += -inline 100
 OCAML_LIB_FLAGS = clib/libofltk.a -cclib $"-lstdc++ -L/usr/local/lib -lfltk2 -lX11 -lXi -lm -lsupc++"
 #
+OCAMLC = ocamlc
 # OCAMLFLAGS    =
 # OCAMLCFLAGS   +=
 # OCAMLOPTFLAGS +=

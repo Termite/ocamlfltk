@@ -286,8 +286,6 @@ class fWidget x y w h title = object(self)
   method get_type = get_type obj
   method set_type n = set_type obj n
   method set_label l = set_label obj l
-  method set_labelsize s = set_labelsize obj s
-  method get_labelsize = get_labelsize obj
   method set_color c = set_color obj c
   method set_tooltip t = widget_set_tooltip obj t
   method get_tooltip = widget_get_tooltip obj
@@ -330,6 +328,13 @@ external group_get_child: widget -> int -> widget = "group_get_child";;
 external group_insert: widget -> widget -> int -> unit = "group_insert";;
 external group_insert_before: widget -> widget -> widget option -> unit = "group_insert_before";;
 
+
+module KidHash = Hashtbl.Make ( struct 
+    type t = widget let equal = (==) let hash = Hashtbl.hash
+end);;
+
+let kiddys = KidHash.create 213;;
+       
 class fGroup ?(add=false) ?(x=0) ?(y=0) w h title = object(self)
     inherit fWidget x y w h title
     method private alloc = new_group
@@ -337,7 +342,12 @@ class fGroup ?(add=false) ?(x=0) ?(y=0) w h title = object(self)
     method children = group_children obj
     method child n =
         let ch = group_get_child obj n in
-        (new objWidget ch :> fWidget)
+        try
+            KidHash.find kiddys ch
+        with Not_found ->
+            let o = (new objWidget ch :> fWidget) in
+            KidHash.add kiddys ch o;
+            o
 
     method wend = group_end obj
     method begin_add = group_begin obj
@@ -640,13 +650,13 @@ external get_value_i: widget -> int = "floatinput_get_valuei";;
 external input_get_text: widget -> string = "input_get_text";;
 external input_set_text: widget -> string -> bool = "input_set_text";;
 
-
 class fInput x y w h label = object(self)
     inherit fWidget x y w h label
     method private alloc = new_input
     method set_text txt = input_set_text obj txt
     method get_text = input_get_text obj
 end;;
+
 
 class fNumInput x y w h label = object(self)
     inherit fInput x y w h label

@@ -1,10 +1,16 @@
 #ifndef OGROUP_H
 #define OGROUP_H
 
+#include <map>
+#include <ext/hash_map>
 #include "owidget.h"
 #include <fltk/Group.h>
 
+
 namespace Ofltk {
+
+typedef std::map<fltk::Rectangle*, Ofltk::ocaml_widget*> kid_map;
+static kid_map kids;
 
 NEW_DIRECTOR(Group);
 
@@ -17,7 +23,10 @@ class ocaml_group : public ocaml_widget {
             dest_widget = new Group_d(o_class, x, y, w, h, t);
         }
         
-        virtual ~ocaml_group() {}
+        virtual ~ocaml_group()
+        {
+            kids.erase(this->dest_widget);
+        }
 
         DEF_DEFAULT(Group_d);
 
@@ -36,7 +45,15 @@ class ocaml_group : public ocaml_widget {
 
         virtual ocaml_widget* child(int n)
         {
-             return new ocaml_widget(static_cast<fltk::Group*>(dest_widget)->child(n));
+             fltk::Widget* w = static_cast<fltk::Group*>(dest_widget)->child(n);
+             kid_map::iterator i = kids.find(w);
+             if (i != kids.end())
+                 return i->second;
+             else {
+                 ocaml_widget* o = new ocaml_widget(w);
+                 kids.insert(std::make_pair(w, o));
+                 return o;
+             }
         }
 
         void insert(ocaml_widget* w, int index)
