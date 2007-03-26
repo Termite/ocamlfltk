@@ -2,7 +2,6 @@
 #define OGROUP_H
 
 #include <map>
-#include <ext/hash_map>
 #include "owidget.h"
 #include <fltk/Group.h>
 
