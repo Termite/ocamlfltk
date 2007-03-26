@@ -349,6 +349,17 @@ class fGroup ?(add=false) ?(x=0) ?(y=0) w h title = object(self)
             KidHash.add kiddys ch o;
             o
 
+    method iter_childs (f : fWidget -> unit) =
+        for i=0 to self#children - 1 do
+            f (self#child i)
+        done
+
+    method fold_childs: 'a.  (('a -> fWidget -> 'a) -> 'a -> 'a) =
+        fun f start -> 
+        let e = ref start in
+        self#iter_childs (fun w -> e := f !e w);
+        !e
+
     method wend = group_end obj
     method begin_add = group_begin obj
     method insert: 'a. (#fWidget as 'a) -> int -> unit =
