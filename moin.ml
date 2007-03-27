@@ -34,9 +34,16 @@ class shape_widget handle_roller x y w h title = object(self)
         fillstrokepath Color.white;
         pop_matrix ();
         setfont self#labelfont self#labelsize;
-        setcolor Color.white;
-        let ang = f in
-        drawtext_rect "widget text" 0 0 w h Flags.align_wrap
+        setcolor Color.white;        
+        let s = float _sides in
+        let ang = 2.0 *. pi /. s in
+        let txt = sprintf "%d sides\nAngle between sides = %g\nLength of side = %g\nPerimeter = %g\nArea = %g" _sides
+            (360.0 /. s)
+            (sqrt (2.0 -. 2.0 *. (cos ang)))
+            (s *. (sqrt (2.0 -. 2.0 *. (cos ang))))
+            (s *. (sin ang) /. 2.0)
+        in
+        drawtext_rect txt 0 0 w h Flags.align_wrap
 end;;
 
 
@@ -54,16 +61,11 @@ sl#set_flags [Flags.align_left];
 sl#set_value (float sw#sides);
 sl#set_step 1.0;
 sl#range 3.0 40.0;
-printf "slider pos: %d,%d\n%!" sl#xpos sl#ypos;
 sl#callback (fun () -> sw#set_sides (int_of_float sl#get_value);
         stat#format_text SBAR_RIGHT "%d sides" sw#sides
     );
 
 win#wend;
-printf "kids: %d\n%!" win#children;
-printf "kid 0: %s size:%d\n%!" (win#child 0)#ct (win#child 0)#width;
-printf "kid 1: %s\n%!" (win#child 1)#ct;
-printf "kid 2: %s\n%!" (win#child 2)#ct;
 Gc.full_major();
 win#show;
 Gc.full_major();
