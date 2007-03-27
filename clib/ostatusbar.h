@@ -25,7 +25,6 @@ class StatusBarGroup_d: public fltk::StatusBarGroup {
 
     void default_draw()
     {
-        std::cout << "drawing a " << id << std::endl;
         fltk::StatusBarGroup::draw();
     }
 

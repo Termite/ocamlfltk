@@ -41,7 +41,7 @@ class fltk_director: public widget {
 
     void default_draw()
     {
-        std::cout << "drawing a " << id << std::endl;
+        //std::cout << "drawing a default " << id << std::endl;
         widget::draw();
     }
 
