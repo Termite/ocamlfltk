@@ -3,6 +3,7 @@
 
 
 #include <fltk/Rectangle.h>
+#include <iostream>
 
 namespace fltk {
     class Widget;
@@ -18,6 +19,11 @@ class ocaml_rect {
 
     public:
     ocaml_rect() : dest_widget(0) {}
+    ocaml_rect(int x, int y, int w, int h)
+    {
+        dest_widget = new fltk::Rectangle(x, y, w, h);
+    }
+
     virtual ~ocaml_rect()
     {
         std::cout << "ocaml_rectangle destroyed" << std::endl;

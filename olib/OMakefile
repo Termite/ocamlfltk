@@ -18,7 +18,7 @@
 #
 # Compile native or byte code? 
 #
-NATIVE_ENABLED = true
+NATIVE_ENABLED = false
 BYTE_ENABLED = true
 
 #

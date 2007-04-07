@@ -45,6 +45,13 @@ extern "C" {
         CAMLreturn(Val_unit);
     }
 
+    CAMLprim value window_border(value window, value set)
+    {
+        CAMLparam2(window, set);
+        ((ocaml_window*) window)->border(Int_val(set));
+        CAMLreturn(Val_unit);
+    }
+
     CAMLprim value window_draw(value widget)
     {
         CAMLparam1(widget);

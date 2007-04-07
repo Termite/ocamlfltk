@@ -31,6 +31,14 @@ extern "C" {
         CAMLreturn(Val_int(r));
     }
 
+    CAMLprim value make_obj_floatinput(value name, value widget)
+    {
+        CAMLparam2(name, widget);
+        value* ocaml_obj = caml_named_value(String_val(name));
+        ocaml_floatinput* w = new ocaml_floatinput((fltk::Widget*)widget);
+        CAMLreturn((value)w);
+    }
+
     CAMLprim value new_floatinput(value name, value x, value y, value w, value h, value label)
     {
         CAMLparam5(x,y,w,h,label);

@@ -29,7 +29,7 @@ OCAMLINCLUDES += olib
 
 # Build an OCaml program
 
-NATIVE_ENABLED = true
+NATIVE_ENABLED = false
 BYTE_ENABLED = true
 
 PROGRAM = moin
@@ -78,7 +78,8 @@ FONTDEMO: fontdemo
 STYLEDEMO: $(OCamlProgram styledemo, styledemo)
 DRAWTIMING: $(OCamlProgram drawtiming, drawtiming)	
 NAVIGATION: $(OCamlProgram navigation, navigation)	
+ARC:        $(OCamlProgram arc, arc)
 
-demos: wizard tabdemo scrolldemo pack moin menudemo boxdemo styledemo drawtiming navigation
+demos: wizard tabdemo scrolldemo pack moin menudemo boxdemo styledemo drawtiming navigation arc
 .DEFAULT: moin 
 

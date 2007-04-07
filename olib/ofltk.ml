@@ -18,6 +18,7 @@ external set_resizeable : widget -> widget -> unit = "group_set_resizable";;
 external window_draw: widget -> unit = "window_draw";;
 external window_set_doublebuffer: widget -> unit = "window_set_doublebuffer";;
 external window_clear_doublebuffer: widget -> unit = "window_clear_doublebuffer";;
+external window_border: widget -> bool -> unit = "window_border";;
 
 external set_window_cb: widget -> string -> unit = "set_window_cb";;
 
@@ -54,6 +55,9 @@ let rec flags_of_bits flags bits res =
             else
                 flags_of_bits rest bits res
 ;;
+
+
+external rectangle: int -> int -> int -> int -> widget = "new_rect";;
 
 external new_widget: string -> int -> int -> int -> int -> string -> widget
     = "new_widget_bc" "new_widget"
@@ -556,7 +560,15 @@ class fWindow ?(add=true) ?(x=0) ?(y=0) w h title = object(self)
     method set_doublebuffer = window_set_doublebuffer obj
     method clear_doublebuffer = window_clear_doublebuffer obj
     method damage = widget_damage obj
+    method border set = window_border obj set
 end;;
+
+class virtual fGlWindow ?(x=0) ?(y=0) w h title = object(self)
+    inherit fWindow ~x ~y w h title
+    method private alloc = new_window
+    method virtual draw: unit 
+end;;
+
 
 type button_typ = NormalButton | CheckButton | LightButton
     | RadioButton | HighlightButton | RepeatButton
@@ -621,6 +633,15 @@ class fValuator x y w h label = object(self)
     method get_max = valuator_get_max obj
     method range a b = valuator_range obj a b
 end;;
+
+module Slider = struct
+let tick_above = 2
+let tick_left = tick_above;;
+let tick_below = 4;;
+let tick_right = tick_below;;
+let tick_both = tick_above lor tick_below
+end;;
+
 
 
 class fSlider x y w h label = object(self)
@@ -688,6 +709,34 @@ class fIntInput x y w h label = object
     method private alloc = new_intinput
 end;;
 
+external make_obj_floatinput: string -> widget -> widget = "make_obj_floatinput";;
+
+class objFloatInput ptr = object(self)
+  inherit fFloatInput 0 0 0 0 ""
+  method private alloc = (fun name _ _ _ _ _ -> make_obj_floatinput name ptr) 
+  method ct = "objFloatInput"
+end;;
+
+external new_value_slider: string -> int -> int -> int -> int -> string ->
+    widget=
+    "new_valueslider_bc" "new_valueslider";;
+external slider_get_input_widget: widget -> widget = "valueslider_get_input";;
+
+class valueSlider x y w h label = object(self)
+    inherit fSlider x y w h label
+(*    val mutable input = new fFloatInput 0 0 0 0 ""*)
+    val mutable input = None
+    method input = match input with
+        | Some i -> i
+        | None ->
+                let i =(new objFloatInput (slider_get_input_widget obj) :>
+        fFloatInput) in
+                input <- Some i;
+                i
+    method ct = "ValueSlider"
+    method private alloc = new_value_slider
+end
+;;
 
 
 external new_output: string -> int -> int -> int -> int -> string -> widget

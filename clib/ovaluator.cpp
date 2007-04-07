@@ -3,6 +3,7 @@
 namespace Ofltk {
 
 char Slider_id[] = "slider-director";
+char ValueSlider_id[] = "valueslider-director";
 char Valuator_id[] = "valuator-director";
 char ValueInput_id[] = "valueinput-director";
 char ValueOutput_id[] = "valueoutput-director";
@@ -119,6 +120,28 @@ extern "C" {
         ((ocaml_slider*)widget)->set_slider_size(Int_val(n));
         CAMLreturn(Val_unit);
     }
+
+    CAMLprim value new_valueslider(value name, value x, value y, value w, value h, value label)
+    {
+        CAMLparam5(x,y,w,h,label);
+        CAMLxparam1(name);
+        ocaml_valueslider* widget = new ocaml_valueslider(caml_named_value(String_val(name)), Int_val(x), Int_val(y), Int_val(w)
+                , Int_val(h), String_val(label));
+        CAMLreturn((value) widget);
+    }
+
+    CAMLprim value new_valueslider_bc(value* args, int argc)
+    {
+        return new_valueslider(args[0],args[1],args[2],args[3],args[4],args[5]);
+    }
+
+    CAMLprim value valueslider_get_input(value widget)
+    {
+        CAMLparam1(widget);
+        CAMLreturn((value)(((ocaml_valueslider*)widget)->input()));
+    }
+
+
 
     CAMLprim value new_valueinput(value name, value x, value y, value w, value h, value label)
     {

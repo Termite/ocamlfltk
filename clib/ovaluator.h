@@ -6,10 +6,13 @@
 #include <fltk/ValueInput.h>
 #include <fltk/ValueOutput.h>
 #include <fltk/Slider.h>
+#include <fltk/ValueSlider.h>
+#include "oinput.h"
 
 namespace Ofltk {
 
 NEW_DIRECTOR(Slider);
+NEW_DIRECTOR(ValueSlider);
 NEW_DIRECTOR(Valuator);
 NEW_DIRECTOR(ValueInput);
 NEW_DIRECTOR(ValueOutput);
@@ -69,6 +72,31 @@ class ocaml_slider : public ocaml_valuator {
         int get_slider_size()
         {
             return static_cast<Slider_d*>(dest_widget)->slider_size();
+        }
+
+};
+
+
+class ocaml_valueslider : public ocaml_slider {
+
+    ocaml_floatinput* input_widget;
+
+    public:
+        ocaml_valueslider() : ocaml_slider() {}
+
+        ocaml_valueslider(::value* o_class, int x, int y, int w, int h, const char* t = 0)
+        {
+            dest_widget = new ValueSlider_d(o_class, x, y, w, h, t);
+            input_widget = new ocaml_floatinput(&(static_cast<fltk::ValueSlider*>(dest_widget)->input));            
+        }
+
+        virtual ~ocaml_valueslider() {}
+
+        DEF_DEFAULT(ValueSlider_d);
+
+        ocaml_floatinput* input()
+        {
+            return input_widget;
         }
 
 };

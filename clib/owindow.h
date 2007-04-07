@@ -29,6 +29,11 @@ class ocaml_window : public ocaml_group {
             static_cast<Window_d*>(dest_widget)->clear_double_buffer();
         }
 
+        void border(bool set)
+        {
+            static_cast<Window_d*>(dest_widget)->border(set);
+        }
+
         DEF_DEFAULT(Window_d);
 
         

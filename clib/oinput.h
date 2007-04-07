@@ -77,6 +77,11 @@ class ocaml_floatinput : public ocaml_numinput {
     public:
         ocaml_floatinput() : ocaml_numinput() {}
 
+        ocaml_floatinput(fltk::Widget *w)
+        {
+            dest_widget = w;
+        }
+
         ocaml_floatinput(value* ocaml, int x, int y, int w, int h, const char* t = 0)
         {
             dest_widget = new FloatInput_d(ocaml, x, y, w, h, t);
