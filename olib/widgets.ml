@@ -1,3 +1,4 @@
+open Printf;;
 open Flags;;
 type widget;;
 
@@ -21,18 +22,6 @@ external window_clear_doublebuffer: widget -> unit = "window_clear_doublebuffer"
 external window_border: widget -> bool -> unit = "window_border";;
 
 external set_window_cb: widget -> string -> unit = "set_window_cb";;
-
-let id = ref 0;;
-
-let callback window (fkt: unit -> unit) = 
-  incr id;
-  let name = "wcb" ^ (string_of_int !id) in
-    Callback.register name fkt;
-    set_window_cb window name
-;;
-
-
-let printf = Printf.printf ;;
 
 
 type when_enum = WhenNever | WhenChanged | WhenRelease | WhenReleaseAlways
@@ -147,16 +136,6 @@ external new_valueinput: string -> int -> int -> int -> int -> string -> widget 
 external new_valueoutput: string -> int -> int -> int -> int -> string -> widget =
   "new_valueoutput_bc" "new_valueoutput";;
 
-(*
-
-external new_intinput:string -> int -> int -> int -> int -> string -> widget =
-    "new_intinput_bc" "new_intinput";;
-external intinput_draw: widget -> unit = "intinput_draw";;
-external set_numinput_ivalue: widget -> int -> unit = "numinput_set_ivalue";;
-external set_numinput_fvalue: widget -> float -> unit ="numinput_set_fvalue";;
-external floatinput_ivalue: widget -> int = "floatinput_ivalue";;
-external floatinput_fvalue: widget -> float = "floatinput_fvalue";;
-*)
 
 external get_flags: widget -> int = "widget_get_flags";;
 external set_flags: widget -> int -> unit = "widget_set_flags";;
