@@ -49,7 +49,7 @@ LIB_FILES[] =
 	ask
 	symbol
 	style
-	ofltk
+	widgets
 	draw
 #	labeltype
 

@@ -1,5 +1,5 @@
 open Printf;;
-open Ofltk;;
+open Widgets;;
 
 
 type _item = I of string * (unit -> unit) option | Divider

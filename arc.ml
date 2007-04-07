@@ -1,5 +1,5 @@
 open Printf;;
-open Ofltk;;
+open Widgets;;
 open Draw;;
 
 let dargs = [| 90.0; 90.0; 100.0; 100.0; 0.0; 360.0; 0.0 |];;

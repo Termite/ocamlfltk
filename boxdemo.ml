@@ -1,5 +1,5 @@
 open Printf;;
-open Ofltk;;
+open Widgets;;
 open Symbol;;
 
 let w = 150;;

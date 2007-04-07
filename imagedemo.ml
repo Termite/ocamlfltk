@@ -1,4 +1,4 @@
-open Ofltk;;
+open Widgets;;
 open Symbol;;
 
 let folder_small3 = [|

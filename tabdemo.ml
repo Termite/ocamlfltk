@@ -1,5 +1,5 @@
 open Printf;;
-open Ofltk;;
+open Widgets;;
 
 let win = new fWindow 320 296  "Pack Demo" in
 let t = new fTabGroup 10 10 300 191 "" in

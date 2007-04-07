@@ -1,5 +1,5 @@
 open Printf;;
-open Ofltk;;
+open Widgets;;
 
 let make_bar name w h dir =
     let b = new fBarGroup 0 0 w h name in

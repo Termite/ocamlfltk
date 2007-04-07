@@ -1,5 +1,5 @@
 open Printf;;
-open Ofltk;;
+open Widgets;;
 
 class myButton x y w h t = object(self)
     inherit fButton x y w h t as chef

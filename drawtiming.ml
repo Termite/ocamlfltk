@@ -1,4 +1,4 @@
-open Ofltk;;
+open Widgets;;
 open Draw;;
 
 class testWindow t = object(self)

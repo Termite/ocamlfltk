@@ -1,5 +1,5 @@
 open Printf;;
-open Ofltk;;
+open Widgets;;
 
 let win = new fWindow (5*75) 400  "Pack Demo" in
 let sc = new fScrollGroup 0 0 (5*75) 300 "" in
