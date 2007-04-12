@@ -103,6 +103,16 @@ class ocaml_widget : public ocaml_rect {
             dest_ptr->redraw();
         }
 
+        virtual bool resize(int w, int h)
+        {
+            return dest_ptr->resize(w, h);
+        }
+
+        virtual bool resize(int x, int y, int w, int h)
+        {
+            return dest_ptr->resize(x, y, w, h);
+        }
+
 };
 
 NEW_DIRECTOR(InvisibleBox);

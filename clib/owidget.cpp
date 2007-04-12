@@ -289,6 +289,26 @@ extern "C" {
        CAMLreturn(Val_unit);
     }
 
+    CAMLprim value widget_resize(value widget, value xy, value w, value h)
+    {
+       CAMLparam4(widget, xy, w, h);
+       bool r;
+       if (Is_long(xy)) 
+       {
+           std::cout << "no xy " << std::endl;
+            r = ((ocaml_widget*) widget)->resize(Int_val(w), Int_val(h));
+       }
+       else
+       {
+           value p = Field(xy,0);
+           int x = Int_val(Field(p,0));
+           int y = Int_val(Field(p,1));
+           std::cout << "x: " << x << " y: " << y << std::endl;
+           r = ((ocaml_widget*) widget)->resize(x, y, Int_val(w), Int_val(h));
+       }
+       CAMLreturn(Val_int(r));
+    }
+
 
     CAMLprim value new_invisible(value name, value x, value y, value w, value h, value label)
     {

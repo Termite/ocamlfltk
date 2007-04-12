@@ -58,6 +58,7 @@ external get_width: widget -> int = "get_width";;
 external get_height: widget -> int = "get_height";;
 external get_x: widget -> int = "get_x";;
 external get_y: widget -> int = "get_y";;
+external widget_resize: widget -> (int*int) option -> int -> int -> bool = "widget_resize";;
 external get_when: widget -> int = "widget_get_when";;
 external set_when: widget -> int -> unit = "widget_set_when";;
 external get_type: widget -> int = "widget_get_type";;
@@ -219,6 +220,7 @@ class fWidget x y w h title = object(self)
       fun widget -> wis <- widget#as_widget :: wis
 *)      
   inherit fltkbase x y w h title
+  val mutable cb_name = ""
   method private alloc = new_widget
   method ct = "widget"
   method set_flags (f:flags list) =
@@ -251,6 +253,7 @@ class fWidget x y w h title = object(self)
   method height = get_height obj
   method xpos = get_x obj
   method ypos = get_y obj
+  method resize ?xy w h = widget_resize obj xy w h
   method set_vertical = widget_set_vertical obj
   method set_horizontal = widget_set_horizontal obj
   method get_when =
@@ -286,9 +289,10 @@ class fWidget x y w h title = object(self)
   method set_labelfont font = set_labelfont obj font
   (*method conf = conf_label*)
   method callback (fkt: unit->unit) = 
-      let name = "widgetcb" ^ (string_of_int (Oo.id self)) in
-      Callback.register name fkt;
-      set_callback obj name
+      if cb_name = "" then 
+          cb_name <- "widgetcb" ^ (string_of_int (Oo.id self));
+      Callback.register cb_name fkt;
+      set_callback obj cb_name;
 
 end;;
 
