@@ -289,10 +289,11 @@ class fWidget x y w h title = object(self)
   method set_labelfont font = set_labelfont obj font
   (*method conf = conf_label*)
   method callback (fkt: unit->unit) = 
-      if cb_name = "" then 
-          cb_name <- "widgetcb" ^ (string_of_int (Oo.id self));
       Callback.register cb_name fkt;
-      set_callback obj cb_name;
+      set_callback obj cb_name
+    initializer
+          cb_name <- "widgetcb" ^ (string_of_int (Oo.id self));
+
 
 end;;
 
