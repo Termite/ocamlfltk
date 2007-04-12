@@ -8,8 +8,8 @@ let name = [| "X"; "Y"; "W"; "H"; "start"; "end"; "rotate" |];;
 class drawing x y w h = object(self)
     inherit fWidget x y w h ""
     method draw =
-        let w = self#width in
-        let h = self#height in
+        let w = self#w in
+        let h = self#h in
         push_clip 0 0 w h;
         setcolor_alpha Color.blue 0.6;
         fillrect 0 0 w h;

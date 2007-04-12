@@ -19,8 +19,8 @@ class shape_widget handle_roller x y w h title = object(self)
 
     method draw =
         setcolor Color.black;
-        let w = self#width in
-        let h = self#height in
+        let w = self#w in
+        let h = self#h in
         fillrect 0 0 w h;
         push_matrix ();
         scale_xy (float w /. 2.0) (float h /. 2.0);
@@ -49,7 +49,7 @@ end;;
 
 
 let win = new fWindow ~x:0 ~y:0 300 330  "hehe" in
-let sl = new fSlider 50 285 (win#width - 60) 30 "Sides:" in
+let sl = new fSlider 50 285 (win#w - 60) 30 "Sides:" in
 let sw = new shape_widget sl#handle 10 10 270 270 "" in
 win#resizable sw;
 let stat = new easyStatusBar in

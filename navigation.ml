@@ -22,11 +22,11 @@ let populate (window : fWindow) height width =
         if not (w < grid || h < grid || w < h) then begin
             try
                 let o = window#fold_childs (fun e o ->
-                    if x < o#xpos + o#width && x + w > o#xpos &&
-                       y < o#ypos + o#height && y + h > o#ypos
+                    if x < o#x + o#w && x + w > o#x &&
+                       y < o#y + o#h && y + h > o#y
                     then 
                        raise Break
-                    else if e == None && (y < o#ypos || y = o#ypos && x < o#xpos) then
+                    else if e == None && (y < o#y || y = o#y && x < o#x) then
                         (
                             Some o
                         ) else None ) None

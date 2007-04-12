@@ -1,5 +1,6 @@
 open Widgets;;
 open Draw;;
+open Printf;;
 
 class testWindow t = object(self)
     inherit fWindow ~x:100 ~y:100 300 300 "Timing"
@@ -9,7 +10,7 @@ class testWindow t = object(self)
         iter <- iter + 1;
         let b = Printf.sprintf "Redraw number %d, text in the widget is clipped
         off somewhere on the right" iter in
-        let w = self#width and h = self#height in
+        let w = self#w and h = self#h in
         if test land 2 <> 0 then
             begin
             setcolor Color.gray75;
