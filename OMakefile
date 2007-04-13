@@ -79,8 +79,9 @@ STYLEDEMO: $(OCamlProgram styledemo, styledemo)
 DRAWTIMING: $(OCamlProgram drawtiming, drawtiming)	
 NAVIGATION: $(OCamlProgram navigation, navigation)	
 ARC:        $(OCamlProgram arc, arc)
+ASK:        $(OCamlProgram ask, ask)
 RESIZE:		$(OCamlProgram resize, resize)	
 
-demos: wizard tabdemo scrolldemo pack moin menudemo boxdemo styledemo drawtiming navigation arc resize
+demos: wizard tabdemo scrolldemo pack moin menudemo boxdemo styledemo drawtiming navigation arc resize ask
 .DEFAULT: moin 
 

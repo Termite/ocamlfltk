@@ -1,5 +1,5 @@
 open Widgets;;
-open Ask;;
+open Dialogs;;
 
 
 let _ =
