@@ -81,6 +81,7 @@ class ocaml_widget : public ocaml_rect {
         }
 
         void color(unsigned c) { dest_ptr->color(c); }
+        const char* label() { return dest_ptr->label(); }
         void copy_label(const char* l)
         {
             dest_ptr->copy_label(l);

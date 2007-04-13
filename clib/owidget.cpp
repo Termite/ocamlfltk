@@ -165,6 +165,12 @@ extern "C" {
         CAMLreturn(Val_unit);
     }
 
+    CAMLprim value widget_label(value widget)
+    {
+        CAMLparam1(widget);
+        CAMLreturn(copy_string(((ocaml_widget*) widget) -> label()));
+    }
+
     CAMLprim value widget_get_labelsize(value widget)
     {
         CAMLparam1(widget);
