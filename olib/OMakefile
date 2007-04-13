@@ -46,7 +46,7 @@ LIB_FILES[] =
 	monitor
 	flags
 	box
-	ask
+	dialogs
 	symbol
 	style
 	widgets
