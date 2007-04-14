@@ -58,6 +58,29 @@ extern "C" {
         CAMLreturn(Val_int(fltk::ask("%s", m)));
     }
        
+    CAMLprim value set_ok(value ok)
+    {
+        CAMLparam1(ok);
+        fltk::ok = strdup(String_val(ok));
+        CAMLreturn(Val_unit);
+    }
+       
+    CAMLprim value message_box(value message)
+    {
+        CAMLparam1(message);
+        char* m = String_val(message);
+        fltk::message("%s", m);
+        CAMLreturn(Val_unit);
+    }
+       
+    CAMLprim value choice(value b0, value b1, value b2, value txt)
+    {
+        CAMLparam4(b0, b1, b2, txt);
+        char* m = String_val(txt);
+        int r = fltk::choice("%s", String_val(b0), String_val(b1), String_val(b2), m);
+        CAMLreturn(Val_int(r));
+    }
+       
     CAMLprim value input_box(value default_str, value message)
     {
         CAMLparam2(default_str, message);
