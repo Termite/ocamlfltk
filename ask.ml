@@ -1,12 +1,18 @@
 open Widgets;;
 open Dialogs;;
 
+let input_default def fmt =
+    match input def fmt with
+    | None -> def
+    | Some s -> s
+;;
 
 let _ =
     set_ok "na gut";
-    message "Jallo %s" "micha";
+    let name = input_default "Hein Doof" "Dein Name?" in
+    message "Jallo %s" name;
     let c = choice "eins" "zwei" "drei" "waehl mal.." in
-    Printf.printf "gezogen: %d\n%!" c;
+    message "gezogen: %d" c;
 	let window = new fWindow 200 55 "" in
 	let b = new fButton 20 10 160 35 "test text" in
 	b#callback (fun () -> 
