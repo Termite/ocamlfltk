@@ -110,7 +110,7 @@ external new_togglebutton: string -> int -> int -> int -> int -> string -> widge
 external button_value: widget -> bool = "button_value";;
 external button_set_value: widget -> bool -> bool = "button_set_value";;
 
-external set_callback: 'a -> string -> unit = "set_window_cb";;
+external set_callback: 'a -> string -> unit = "set_widget_cb";;
 
 external new_valuator: string -> int -> int -> int -> int -> string -> widget
     = "new_valuator_bc" "new_valuator"

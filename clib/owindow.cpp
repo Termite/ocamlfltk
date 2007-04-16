@@ -59,19 +59,4 @@ extern "C" {
         CAMLreturn(Val_unit);
     }
 
-    static void widget_cb(fltk::Widget* widget, value* caml_cb)
-    {
-        caml_callback(*caml_cb, Val_unit);
-    }
-
-    CAMLprim value set_window_cb(value window, value fkt)
-    {
-        CAMLparam2(window, fkt);
-        value* cb = caml_named_value(String_val(fkt));             
-//        ((ocaml_widget*) window)->callback_fkt = caml_named_value(String_val(fkt));
-        ((ocaml_widget*) window)
-            ->callback((fltk::Callback*)widget_cb, (void*)cb);
-        CAMLreturn(Val_unit);
-    }
-
 }
