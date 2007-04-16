@@ -144,6 +144,20 @@ CAMLprim value style_set_scrollbar_width(value style, value v)
     CAMLreturn(Val_unit);
 }
 
+CAMLprim value style_find(value v)
+{
+    CAMLparam1(v);
+    CAMLlocal1(r);
+    fltk::Style* s = fltk::Style::find(String_val(v));
+    if (s) {
+        r = caml_alloc_small(1,0);
+        Field(r,0) = (value) s;
+    } else {
+        r = Val_int(0);
+    }
+    CAMLreturn(r);
+}
+
 
 
 }

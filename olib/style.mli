@@ -27,7 +27,7 @@ external set_leading:   [>normal] style -> float -> unit = "style_setleading";;
 external set_scrollbar_align: [>normal] style -> Flags.flags -> unit = "style_scrollbar_align";;
 external set_scrollbar_width: [>normal] style -> Flags.flags -> unit = "style_scrollbar_width";;
 
-
+external find: string -> normal style option = "style_find";;
 
 
 
