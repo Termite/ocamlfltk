@@ -45,6 +45,7 @@ CLIBFILES[] =
    oitem
    ochoices
    obox
+   odialogs
    opackedgroup
    otabgroup
    ostatusbar
