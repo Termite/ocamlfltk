@@ -1,5 +1,6 @@
 #include "ocamlfltk.h"
 #include <fltk/Box.h>
+#include <fltk/Style.h>
 
 #include "osymbols.h"
 
