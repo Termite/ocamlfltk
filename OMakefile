@@ -18,7 +18,8 @@
 #
 # Various options
 #
-OCAMLC = ocamlc
+OCAMLC = ocamlc.opt
+OCAMLOPT = ocamlopt.opt
 OCAMLFLAGS    = -warn-error a
 # OCAMLCFLAGS   +=
 OCAMLOPTFLAGS += -inline 100
@@ -89,6 +90,7 @@ BUTTONS_FILES[] =
 
 BUTTONS:	$(OCamlProgram buttons, $(BUTTONS_FILES))	
 BUTTON:  	$(OCamlProgram button, button)	
+GROUPTEST:  $(OCamlProgram grouptest, grouptest)
 
 demos: wizard tabdemo scrolldemo pack moin menudemo boxdemo styledemo drawtiming navigation arc resize ask moin sliderdemo buttons button
 .DEFAULT: buttons

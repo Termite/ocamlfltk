@@ -108,6 +108,13 @@ module PtrHash = Hashtbl.Make(struct
 
 let ptr_tbl = PtrHash.create 257;;
 
+module GroupHash = Hashtbl.Make(struct 
+    type t = widget_ptr
+    let equal = (==)
+    let hash = Hashtbl.hash end);; 
+
+let grp_tbl = GroupHash.create 257;;
+
 class virtual fltkbase x y w h title = object(self : 'a)
     val mutable obj = null_widget
     method obj = obj
@@ -569,7 +576,23 @@ class valueOutput x y w h label = object
     method handle ev = valueOutput_handle obj ev
 end;;
 
-external set_resizeable : widget_ptr -> widget_ptr -> unit = "group_set_resizable";;
+external group_set_resizeable : widget_ptr -> widget_ptr -> unit = "group_set_resizable";;
+external group_get_resizable: widget_ptr -> widget_ptr = "group_get_resizable";;
+external group_add: widget_ptr -> widget_ptr -> unit = "group_add";;
+external group_clear: widget_ptr -> unit = "group_clear";;
+external group_init_sizes: widget_ptr -> unit = "group_init_sizes";;
+external group_set_focuswidget: widget_ptr -> widget_ptr -> unit = "group_set_focuswidget";;
+external group_set_focusindex: widget_ptr -> int -> unit = "group_set_focusindex";;
+external group_get_focus: widget_ptr -> int = "group_get_focus";;
+external group_find: widget_ptr -> widget_ptr -> int = "group_find";;
+external group_remove: widget_ptr -> int -> unit = "group_remove";;
+external group_remove_widget: widget_ptr -> widget_ptr -> unit = "group_remove_widget";;
+external group_replace: widget_ptr -> int -> widget_ptr -> unit = "group_replace";;
+external group_replace_with: widget_ptr -> widget_ptr -> widget_ptr -> unit = "group_replace_with";;
+external group_current: unit -> widget_ptr = "group_get_current";;
+external group_set_current: widget_ptr -> unit = "group_set_current";;
+
+
 
 class group ?(add=false) ?(x=0) ?(y=0) w h title = object(self)
     inherit widget x y w h title
@@ -579,6 +602,35 @@ class group ?(add=false) ?(x=0) ?(y=0) w h title = object(self)
     method handle ev = group_handle obj ev
     method wend = group_end obj
     method begin_add = group_begin obj
+    method clear = group_clear obj
+    method init_sizes = group_init_sizes obj
+    method setFocusWidget: 'a. (#widget as 'a) -> unit = 
+        fun widget -> group_set_focuswidget obj widget#obj
+    method setFocus i = group_set_focusindex obj i
+    method focus = group_get_focus obj
+    method find: 'a. (#widget as 'a) -> int = 
+        fun widget -> group_find obj widget#obj
+    method get_resizable =
+    	let w = group_get_resizable obj in
+        try
+            PtrHash.find ptr_tbl w
+        with Not_found -> (new widgetProxy w :> widget)
+
+    method resizable: 'a. (#widget as 'a) -> unit = 
+        fun widget -> group_set_resizeable obj widget#obj
+    method add: 'a. (#widget as 'a) -> unit =
+        fun widget -> group_add obj widget#obj
+    method add_resizable: 'a. (#widget as 'a) -> unit =
+        fun widget -> 
+		self#add widget;
+		self#resizable widget
+    method remove_widget: 'a. (#widget as 'a) -> unit =
+        fun widget -> group_remove_widget obj widget#obj
+    method remove idx = group_remove obj idx
+    method replace: 'a. int -> (#widget as 'a) -> unit =
+        fun idx widget -> group_replace obj idx widget#obj
+    method replace_with: 'a 'b.  (#widget as 'a) -> (#widget as 'b) -> unit =
+        fun old replacement -> group_replace_with obj old#obj replacement#obj
     method insert: 'a. (#widget as 'a) -> int -> unit =
         fun widget idx -> group_insert obj widget#obj idx 
     method insert_before: 'a 'b.  (#widget as 'a) -> (#widget as 'b) option -> unit =
@@ -602,12 +654,36 @@ class group ?(add=false) ?(x=0) ?(y=0) w h title = object(self)
         let e = ref start in
         self#iter_childs (fun w -> e := f !e w);
         !e
-    method resizable: 'a. (#widget as 'a) -> unit = 
-        fun widget -> set_resizeable obj widget#obj
     initializer 
-        if add = true then self#begin_add else self#wend
+        if add = true then self#begin_add else self#wend;
+	print_endline "group init";
+	GroupHash.add grp_tbl obj (self :> group)		
 
 end;;
+
+class groupProxy ptr = object(self)
+	inherit group 0 0 ""
+	method private alloc = fun _ _ _ _ _ _ -> ptr
+	initializer
+		print_endline "groupProxy init"
+		(*GroupHash.add grp_tbl ptr (self :> group) *)
+end;;
+
+let groupGetCurrent () =
+	let g = group_current () in
+    if g == null_widget then None
+    else Some (
+    	try
+	        GroupHash.find grp_tbl g
+    	with
+	    	Not_found -> (new groupProxy g :> group))
+;;		
+
+let groupSetCurrent (group : #group option) =
+	match group with
+	| None -> group_set_current null_widget
+	| Some g -> group_set_current g#obj
+;;
 
 external new_wizard_group: string -> int -> int -> int -> int -> string -> widget_ptr
     = "new_WizardGroup_bc" "new_WizardGroup";;
@@ -722,7 +798,7 @@ class menu x y w h label = object
     method private alloc = new_menu
     method draw = menu_draw obj
     method handle ev = menu_handle obj ev
-    method children = menu_children obj
+    (*method children = menu_children obj*)
     method value = menu_value obj
     method set_value = menu_set_value obj
 end;;
