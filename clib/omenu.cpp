@@ -26,6 +26,28 @@ extern "C" {
         CAMLreturn(Val_unit);
     }
 
+    CAMLprim value menu_children(value widget)
+    {
+        CAMLparam1(widget);
+        int r = ((fltk::Menu*) widget) -> children();
+        CAMLreturn(Val_int(r));
+    }
+
+    CAMLprim value menu_value(value widget)
+    {
+        CAMLparam1(widget);
+        int r = ((fltk::Menu*) widget) -> value();
+        CAMLreturn(Val_int(r));
+    }
+
+    CAMLprim value menu_set_value(value widget, value v)
+    {
+        CAMLparam2(widget, v);
+        int r = ((fltk::Menu*) widget) -> value(Int_val(v));
+        CAMLreturn(Val_unit);
+    }
+
+
     CAMLprim value menubar_handle(value widget, value ev)
     {
         CAMLparam2(widget, ev);
@@ -40,7 +62,5 @@ extern "C" {
         CAMLreturn(Val_unit);
     }
 
-
-     
 }
 

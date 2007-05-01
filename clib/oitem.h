@@ -19,12 +19,18 @@ namespace Ofltk {
               , ocaml_obj(oclass)
         { }
 
+        o_Item(::value* oclass, const char* label, fltk::Symbol* s)
+            : fltk::Item(label, s)
+              , id("Item-director") 
+              , ocaml_obj(oclass)
+        { }
+
         virtual ~o_Item()
         { }
 
         void default_draw()
         {
-            std::cout << "drawing a " << id << std::endl;
+            //std::cout << "drawing a " << id << std::endl;
             fltk::Item::draw();
         }
 
@@ -62,7 +68,7 @@ namespace Ofltk {
 
         void default_draw()
         {
-            std::cout << "drawing a " << id << std::endl;
+            //std::cout << "drawing a " << id << std::endl;
             fltk::ItemGroup::draw();
         }
 

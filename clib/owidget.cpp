@@ -68,6 +68,13 @@ extern "C" {
         CAMLreturn(Val_bool(((fltk::Widget*)widget) -> active()));
     }
 
+    CAMLprim value widget_draw_box(value widget)
+    {
+        CAMLparam1(widget);
+        ((fltk::Widget*)widget) -> draw_box();
+        CAMLreturn(Val_unit);
+    }
+
     CAMLprim value widget_activate(value widget)
     {
         CAMLparam1(widget);
@@ -141,6 +148,29 @@ extern "C" {
     {
         CAMLparam1(widget);
         ((fltk::Widget*) widget) -> set_horizontal();
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value widget_align(value widget, value flags)
+    {
+        CAMLparam2(widget, flags);
+        ((fltk::Widget*) widget)->align(Int_val(flags));
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value widget_scrollbar_width(value sc, value width)
+    {
+        CAMLparam2(sc, width);
+        fltk::Widget* b = (fltk::Widget*) sc;
+        b->scrollbar_width(Int_val(width));
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value widget_scrollbar_align(value sc, value typ)
+    {
+        CAMLparam2(sc, typ);
+        fltk::Widget* b = (fltk::Widget*) sc;
+        b->scrollbar_align(Int_val(typ));
         CAMLreturn(Val_unit);
     }
 
@@ -468,6 +498,13 @@ extern "C" {
         CAMLreturn(Val_unit);
     }
 
+    CAMLprim value widget_set_labelcolor(value widget, value color)
+    {
+        CAMLparam2(widget, color);
+        ((fltk::Widget*) widget)->labelcolor(Int32_val(color));
+        CAMLreturn(Val_unit);
+    }
+
     CAMLprim value widget_set_label(value widget, value label)
     {
         CAMLparam2(widget, label);
@@ -509,18 +546,29 @@ extern "C" {
     }
 
 
-    CAMLprim value new_invisible(value name, value x, value y, value w, value h, value label)
+    CAMLprim value new_invisible(value box, value name, value x, value y, value w, value h, value label)
     {
         CAMLparam5(x,y,w,h,label);
-        CAMLxparam1(name);
-        o_InvisibleBox* widget = new o_InvisibleBox(caml_named_value(String_val(name)), Int_val(x), Int_val(y), Int_val(w)
-                , Int_val(h), String_val(label));
+        CAMLxparam2(name, box);
+	fltk::Box* b = Is_long(box) ? 0 : (fltk::Box*) Field(box,0);
+	o_InvisibleBox* widget  = 0;
+	if (b) 
+		std::cout << "box set" << std::endl;
+	else
+		std::cout << "box empty" << std::endl;
+
+	widget =
+		b ? new o_InvisibleBox(caml_named_value(String_val(name)), b, 
+				Int_val(x), Int_val(y), Int_val(w) , Int_val(h), String_val(label))
+		: new o_InvisibleBox(caml_named_value(String_val(name)),
+				Int_val(x), Int_val(y), Int_val(w) , Int_val(h), String_val(label));
+
         CAMLreturn((value) widget);
     }
 
     CAMLprim value new_invisible_bc(value* args, int argc)
     {
-        return new_invisible(args[0],args[1],args[2],args[3],args[4],args[5]);
+        return new_invisible(args[0],args[1],args[2],args[3],args[4],args[5],args[6]);
     }
 
     CAMLprim value invisible_handle(value widget, value ev)

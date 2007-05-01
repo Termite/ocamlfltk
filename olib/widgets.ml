@@ -38,6 +38,10 @@ external widget_hide: widget_ptr-> unit = "widget_hide";;
 external widget_active: widget_ptr-> bool = "widget_active";;
 external widget_activate: widget_ptr-> unit = "widget_activate";;
 external widget_deactivate: widget_ptr-> unit = "widget_deactivate";;
+external widget_draw_box: widget_ptr-> unit = "widget_draw_box";;
+external widget_scrollbar_align: widget_ptr -> Flags.flags -> unit = "widget_scrollbar_align";;
+external widget_scrollbar_width: widget_ptr -> int -> unit =
+    "widget_scrollbar_width";;
 external get_width: widget_ptr-> int = "get_width";;
 external get_height: widget_ptr-> int = "get_height";;
 external get_x: widget_ptr-> int = "get_x";;
@@ -48,6 +52,7 @@ external set_when: widget_ptr-> int -> unit = "widget_set_when";;
 external get_type: widget_ptr-> int = "widget_get_type";;
 external set_type: widget_ptr-> int -> unit = "widget_set_type";;
 external set_label: widget_ptr-> string -> unit = "widget_set_label";;
+external set_labelcolor: widget_ptr-> int32 -> unit = "widget_set_labelcolor";;
 external set_color: widget_ptr-> int32 -> unit = "widget_set_color";;
 external redraw_widget: widget_ptr -> unit = "s_redraw_widget";;
 external set_callback: widget_ptr -> string -> unit = "s_set_widget_cb";;
@@ -69,6 +74,7 @@ external widget_get_tooltip : widget_ptr-> string = "widget_get_tooltip";;
 external widget_set_horizontal: widget_ptr-> unit = "widget_set_horizontal";;
 external widget_handle: widget_ptr-> Event.event_type -> Event.event_type = "widget_handle";;
 external widget_set_labelfont: widget_ptr -> Font.font -> unit = "widget_get_labelfont";;
+external widget_align: widget_ptr -> Flags.flags -> unit = "widget_align";;
 
 
 external new_button: string -> int -> int -> int -> int -> string -> widget_ptr = 
@@ -147,7 +153,11 @@ class widget x y w h title = object(self)
   method draw = widget_draw obj
   method handle ev = widget_handle obj ev
   method redraw = redraw_widget obj
+  method draw_box = widget_draw_box obj
   method show = widget_show obj
+  method align = widget_align obj
+  method scrollbar_align = widget_scrollbar_align obj
+  method scrollbar_width = widget_scrollbar_width obj
   method hide = widget_hide obj
   method active = widget_active obj
   method activate = widget_activate obj
@@ -175,6 +185,7 @@ class widget x y w h title = object(self)
   method get_type = get_type obj
   method set_type n = set_type obj n
   method set_label l = set_label obj l
+  method set_labelcolor l = set_labelcolor obj l
   method set_color c = set_color obj c
   method set_tooltip t = widget_set_tooltip obj t
   method get_tooltip = widget_get_tooltip obj
@@ -206,16 +217,16 @@ class widgetProxy ptr = object(self)
   method ct = "widgetProxy"
 end;;
 
-external new_invisible: string -> int -> int -> int -> int -> string -> widget_ptr =
+external new_invisible: 'a image option -> string -> int -> int -> int -> int -> string -> widget_ptr =
   "new_invisible_bc" "new_invisible";;
 external invisible_draw: widget_ptr -> unit = "invisible_draw";;
 external invisible_handle: widget_ptr -> Event.event_type -> Event.event_type =
     "invisible_handle";;
 
-class invisible x y w h label = object
+class invisible ?box x y w h label = object
     inherit widget x y w h label
     method ct = "invisible box"
-    method private alloc = new_invisible
+    method private alloc = new_invisible box
     method draw = invisible_draw obj
     method handle ev = invisible_handle obj ev
 end;;
@@ -673,7 +684,7 @@ class tabGroup x y w h label = object
     method get_value = tabgroup_get_value obj
 end;;
 
-type scrolltype = Horizontal | Vertical | Both | Always | HorizontalAlways
+type scrolltype = NoScroll | Horizontal | Vertical | Both | Always | HorizontalAlways
                 | VerticalAlways | BothAlways;;
 
 external new_scrollgroup: string -> int -> int -> int -> int -> string -> widget_ptr
@@ -701,6 +712,9 @@ external new_menu: string -> int -> int -> int -> int -> string -> widget_ptr
     = "new_Menu_bc" "new_Menu";;
 external menu_draw: widget_ptr -> unit = "menu_draw";;
 external menu_handle: widget_ptr -> Event.event_type -> Event.event_type = "menu_handle";;
+external menu_children: widget_ptr -> int = "menu_children";;
+external menu_value: widget_ptr -> int = "menu_value";;
+external menu_set_value: widget_ptr -> int -> unit = "menu_set_value";;
 
 class menu x y w h label = object
     inherit group ~x:x ~y:y w h label
@@ -708,6 +722,9 @@ class menu x y w h label = object
     method private alloc = new_menu
     method draw = menu_draw obj
     method handle ev = menu_handle obj ev
+    method children = menu_children obj
+    method value = menu_value obj
+    method set_value = menu_set_value obj
 end;;
 
 external new_choice: string -> int -> int -> int -> int -> string -> widget_ptr
@@ -767,14 +784,14 @@ class menuBar x y w h label = object
     method handle ev = menubar_handle obj ev
 end;;
 
-external new_item: string -> string -> widget_ptr = "new_Item";;
+external new_item: string -> string -> 'a image option -> widget_ptr = "new_Item";;
 external item_draw: widget_ptr -> unit = "item_draw";;
 external item_handle: widget_ptr -> Event.event_type -> Event.event_type = "item_handle";;
 
-class item menuitem = object
+class item ?symbol menuitem = object
     inherit widget 0 0 0 0 ""
     method ct = "Item"
-    method private alloc = fun objcb _ _ _ _ _ -> new_item objcb menuitem
+    method private alloc = fun objcb _ _ _ _ _ -> new_item objcb menuitem symbol
     method draw = item_draw obj
     method handle ev = item_handle obj ev
 end;;

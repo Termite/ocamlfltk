@@ -50,7 +50,15 @@ extern "C" {
     {
         CAMLparam2(sc, typ);
         fltk::ScrollGroup* b = (fltk::ScrollGroup*) sc;
-        b->type(1 + Int_val(typ));
+        b->type( Int_val(typ));
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value scrollgroup_align(value sc, value typ)
+    {
+        CAMLparam2(sc, typ);
+        fltk::ScrollGroup* b = (fltk::ScrollGroup*) sc;
+        b->align(Int_val(typ));
         CAMLreturn(Val_unit);
     }
 

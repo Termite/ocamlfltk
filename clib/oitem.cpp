@@ -4,11 +4,12 @@ using namespace Ofltk;
 
 extern "C" {
 
-    CAMLprim value new_Item(value name, value item)
+    CAMLprim value new_Item(value name, value item, value symbol)
     {
-        CAMLparam2(name, item);
-        o_Item* widget =
-            new o_Item(caml_named_value(String_val(name)), String_val(item));
+        CAMLparam3(name, item, symbol);
+	fltk::Symbol* s = Is_long(symbol) ? 0 : (fltk::Symbol*)Field(symbol,0);
+        o_Item* widget = s ? new o_Item(caml_named_value(String_val(name)), String_val(item),s)
+	  	         : new o_Item(caml_named_value(String_val(name)), String_val(item));
         CAMLreturn((value) widget);
     }
 

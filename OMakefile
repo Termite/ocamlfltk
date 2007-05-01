@@ -54,7 +54,7 @@ TAB_FILES = tabdemo
 OCamlProgram($(TAB_DEMO), $(TAB_FILES))
 
 SCROLL_DEMO = scrolldemo
-SCROLL_FILES = scrolldemo
+SCROLL_FILES = scrolldemo pixmaps
 OCamlProgram($(SCROLL_DEMO), $(SCROLL_FILES))
 
 MENU_DEMO = menudemo
