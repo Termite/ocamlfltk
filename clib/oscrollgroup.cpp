@@ -8,35 +8,49 @@ using namespace Ofltk;
 
 extern "C" {
     
-    MAKE_NEW(scrollgroup);
+    GEN_NEW(ScrollGroup);
+
+    CAMLprim value scrollgroup_handle(value widget, value ev)
+    {
+        CAMLparam2(widget, ev);
+        int r = ((o_ScrollGroup*) widget) -> default_handle(Int_val(ev));
+        CAMLreturn(Val_int(r));
+    }
+
+    CAMLprim value scrollgroup_draw(value widget)
+    {
+        CAMLparam1(widget);
+        ((o_ScrollGroup*) widget) -> default_draw();
+        CAMLreturn(Val_unit);
+    }
 
     CAMLprim value scrollgroup_xpos(value sc)
     {
         CAMLparam1(sc);
-        ocaml_scrollgroup* b = (ocaml_scrollgroup*) sc;
-        CAMLreturn(Val_int(b->xpos()));
+        fltk::ScrollGroup* b = (fltk::ScrollGroup*) sc;
+        CAMLreturn(Val_int(b->xposition()));
     }
 
     CAMLprim value scrollgroup_ypos(value sc)
     {
         CAMLparam1(sc);
-        ocaml_scrollgroup* b = (ocaml_scrollgroup*) sc;
-        CAMLreturn(Val_int(b->ypos()));
+        fltk::ScrollGroup* b = (fltk::ScrollGroup*) sc;
+        CAMLreturn(Val_int(b->yposition()));
     }
 
     CAMLprim value scrollgroup_scroll_to(value sc, value x, value y)
     {
         CAMLparam3(sc, x, y);
-        ocaml_scrollgroup* b = (ocaml_scrollgroup*) sc;
-        b->scroll_to(Int_val(x), Int_val(y));
+        fltk::ScrollGroup* b = (fltk::ScrollGroup*) sc;
+        b->scrollTo(Int_val(x), Int_val(y));
         CAMLreturn(Val_unit);
     }
 
     CAMLprim value scrollgroup_type(value sc, value typ)
     {
         CAMLparam2(sc, typ);
-        ocaml_scrollgroup* b = (ocaml_scrollgroup*) sc;
-        b->set_type(1 + Int_val(typ));
+        fltk::ScrollGroup* b = (fltk::ScrollGroup*) sc;
+        b->type(1 + Int_val(typ));
         CAMLreturn(Val_unit);
     }
 

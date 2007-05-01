@@ -6,30 +6,7 @@
 
 namespace Ofltk {
 
-    NEW_DIRECTOR(ScrollGroup);
-
-    class ocaml_scrollgroup : public ocaml_group {
-        public:
-            ocaml_scrollgroup() : ocaml_group() {}
-
-            ocaml_scrollgroup(value* ocaml, int x, int y, int w, int h, const char* t = 0)
-            {
-                dest_widget = new ScrollGroup_d(ocaml, x, y, w, h, t);
-            }
-
-            virtual ~ocaml_scrollgroup() {}
-
-            DEF_DEFAULT(ScrollGroup_d);
-
-            int xpos() { return static_cast<ScrollGroup_d*>(dest_widget)->xposition(); }
-            int ypos() { return static_cast<ScrollGroup_d*>(dest_widget)->yposition(); }
-
-            void scroll_to(int x, int y)
-            { 
-                static_cast<ScrollGroup_d*>(dest_widget)->scrollTo(x, y);
-            }
-    };
-
+    NEW_WIDGET(ScrollGroup);
 
 }
 

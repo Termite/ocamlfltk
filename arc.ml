@@ -6,7 +6,7 @@ let dargs = [| 90.0; 90.0; 100.0; 100.0; 0.0; 360.0; 0.0 |];;
 let name = [| "X"; "Y"; "W"; "H"; "start"; "end"; "rotate" |];;
 
 class drawing x y w h = object(self)
-    inherit fWidget x y w h ""
+    inherit widget x y w h ""
     method draw =
         let w = self#w in
         let h = self#h in
@@ -42,8 +42,8 @@ end;;
 
 
 let _ =
-    let window = new fWindow 300 510 "Arc" in
-    window#border false;
+    let window = new window 300 510 "Arc" in
+    (* window#border false; *)
     window#begin_add;
     let drawing = new drawing 10 10 280 280 in
     let y = ref 300 in

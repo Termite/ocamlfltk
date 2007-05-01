@@ -3,7 +3,7 @@ open Draw;;
 open Printf;;
 
 class testWindow t = object(self)
-    inherit fWindow ~x:100 ~y:100 300 300 "Timing"
+    inherit window ~x:100 ~y:100 300 300 "Timing"
     val test = t
     val mutable iter = 1
     method draw =

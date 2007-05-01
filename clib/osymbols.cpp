@@ -1,15 +1,14 @@
 #include "osymbols.h"
+#include <fltk/SharedImage.h>
 
 using namespace Ofltk;
 
 extern "C" {
 
-
-    CAMLprim value new_symbol(value _draw, value name)
+    CAMLprim value new_symbol(value vm, value name)
     {
-        CAMLparam2(_draw, name);
-        ocaml_symbol* s =
-            new ocaml_symbol(caml_named_value(String_val(_draw)), String_val(name));
+        CAMLparam2(vm, name);
+        o_Symbol* s = new o_Symbol(vm, String_val(name));
         CAMLreturn((value) s);
     }
 
@@ -19,7 +18,7 @@ extern "C" {
         CAMLlocal1(erg);
         int w = Int_val(_w);
         int h = Int_val(_h);
-        ((ocaml_symbol*)symbol)->measure(w, h);
+        ((fltk::Symbol*)symbol)->measure(w, h);
         erg = caml_alloc_small(2, 0);     
         Field(erg, 0) = Val_int(w);
         Field(erg, 1) = Val_int(h);
@@ -29,47 +28,39 @@ extern "C" {
     CAMLprim value symbol_set_name(value symbol, value name)
     {
         CAMLparam2(symbol, name);
-        ((ocaml_symbol*)symbol)->name(String_val(name));
+        ((fltk::Symbol*)symbol)->name(String_val(name));
         CAMLreturn(Val_unit);
     }
 
     CAMLprim value symbol_get_name(value symbol)
     {
         CAMLparam1(symbol);
-        const char* n = ((ocaml_symbol*)symbol)->name();
+        const char* n = ((fltk::Symbol*)symbol)->name();
         CAMLreturn(copy_string(n));
     }
 
     CAMLprim value symbol_is_frame(value symbol)
     {
         CAMLparam1(symbol);
-        bool n = ((ocaml_symbol*)symbol)->is_frame();
+        bool n = ((fltk::Symbol*)symbol)->is_frame();
         CAMLreturn(Val_int(n));
     }
-
-    CAMLprim value new_flatbox(value _draw, value name)
+    CAMLprim value new_flatbox(value vm, value name)
     {
-        CAMLparam2(_draw, name);
-        value* draw = Is_block(_draw) 
-            ? caml_named_value(String_val(Field(_draw,0)))
-            : 0;
-        ocaml_flatbox* s = new ocaml_flatbox(draw, String_val(name));
+        CAMLparam2(vm, name);
+        o_FlatBox* s = new o_FlatBox(vm, String_val(name));
         CAMLreturn((value) s);
     }
 
-    CAMLprim value new_framebox(value _draw, value name, value x, value y,
+    CAMLprim value new_framebox(value vm, value name, value x, value y,
             value w, value h, value pattern, value down_box)
     {
-        CAMLparam4(_draw, name, x, y);
+        CAMLparam4(vm, name, x, y);
         CAMLxparam4(h, pattern, down_box, w);
-        ocaml_symbol* down = (Is_block(down_box)) ? (ocaml_symbol*)Field(down_box,0) : 0;
-        value* draw = Is_block(_draw) 
-            ? caml_named_value(String_val(Field(_draw,0)))
-            : 0;
-        ocaml_framebox* s =
-            new ocaml_framebox(draw, String_val(name),
-                    Int_val(x), Int_val(y), Int_val(w), Int_val(h),
-                    String_val(pattern), down);
+        fltk::Symbol* down = Is_long(down_box) ? 0 : (fltk::Symbol*)Field(down_box,0);
+        o_FrameBox* s = new o_FrameBox(vm, String_val(name),
+			Int_val(x), Int_val(y), Int_val(w), Int_val(h),
+			String_val(pattern), down);
         CAMLreturn((value) s);
     }
 
@@ -82,24 +73,20 @@ extern "C" {
     CAMLprim value framebox_get_data(value symbol)
     {
         CAMLparam1(symbol);
-        CAMLreturn(copy_string(((ocaml_framebox*)symbol)->data()));
+        CAMLreturn(copy_string(((fltk::FrameBox*)symbol)->data()));
     }
 
     CAMLprim value framebox_set_data(value symbol, value data)
     {
         CAMLparam2(symbol, data);
-        ((ocaml_framebox*)symbol)->data(String_val(data));
+        ((fltk::FrameBox*)symbol)->data(String_val(data));
         CAMLreturn(Val_unit);
     }
 
-    CAMLprim value new_highlightbox(value _draw, value name, value box)
+    CAMLprim value new_highlightbox(value vm, value name, value box)
     {
-        CAMLparam3(_draw, name, box);
-        value* draw = Is_block(_draw) 
-            ? caml_named_value(String_val(Field(_draw,0)))
-            : 0;
-        ocaml_highlightbox* s = new ocaml_highlightbox(draw, String_val(name)
-                , (ocaml_symbol*) box);
+        CAMLparam3(vm, name, box);
+        o_HighlightBox* s = new o_HighlightBox(vm, String_val(name), (fltk::Symbol*) box);
         CAMLreturn((value) s);
     }
 
@@ -110,7 +97,7 @@ extern "C" {
         fltk::Symbol* s = const_cast<fltk::Symbol*>(fltk::Symbol::find(String_val(name)));
         if (!s) CAMLreturn(Val_int(0));
         ret = caml_alloc_small(1,0);
-        Field(ret,0) = (value)(new ocaml_symbol(s));
+        Field(ret,0) = (value)s;
         CAMLreturn(ret);
     }
         
@@ -123,11 +110,11 @@ extern "C" {
         int a = Int_val(start);
         int b = Int_val(stop);
         //XXX exception?
-        if (a >= b || a < 0 || b <= 0 || a > l || b > l) CAMLreturn(Val_int(0));
-        fltk::Symbol* s = const_cast<fltk::Symbol*>(fltk::Symbol::find(str+a, str+b));
+        if (a >= b || a < 0 || b <= 0 || a >= l || b >= l) CAMLreturn(Val_int(0));
+        const fltk::Symbol* s = fltk::Symbol::find(str+a, str+b);
         if (!s) CAMLreturn(Val_int(0));
         ret = caml_alloc_small(1,0);
-        Field(ret,0) = (value)(new ocaml_symbol(s));
+        Field(ret,0) = (value)s;
         CAMLreturn(ret);
     }
         
@@ -136,23 +123,31 @@ extern "C" {
         CAMLparam1(nr);
         CAMLlocal2(ret,opt);
         int n = Int_val(nr);
-        fltk::Symbol* s = const_cast<fltk::Symbol*>(fltk::Symbol::iterate(n));
+        const fltk::Symbol* s = fltk::Symbol::iterate(n);
         if (!s) 
         {
             opt = Val_int(0);  
         }
         else
         {
-            ocaml_symbol* os = new ocaml_symbol(s);
             ret = caml_alloc_small(2,0);
             Field(ret,0) = Val_int(n);
-            Field(ret,1) = (value)os; 
+            Field(ret,1) = (value)s; 
             opt = caml_alloc_small(1,0);
             Field(opt,0) = ret;
         }
         CAMLreturn(opt);
     }
-        
+       
+    CAMLprim value register_images(value nix)
+    {
+        CAMLparam1(nix);
+        fltk::register_images(); 
+        CAMLreturn(Val_unit);
+    }
+
+
+    /****************** debug output ******************************/
     static void margin (int n)
     { while (n-- > 0) printf(".");  return; }
 

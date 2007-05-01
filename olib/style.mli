@@ -19,7 +19,7 @@ external set_selcolor: [>normal] style -> color -> unit = "style_setselcolor";;
 external set_seltextcolor: [>normal] style -> color -> unit = "style_setseltextcolor";;
 external set_buttoncolor:  [>normal] style -> color -> unit = "style_setbuttoncolor";;
 external set_labelcolor:   [>normal] style -> color -> unit = "style_setlabelcolor";;
-external set_highlightcol:    [>normal] style -> color -> unit = "style_sethighlightcol";;
+external set_highlight_color:    [>normal] style -> color -> unit = "style_set_highlight_color";;
 external set_highlighttextcol:[>normal] style -> color -> unit = "style_sethighlighttextcol";;
 external set_labelsize: [>normal] style -> float -> unit = "style_setlabelsize";;
 external set_textsize:  [>normal] style -> float -> unit = "style_settextsize";;
@@ -28,6 +28,7 @@ external set_scrollbar_align: [>normal] style -> Flags.flags -> unit = "style_sc
 external set_scrollbar_width: [>normal] style -> Flags.flags -> unit = "style_scrollbar_width";;
 
 external find: string -> normal style option = "style_find";;
+external reset_theme: unit -> unit = "reset_theme";;
 
-
+val buttonDefaultStyle : named style;;
 

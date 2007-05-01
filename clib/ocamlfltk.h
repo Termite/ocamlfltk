@@ -26,17 +26,17 @@ static const int handle_method = caml_hash_variant("handle");
 static const int layout_method = caml_hash_variant("layout");
 
 template<class widget, const char* name>
-class fltk_director: public widget {
+class fltk_widget: public widget {
         const char* id;
     protected:
         ::value* ocaml_obj;
 
     public:
-    fltk_director(::value* oclass, int x, int y, int w, int h, const char* t = 0)
+    fltk_widget(::value* oclass, int x, int y, int w, int h, const char* t = 0)
         : widget(x, y, w, h, t), id(name), ocaml_obj(oclass)
     { }
 
-    virtual ~fltk_director()
+    virtual ~fltk_widget()
     { }
 
     void default_draw()
@@ -62,19 +62,28 @@ class fltk_director: public widget {
     }
 };
 
-// NEW_DIRECTOR(Widget) gives: 
+
+// NEW_WIDGET(Widget) gives: 
 // extern char Widget_id[];
-// typedef fltk_director<fltk::Widget, Widget_id> Widget_d;
+// typedef fltk_widget<fltk::Widget, Widget_id> Widget_d;
 //
 
 }
-// = #typ "-director";
-#define NEW_DIRECTOR(typ) extern char typ ## _id[];\
-                      typedef fltk_director<fltk::typ, typ##_id>  typ##_d;
+#define NEW_WIDGET(typ) \
+            extern char typ ## _id[];\
+            typedef fltk_widget<fltk::typ, typ##_id>  o_##typ;
 
-#define DEF_DEFAULT(widget)\
-            virtual void default_draw() { static_cast<widget*>(dest_widget)->default_draw(); }\
-            virtual int default_handle(int ev) { return static_cast<widget*>(dest_widget)->default_handle(ev); }
+#define GEN_NEW(widget) \
+    CAMLprim value new_##widget(value name, value x, value y, value w, value h, value label)\
+    {\
+        CAMLparam5(x,y,w,h,label);\
+        CAMLxparam1(name);\
+        o_##widget* wp = new o_##widget(caml_named_value(String_val(name)),\
+                 Int_val(x), Int_val(y), Int_val(w), Int_val(h), String_val(label));\
+        CAMLreturn((value) wp);\
+    }\
+    CAMLprim value new_##widget##_bc(value* args, int argc)\
+    { return new_##widget(args[0],args[1],args[2],args[3],args[4],args[5]); }
 
 
 #endif

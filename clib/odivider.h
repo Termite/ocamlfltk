@@ -6,19 +6,19 @@
 
 namespace Ofltk {
 
-    class Divider_d : public fltk::Divider {
+    class o_Divider : public fltk::Divider {
         const char* id;
         protected:
         ::value* ocaml_obj;
 
         public:
-        Divider_d(::value* oclass)
+        o_Divider(::value* oclass)
             : fltk::Divider()
               , id("Divider-director") 
               , ocaml_obj(oclass)
         { }
 
-        virtual ~Divider_d()
+        virtual ~o_Divider()
         { }
 
         void default_draw()
@@ -43,22 +43,6 @@ namespace Ofltk {
             return Int_val(caml_callback2(caml_get_public_method(*ocaml_obj, handle_method), *ocaml_obj, Val_int(e)));
         }
     };
-
-    class ocaml_divider : public ocaml_widget {
-        public:
-            ocaml_divider() : ocaml_widget() {}
-
-            ocaml_divider(value* ocaml)
-            {
-                dest_widget = new Divider_d(ocaml);
-            }
-
-            virtual ~ocaml_divider() {}
-
-            DEF_DEFAULT(Divider_d)
-
-    };
-    
 
 }
 

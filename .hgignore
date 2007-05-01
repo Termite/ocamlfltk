@@ -1,6 +1,8 @@
 syntax: glob
+.omakedb
 Session.vim
 *.run
+*.omc
 *.opt
 *.swp
 *.swo

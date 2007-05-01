@@ -12,14 +12,14 @@ let bt =
         let x = (!n mod 4) * w + 10 in
         let y = (!n / 4) * h + 10 in
         incr n;
-        let b = new fInvisible x y (if square then h - 20 else w - 20) (h - 20) name in
+        let b = new invisible x y (if square then h - 20 else w - 20) (h - 20) name in
         b#set_box box;
         b#set_labelsize 11.0;
 ;;
 
 
 
-let win = new fWindow ~x:0 ~y:0 (4 * w) (rows * h) "Box Demo" in
+let win = new window ~x:0 ~y:0 (4 * w) (rows * h) "Box Demo" in
 win#set_color 12l;
 print_endline "all symbols:";
 Symbol.iter_symbol(fun s -> print_endline (get_name s));

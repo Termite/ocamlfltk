@@ -14,7 +14,7 @@ extern "C" {
     {
         CAMLparam5(x,y,w,h,label);
         CAMLxparam1(name);
-        ocaml_group* widget = new ocaml_group(caml_named_value(String_val(name)), Int_val(x), Int_val(y), Int_val(w)
+        o_Group* widget = new o_Group(caml_named_value(String_val(name)), Int_val(x), Int_val(y), Int_val(w)
                 , Int_val(h), String_val(label));
         CAMLreturn((value) widget);
     }
@@ -27,50 +27,63 @@ extern "C" {
     CAMLprim value group_begin(value group)
     {
         CAMLparam1(group);
-        ((ocaml_group*)group) -> begin();
+        ((fltk::Group*)group) -> begin();
         CAMLreturn(Val_unit);
     }
 
     CAMLprim value group_end(value group)
     {
         CAMLparam1(group);
-        ((ocaml_group*)group) -> end();
+        ((fltk::Group*)group) -> end();
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value group_handle(value widget, value ev)
+    {
+        CAMLparam2(widget, ev);
+        int r = ((o_Group*) widget) -> default_handle(Int_val(ev));
+        CAMLreturn(Val_int(r));
+    }
+
+    CAMLprim value group_draw(value widget)
+    {
+        CAMLparam1(widget);
+        ((o_Group*) widget) -> default_draw();
         CAMLreturn(Val_unit);
     }
 
     CAMLprim value group_set_resizable(value group, value widget)
     {
        CAMLparam2(group, widget);
-      ((ocaml_group*)group)->resizable((ocaml_widget*)widget);
+      ((fltk::Group*)group)->resizable((fltk::Widget*)widget);
        CAMLreturn(Val_unit);
     }
 
     CAMLprim value group_children(value group)
     {
       CAMLparam1(group);
-      CAMLreturn(Val_int(((ocaml_group*)group)->children()));
+      CAMLreturn(Val_int(((fltk::Group*)group)->children()));
     }
 
     CAMLprim value group_get_child(value group, value n)
     {
       CAMLparam2(group, n);
-      ocaml_widget* w = ((ocaml_group*)group)->child(Int_val(n));
+      fltk::Widget* w = ((fltk::Group*)group)->child(Int_val(n));
       CAMLreturn((value)w);
     }
 
     CAMLprim value group_insert(value group, value widget, value idx)
     {
       CAMLparam3(group, widget, idx);
-      ((ocaml_group*) group)->insert((ocaml_widget*)widget, Int_val(idx));
+      ((fltk::Group*) group)->insert(*((fltk::Widget*)widget), Int_val(idx));
       CAMLreturn(Val_unit);
     }
 
     CAMLprim value group_insert_before(value group, value widget, value before)
     {
       CAMLparam3(group, widget, before);
-      ocaml_widget* w = Is_long(before) ? 0 : (ocaml_widget*) Field(before,0);
-      ((ocaml_group*) group)->insert((ocaml_widget*)widget, w);
+//      fltk::Widget* w = Is_long(before) ? 0 : (fltk::Widget*) Field(before,0);
+      ((fltk::Group*) group)->insert(*((fltk::Widget*)widget), (fltk::Widget*)before);
       CAMLreturn(Val_unit);
     }
-
 }

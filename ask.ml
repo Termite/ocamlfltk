@@ -13,8 +13,8 @@ let _ =
     message "Jallo %s" name;
     let c = choice "eins" "zwei" "drei" "waehl mal.." in
     message "gezogen: %d" c;
-	let window = new fWindow 200 55 "" in
-	let b = new fButton 20 10 160 35 "test text" in
+	let window = new window 200 55 "" in
+	let b = new button 20 10 160 35 "test text" in
 	b#callback (fun () -> 
 		match input ~def:b#label "new label:" with
 		| None -> ()

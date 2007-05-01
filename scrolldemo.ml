@@ -1,10 +1,10 @@
 open Printf;;
 open Widgets;;
 
-let win = new fWindow (5*75) 400  "Pack Demo" in
-let sc = new fScrollGroup 0 0 (5*75) 300 "" in
+let win = new window (5*75) 400  "ScrollGroup Demo" in
+let sc = new scrollGroup 0 0 (5*75) 300 "" in
 sc#begin_add;
-let w = new fWidget 0 (8*25) (5*75) (5*75) "" in
+let w = new widget 0 (8*25) (5*75) (5*75) "" in
 sc#wend;
 sc#scrolltype BothAlways;
 

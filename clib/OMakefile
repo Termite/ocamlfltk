@@ -15,8 +15,8 @@
 # configuration variables.
 #
 
-#CXXFLAGS += -march=athlon-xp -O3 -mfpmath=sse -msse -mmmx -m3dnow -maccumulate-outgoing-args
-CXXFLAGS += -Wall -O1 -march=athlon-xp
+#CXXFLAGS += -march=x86-64 -O3 -mfpmath=sse -msse -mmmx -m3dnow -maccumulate-outgoing-args
+CXXFLAGS += -Wall -O1
 # ASFLAGS +=
 #LDFLAGS += -pg
 INCLUDES += /usr/local/include/ /usr/local/godi/lib/ocaml/std-lib
@@ -27,6 +27,7 @@ INCLUDES += /usr/local/include/ /usr/local/godi/lib/ocaml/std-lib
 #
 
 CLIBFILES[] =
+   new
    orect
    orun
    oevent

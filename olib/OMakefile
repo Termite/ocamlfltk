@@ -26,10 +26,10 @@ BYTE_ENABLED = true
 #
 #OCAMLCFLAGS    = -p a 
 OCAMLOPTFLAGS += -inline 100
-OCAML_LIB_FLAGS = clib/libofltk.a -cclib $"-lstdc++ -L/usr/local/lib -lfltk2 -lX11 -lXi -lm -lsupc++"
+OCAML_LIB_FLAGS = clib/libofltk.a -cclib $"-lstdc++ -L/usr/local/lib -lpng -ljpeg -lfltk2_images -lfltk2 -lXft -lXinerama -lX11 -lXi -lm -lpthread -lXext -lsupc++"
 #
 OCAMLC = ocamlc
-# OCAMLFLAGS    =
+# OCAMLFLAGS    = -g
 # OCAMLCFLAGS   +=
 # OCAMLOPTFLAGS +=
 # OCAML_LINK_FLAGS +=

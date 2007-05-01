@@ -14,7 +14,7 @@ extern "C" {
     {
         CAMLparam5(x,y,w,h,label);
         CAMLxparam1(name);
-        ocaml_window* widget = new ocaml_window(caml_named_value(String_val(name)), Int_val(x), Int_val(y), Int_val(w)
+        o_Window* widget = new o_Window(caml_named_value(String_val(name)), Int_val(x), Int_val(y), Int_val(w)
                 , Int_val(h), String_val(label));
         CAMLreturn((value) widget);
     }
@@ -27,36 +27,59 @@ extern "C" {
     CAMLprim value window_handle(value widget, value ev)
     {
         CAMLparam2(widget, ev);
-        int r = ((ocaml_window*) widget)->default_handle(Int_val(ev));
+        int r = ((o_Window*) widget)->default_handle(Int_val(ev));
         CAMLreturn(Val_int(r));
+    }
+
+    CAMLprim value window_draw(value widget)
+    {
+        CAMLparam1(widget);
+        ((o_Window*) widget) -> default_draw();
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value window_show(value widget)
+    {
+        CAMLparam1(widget);
+        ((fltk::Window*)widget) -> show();
+        CAMLreturn(Val_unit);
+    }
+
+    typedef char* char_p;
+
+    CAMLprim value window_show_args(value widget, value args)
+    {
+        CAMLparam2(widget, args);
+        int size = Wosize_val(args);
+        char** argv = size ? new char_p [size] : 0;
+        for (int i=0; i < size; ++i) {
+            argv[i] = String_val(Field(args,i));
+        }
+        ((fltk::Window*)widget) -> show(size, argv);
+        if (argv) delete[] argv;
+        CAMLreturn(Val_unit);
     }
 
     CAMLprim value window_set_doublebuffer(value window)
     {
         CAMLparam1(window);
-        ((ocaml_window*) window)->set_double_buffer();
+        ((fltk::Window*) window)->set_double_buffer();
         CAMLreturn(Val_unit);
     }
 
     CAMLprim value window_clear_doublebuffer(value window)
     {
         CAMLparam1(window);
-        ((ocaml_window*) window)->clear_double_buffer();
+        ((fltk::Window*) window)->clear_double_buffer();
         CAMLreturn(Val_unit);
     }
 
     CAMLprim value window_border(value window, value set)
     {
         CAMLparam2(window, set);
-        ((ocaml_window*) window)->border(Int_val(set));
+        ((fltk::Window*) window)->border(Int_val(set));
         CAMLreturn(Val_unit);
     }
 
-    CAMLprim value window_draw(value widget)
-    {
-        CAMLparam1(widget);
-        ((ocaml_widget*) widget) -> default_draw();
-        CAMLreturn(Val_unit);
-    }
 
 }

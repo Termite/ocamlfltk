@@ -3,7 +3,7 @@ open Widgets;;
 
 exception Break;;
 
-let populate (window : fWindow) height width =
+let populate (window : window) height width =
 (*    let log = Scanf.Scanning.from_file "log" in*)
     let grid = 25 in
     let m_y = height / grid + 1 in
@@ -31,7 +31,7 @@ let populate (window : fWindow) height width =
                             Some o
                         ) else None ) None
                 in
-                let inp = new fInput x y w h "" in
+                let inp = new input x y w h "" in
                 window#insert_before inp o 
             with
             | Break -> ()
@@ -42,7 +42,7 @@ let populate (window : fWindow) height width =
 let _ =
     Random.self_init ();
     let width = 600 and height = 300 in
-    let window = new fWindow width height Sys.argv.(0) in
+    let window = new window width height Sys.argv.(0) in
     window#wend;
     populate window height width;
     window#resizable window;

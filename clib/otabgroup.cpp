@@ -10,20 +10,35 @@ using namespace Ofltk;
 
 extern "C" {
 
-    MAKE_NEW(tabgroup);
+    GEN_NEW(TabGroup);
+
+    CAMLprim value tabgroup_handle(value widget, value ev)
+    {
+        CAMLparam2(widget, ev);
+        int r = ((o_TabGroup*) widget) -> default_handle(Int_val(ev));
+        CAMLreturn(Val_int(r));
+    }
+
+    CAMLprim value tabgroup_draw(value widget)
+    {
+        CAMLparam1(widget);
+        ((o_TabGroup*) widget) -> default_draw();
+        CAMLreturn(Val_unit);
+    }
+
     
     CAMLprim value tabgroup_get_value(value tabgroup)
     {
         CAMLparam1(tabgroup);
-        ocaml_tabgroup* b = (ocaml_tabgroup*) tabgroup;
-        CAMLreturn(Val_int(b->get_value()));
+        fltk::TabGroup* b = (fltk::TabGroup*) tabgroup;
+        CAMLreturn(Val_int(b->value()));
     }
 
     CAMLprim value tabgroup_set_value(value tabgroup, value data)
     {
         CAMLparam2(tabgroup, data);
-        ocaml_tabgroup* b = (ocaml_tabgroup*) tabgroup;
-        CAMLreturn(Val_int(b->set_value(Int_val(data))));
+        fltk::TabGroup* b = (fltk::TabGroup*) tabgroup;
+        CAMLreturn(Val_int(b->value(Int_val(data))));
     }
 
 }

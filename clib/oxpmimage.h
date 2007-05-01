@@ -2,63 +2,38 @@
 #define OXPMIMAGE_H
 
 #include "oimage.h"
+#include "osymbolbase.h"
 #include <fltk/xpmImage.h>
+
 
 namespace Ofltk {
 
-class xpmImage_d : public fltk::xpmImage {
-    value* _draw_method;
-    value* fills_rect_method;
-    value* is_frame_method;
-    value* inset_method;
-    value* measure_method;
+class o_XpmImage : public symbol_base, public fltk::xpmImage {
 
     public:
 
-    xpmImage_d(value* dm, const char * const * data, const char* name) 
-        : fltk::xpmImage(data, name), _draw_method(dm), fills_rect_method(0)
-          , is_frame_method(0), inset_method(0), measure_method(0)
-    {}
+    o_XpmImage(value vm, const char * const * data, const char* name) 
+        : symbol_base(vm), fltk::xpmImage(data, name)
+    { }
 
-    virtual ~xpmImage_d() {}
+    virtual ~o_XpmImage() {}
 
     virtual void _draw(const fltk::Rectangle& r) const
     {
         if (_draw_method) 
-        {
-            value args[] = {  Val_int(r.x()), Val_int(r.y()), Val_int(r.w()), Val_int(r.h()) };
-            caml_callbackN(*_draw_method, 4, args);
-        }
+            base_draw(r);
         else
             fltk::xpmImage::_draw(r);
     }
 
-    virtual void measure(int&w, int& h)
+    virtual void _measure(int&w, int& h)
     {
         if (!measure_method)
-            fltk::xpmImage::measure(w, h);
+            fltk::xpmImage::_measure(w, h);
         else {             
-             value m = caml_callback2(*measure_method, Val_int(w), Val_int(h));
-             w = Int_val(Field(m,0));
-             h = Int_val(Field(m,1));
+            base_measure(w, h);
         }
     }
-
-
-};
-
-
-class ocaml_xpmimage : public ocaml_image {
-
-    public:
-        ocaml_xpmimage() : ocaml_image() {}
-
-        ocaml_xpmimage(value* dm, const char * const * data, const char* name)        
-        {
-            dest = new xpmImage_d(dm, data, name);
-        }
-
-        virtual ~ocaml_xpmimage() {}
 
 };
 

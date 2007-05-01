@@ -3,74 +3,75 @@
 
 #include "osymbols.h"
 #include <fltk/Image.h>
+#include <fltk/TiledImage.h>
 
 namespace Ofltk {
 
-class Image_d : public fltk::Image {
-    value* _draw_method;
-    value* fills_rect_method;
-    value* is_frame_method;
-    value* inset_method;
-    value* measure_method;
+class o_Image : public symbol_base, public fltk::Image {
 
     public:
 
-    Image_d(value* dm, const char* name) 
-        : fltk::Image(name), _draw_method(dm), fills_rect_method(0)
-          , is_frame_method(0), inset_method(0), measure_method(0)
+    o_Image(value vm, const char* name) 
+        : symbol_base(vm), fltk::Image(name)
     {}
-    Image_d(value* dm, int w, int h, const char* name) 
-        : fltk::Image(w, h, name), _draw_method(dm), fills_rect_method(0)
-          , is_frame_method(0), inset_method(0), measure_method(0)
+    o_Image(value vm, int w, int h, const char* name) 
+        : symbol_base(vm), fltk::Image(w, h, name)
     {}
 
-    virtual ~Image_d() {}
+    virtual ~o_Image() {}
 
     virtual void _draw(const fltk::Rectangle& r) const
     {
         if (_draw_method) 
         {
-            value args[] = {  Val_int(r.x()), Val_int(r.y()), Val_int(r.w()), Val_int(r.h()) };
-            caml_callbackN(*_draw_method, 4, args);
+            base_draw(r); 
         }
         else
             fltk::Image::_draw(r);
     }
 
-    virtual void measure(int&w, int& h)
+    virtual void _measure(int&w, int& h)
     {
         if (!measure_method)
-            fltk::Image::measure(w, h);
+            fltk::Image::_measure(w, h);
         else {             
-             value m = caml_callback2(*measure_method, Val_int(w), Val_int(h));
-             w = Int_val(Field(m,0));
-             h = Int_val(Field(m,1));
+             base_measure(w, h); 
         }
     }
 
 
 };
 
-
-class ocaml_image : public ocaml_symbol {
+class o_TiledImage : public symbol_base, public fltk::TiledImage {
 
     public:
-        ocaml_image() : ocaml_symbol() {}
 
-        ocaml_image(value* dm, const char* name)        
+    o_TiledImage(value vm, fltk::Symbol* box) 
+        : symbol_base(vm), fltk::TiledImage(box)
+    {}
+
+    virtual ~o_TiledImage() {}
+
+    virtual void _draw(const fltk::Rectangle& r) const
+    {
+        if (_draw_method) 
         {
-            dest = new Image_d(dm, name);
+            base_draw(r); 
         }
-        ocaml_image(value* dm, int w, int h, const char* name)        
-        {
-            dest = new Image_d(dm, w, h, name);
+        else {
+            fltk::TiledImage::_draw(r);
+	}
+    }
+
+    virtual void _measure(int&w, int& h)
+    {
+        if (!measure_method)
+            fltk::TiledImage::_measure(w, h);
+        else {             
+             base_measure(w, h); 
         }
-
-        virtual ~ocaml_image() {}
-
+    }
 };
-
-
 
 }
 

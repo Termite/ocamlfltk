@@ -7,19 +7,19 @@
 
 namespace Ofltk {
 
-    class Item_d : public fltk::Item {
+    class o_Item : public fltk::Item {
         const char* id;
         protected:
         ::value* ocaml_obj;
 
         public:
-        Item_d(::value* oclass, const char* label=0)
+        o_Item(::value* oclass, const char* label=0)
             : fltk::Item(label)
               , id("Item-director") 
               , ocaml_obj(oclass)
         { }
 
-        virtual ~Item_d()
+        virtual ~o_Item()
         { }
 
         void default_draw()
@@ -45,34 +45,19 @@ namespace Ofltk {
         }
     };
 
-    class ocaml_item : public ocaml_widget {
-        public:
-            ocaml_item() : ocaml_widget() {}
-
-            ocaml_item(value* ocaml, const char* t = 0)
-            {
-                dest_widget = new Item_d(ocaml, t);
-            }
-
-            virtual ~ocaml_item() {}
-
-            DEF_DEFAULT(Item_d);
-
-    };
-
-    class ItemGroup_d : public fltk::ItemGroup {
+    class o_ItemGroup : public fltk::ItemGroup {
         const char* id;
         protected:
         ::value* ocaml_obj;
 
         public:
-        ItemGroup_d(::value* oclass, const char* label=0)
+        o_ItemGroup(::value* oclass, const char* label=0)
             : fltk::ItemGroup(label)
               , id("ItemGroup-director") 
               , ocaml_obj(oclass)
         { }
 
-        virtual ~ItemGroup_d()
+        virtual ~o_ItemGroup()
         { }
 
         void default_draw()
@@ -96,21 +81,6 @@ namespace Ofltk {
             //std::cout << id <<  "-handle event: " << e << std::endl;
             return Int_val(caml_callback2(caml_get_public_method(*ocaml_obj, handle_method), *ocaml_obj, Val_int(e)));
         }
-    };
-
-    class ocaml_itemgroup : public ocaml_widget {
-        public:
-            ocaml_itemgroup() : ocaml_widget() {}
-
-            ocaml_itemgroup(value* ocaml, const char* t = 0)
-            {
-                dest_widget = new ItemGroup_d(ocaml, t);
-            }
-
-            virtual ~ocaml_itemgroup() {}
-
-            DEF_DEFAULT(ItemGroup_d);
-
     };
 
 }

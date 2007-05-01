@@ -11,38 +11,40 @@ using namespace Ofltk;
 
 extern "C" {
 
-    CAMLprim value new_statusbar(value name, value x, value y, value w, value h, value label)
-    {
-        CAMLparam5(x,y,w,h,label);
-        CAMLxparam1(name);
-        ocaml_statusbar* widget = new ocaml_statusbar(caml_named_value(String_val(name)), Int_val(x), Int_val(y), Int_val(w)
-                , Int_val(h), String_val(label));
-        CAMLreturn((value) widget);
-    }
-
-    CAMLprim value new_statusbar_bc(value* args, int argc)        
-    {
-        return new_statusbar(args[0],args[1],args[2],args[3],args[4],args[5]);
-    }
+    GEN_NEW(StatusBarGroup);
 
     CAMLprim value new_easy_statusbar(value name, value height) 
     {
         CAMLparam2(name, height);
-        ocaml_statusbar* widget = new ocaml_statusbar(caml_named_value(String_val(name)), Int_val(height));
+        o_StatusBarGroup* widget = new o_StatusBarGroup(caml_named_value(String_val(name)), Int_val(height));
         CAMLreturn((value) widget);
+    }
+
+    CAMLprim value statusbar_handle(value widget, value ev)
+    {
+        CAMLparam2(widget, ev);
+        int r = ((o_StatusBarGroup*) widget) -> default_handle(Int_val(ev));
+        CAMLreturn(Val_int(r));
+    }
+
+    CAMLprim value statusbar_draw(value widget)
+    {
+        CAMLparam1(widget);
+        ((o_StatusBarGroup*) widget) -> default_draw();
+        CAMLreturn(Val_unit);
     }
 
     CAMLprim value statusbar_set_text(value widget, value pos, value text)
     {
        CAMLparam3(widget, pos, text); 
-       ((ocaml_statusbar*) widget)->set(String_val(text), fltk::StatusBarGroup::Position(Int_val(pos)));
+       ((fltk::StatusBarGroup*) widget)->set(String_val(text), fltk::StatusBarGroup::Position(Int_val(pos)));
        CAMLreturn(Val_unit);
     }
 
     CAMLprim value statusbar_child_box(value widget, value box, value pos)
     {
        CAMLparam3(widget, box, pos);
-       ((ocaml_statusbar*) widget)->child_box(((ocaml_symbol*) box)->dest_symbol(), fltk::StatusBarGroup::Position(Int_val(pos)));
+       ((fltk::StatusBarGroup*) widget)->child_box((fltk::Box*) box, fltk::StatusBarGroup::Position(Int_val(pos)));
        CAMLreturn(Val_unit);
     }
 

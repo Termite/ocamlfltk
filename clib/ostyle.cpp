@@ -14,28 +14,28 @@ CAMLprim value style_default_style(value n)
 CAMLprim value style_set_box(value style, value v)
 {
     CAMLparam2(style, v);
-    ((fltk::Style*)style)->box(((ocaml_symbol*)v)->dest_symbol());
+    ((fltk::Style*)style)->box((fltk::Box*)v);
     CAMLreturn(Val_unit);
 }
 
 CAMLprim value style_set_buttonbox(value style, value v)
 {
     CAMLparam2(style, v);
-    ((fltk::Style*)style)->buttonbox(((ocaml_symbol*)v)->dest_symbol());
+    ((fltk::Style*)style)->buttonbox((fltk::Box*)v);
     CAMLreturn(Val_unit);
 }
 
 CAMLprim value style_set_focusbox(value style, value v)
 {
     CAMLparam2(style, v);
-    ((fltk::Style*)style)->focusbox(((ocaml_symbol*)v)->dest_symbol());
+    ((fltk::Style*)style)->focusbox((fltk::Box*)v);
     CAMLreturn(Val_unit);
 }
 
 CAMLprim value style_set_glyph(value style, value v)
 {
     CAMLparam2(style, v);
-    ((fltk::Style*)style)->glyph(((ocaml_symbol*)v)->dest_symbol());
+    ((fltk::Style*)style)->glyph((fltk::Box*)v);
     CAMLreturn(Val_unit);
 }
 
@@ -159,6 +159,14 @@ CAMLprim value style_find(value v)
 }
 
 
+CAMLprim value reset_theme(value nix)
+{
+    CAMLparam1(nix);
+    fltk::reset_theme();
+    CAMLreturn(Val_unit);
+}
+
+	
 
 }
 

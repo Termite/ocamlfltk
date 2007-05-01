@@ -19,7 +19,7 @@
 # Various options
 #
 OCAMLC = ocamlc
-OCAMLFLAGS    = 
+OCAMLFLAGS    = -warn-error a
 # OCAMLCFLAGS   +=
 OCAMLOPTFLAGS += -inline 100
 # OCAML_LINK_FLAGS +=
@@ -81,7 +81,15 @@ NAVIGATION: $(OCamlProgram navigation, navigation)
 ARC:        $(OCamlProgram arc, arc)
 ASK:        $(OCamlProgram ask, ask)
 RESIZE:		$(OCamlProgram resize, resize)	
+SLIDERDEMO: $(OCamlProgram sliderdemo, sliderdemo)
 
-demos: wizard tabdemo scrolldemo pack moin menudemo boxdemo styledemo drawtiming navigation arc resize ask
-.DEFAULT: moin 
+BUTTONS_FILES[] = 
+	pixmaps
+	buttons
+
+BUTTONS:	$(OCamlProgram buttons, $(BUTTONS_FILES))	
+BUTTON:  	$(OCamlProgram button, button)	
+
+demos: wizard tabdemo scrolldemo pack moin menudemo boxdemo styledemo drawtiming navigation arc resize ask moin sliderdemo buttons button
+.DEFAULT: buttons
 

@@ -4,7 +4,7 @@ open Widgets;;
 open Draw;;
 
 class shape_widget handle_roller x y w h title = object(self)
-    inherit fWidget x y w h title
+    inherit widget x y w h title
     val pi = 4.0 *. (atan 1.0)
     val mutable _sides = 3
     method sides = _sides
@@ -48,13 +48,14 @@ end;;
 
 
 
-let win = new fWindow ~x:0 ~y:0 300 330  "hehe" in
-let sl = new fSlider 50 285 (win#w - 60) 30 "Sides:" in
+let win = new window ~x:0 ~y:0 300 330  "hehe" in
+let sl = new slider 50 285 (win#w - 60) 30 "Sides:" in
 let sw = new shape_widget sl#handle 10 10 270 270 "" in
 win#resizable sw;
-let stat = new easyStatusBar in
+(*let stat = new easyStatusBar in
 stat#child_box SBAR_RIGHT Box.thin_down_box; 
 stat#print "Hi, wie geht's?";
+*)
 win#begin_add;
 sl#clr_flags [Flags.align_mask];
 sl#set_flags [Flags.align_left];
@@ -62,7 +63,7 @@ sl#set_value (float sw#sides);
 sl#set_step 1.0;
 sl#range 3.0 40.0;
 sl#callback (fun () -> sw#set_sides (int_of_float sl#get_value);
-        stat#format_text SBAR_RIGHT "%d sides" sw#sides
+        (*stat#format_text SBAR_RIGHT "%d sides" sw#sides*)
     );
 
 win#wend;

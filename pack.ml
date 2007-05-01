@@ -2,14 +2,14 @@ open Printf;;
 open Widgets;;
 
 let make_bar name w h dir =
-    let b = new fBarGroup 0 0 w h name in
+    let b = new barGroup 0 0 w h name in
     if dir = `Vert then b#set_vertical;
     b#set_box Box.thin_up_box;
 ;;
 
 
-let win = new fWindow 300 300  "Pack Demo" in
-let p = new fPackedGroup 0 0 300 300 "" in
+let win = new window 300 300  "Pack Demo" in
+let p = new packedGroup 0 0 300 300 "" in
 win#resizable p;
 p#begin_add;
 make_bar "bar0" 30 30 `H; 
@@ -17,7 +17,7 @@ make_bar "bar1" 30 30 `H;
 make_bar "bar2" 30 30 `Vert;
 make_bar "bar3" 30 30 `Vert;
 make_bar "bar4" 30 30 `H;
-let w = new fWidget 0 0 30 30 "resizable()" in
+let w = new widget 0 0 30 30 "resizable()" in
 w#set_box Box.flat_box;
 w#set_color 0x44444400l;
 p#resizable w;

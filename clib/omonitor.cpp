@@ -6,12 +6,12 @@ using namespace Ofltk;
 extern "C" {
 
 #include <caml/custom.h>
-#define monval(v)   (*((ocaml_monitor**)Data_custom_val(v)))
+#define monval(v)   (*((fltk::Monitor**)Data_custom_val(v)))
 
     void destroy_monitor(value m)
     {
         std::cout << "destroying monitor..." << std::endl;
-        delete(monval(m));
+        //delete(monval(m));
     }
    
     static struct custom_operations monitor_ops = {
@@ -23,10 +23,10 @@ extern "C" {
         custom_deserialize_default
     };
 
-    static value alloc_monitor(ocaml_monitor* m)
+    static value alloc_monitor(const fltk::Monitor* m)
     {
-        value v = caml_alloc_custom(&monitor_ops, sizeof(ocaml_monitor*), 0, 1);
-        monval(v) = m;
+        value v = caml_alloc_custom(&monitor_ops, sizeof(fltk::Monitor*), 0, 1);
+        monval(v) = const_cast<fltk::Monitor*>(m);
         return v;
     }
 
@@ -59,14 +59,14 @@ extern "C" {
     {
         CAMLparam2(x, y);
         const fltk::Monitor& m = fltk::Monitor::find(Int_val(x), Int_val(y));
-        CAMLreturn(alloc_monitor(new ocaml_monitor(m)));
+        CAMLreturn(alloc_monitor(&m));
     }
 
     CAMLprim value monitor_all(value nix)
     {
         CAMLparam1(nix);
-        const fltk::Monitor m = fltk::Monitor::all();
-        CAMLreturn((value)(alloc_monitor(new ocaml_monitor(m))));
+        const fltk::Monitor& m = fltk::Monitor::all();
+        CAMLreturn((value)(alloc_monitor(&m)));
     }
 
     CAMLprim value monitor_rect(value mon)
@@ -74,10 +74,10 @@ extern "C" {
         CAMLparam1(mon);
         CAMLlocal1(r);
         r = caml_alloc_small(4,0);
-        Field(r,0) = monval(mon)->work()->x();
-        Field(r,1) = monval(mon)->work()->y();
-        Field(r,2) = monval(mon)->work()->w();
-        Field(r,3) = monval(mon)->work()->h();
+        Field(r,0) = monval(mon)->x();
+        Field(r,1) = monval(mon)->y();
+        Field(r,2) = monval(mon)->w();
+        Field(r,3) = monval(mon)->h();
         CAMLreturn(r);
     }
 
@@ -90,7 +90,7 @@ extern "C" {
         erg = caml_alloc_tuple(cnt);
         for (int i=0; i < cnt; ++i)
         {
-           Store_field(erg, i, alloc_monitor(new ocaml_monitor(list[i]))); 
+           Store_field(erg, i, alloc_monitor(&(list[i]))); 
         }
         CAMLreturn(erg);
     }

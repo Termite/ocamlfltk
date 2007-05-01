@@ -8,7 +8,8 @@ type named = [normal | `Named];;
 type 'a box = 'a Symbol.sym constraint 'a = [> Symbol.symbol];;
 
 external default_style: unit -> cstyle = "style_default_style";;
-external set_box: [> normal] style -> 'a box -> unit = "style_set_box";;
+external set_box: cstyle -> 'a box -> unit = "style_set_box";;
+
 external set_buttonbox: [> normal ] style -> 'a box -> unit = "style_set_buttonbox";;
 external set_focusbox:  [> normal ] style -> 'a box -> unit = "style_set_focusbox";;
 external set_glyph: [>normal] style -> 'a box -> unit = "style_set_glyph";;
@@ -21,7 +22,7 @@ external set_selcolor: [>normal] style -> color -> unit = "style_setselcolor";;
 external set_seltextcolor: [>normal] style -> color -> unit = "style_setseltextcolor";;
 external set_buttoncolor:  [>normal] style -> color -> unit = "style_setbuttoncolor";;
 external set_labelcolor:   [>normal] style -> color -> unit = "style_setlabelcolor";;
-external set_highlightcol:    [>normal] style -> color -> unit = "style_sethighlightcol";;
+external set_highlight_color:    [>normal] style -> color -> unit = "style_set_highlight_color";;
 external set_highlighttextcol:[>normal] style -> color -> unit = "style_sethighlighttextcol";;
 external set_labelsize: [>normal] style -> float -> unit = "style_setlabelsize";;
 external set_textsize:  [>normal] style -> float -> unit = "style_settextsize";;
@@ -31,9 +32,7 @@ external set_scrollbar_width: [>normal] style -> Flags.flags -> unit = "style_sc
 
 external find: string -> normal style option  = "style_find";;
 
-
-
-
+external reset_theme: unit -> unit = "reset_theme";;
 
 let apply v f st =
     match v with
@@ -41,23 +40,28 @@ let apply v f st =
     | Some n -> f st n
 ;;
 
+external button_default_style: unit -> cstyle = "button_default_style";;
+let buttonDefaultStyle = button_default_style();;
+
 (*
-let make_style 
+let modify_style 
     ?box ?buttonbox ?focusbox ?glyph ?labelfont ?textfont ?labeltype 
     ?color ?textcolor ?sel_color ?sel_textcolor ?buttoncolor ?labelcolor
     ?hi_color ?hi_textcolor ?labelsize ?textsize ?leading
     ?scrollbar_align ?scrollbar_width
     ?hide_underscore ?draw_boxes_inactive ?wheel_scroll
-    () =
-        let s = default_style () in
-        List.iter (fun (v,f) -> apply v f s) [
+    style =
+        List.iter (fun (v,f) -> apply v f style) [
             box,setbox;
             buttonbox, setbuttonbox;
             focusbox, set_focusbox;
             glyph, set_glyph;
             labelfont, set_labelfont;
+
+
+let ns = buttonDefaultStyle () in
+modify_style ~box:plastic_up ~color:220l ~highlightColor:3l ns;;
+
 *)
-
-
 
 

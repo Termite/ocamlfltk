@@ -18,6 +18,13 @@ using namespace Ofltk;
 
 extern "C" {
     
+    CAMLprim value fltk_redraw(value a)
+    {
+        CAMLparam1(a);
+        fltk::redraw(); 
+        CAMLreturn(Val_unit);
+    }
+
 
     CAMLprim value output_ptr(value a)
     {
@@ -36,249 +43,420 @@ extern "C" {
     CAMLprim value get_null_widget(value nix)
     {
         CAMLparam1(nix);
-        CAMLreturn(Val_int(0));
+        CAMLreturn((value)0);
     }
-
-
-    /* ============================================================ */
-
-    CAMLprim value new_widget(value name, value x, value y, value w, value h, value label)
+	
+    /* XXX TEST */
+    
+    CAMLprim value s_new_widget(value name, value x, value y, value w, value h, value label)
     {
         CAMLparam5(x,y,w,h,label);
         CAMLxparam1(name);
-        ocaml_widget* widget = new ocaml_widget(caml_named_value(String_val(name)), Int_val(x), Int_val(y), Int_val(w)
+        o_Widget* widget = new o_Widget(caml_named_value(String_val(name)), Int_val(x), Int_val(y), Int_val(w)
                 , Int_val(h), String_val(label));
         CAMLreturn((value) widget);
     }
 
-    CAMLprim value new_widget_bc(value* args, int argc)
+    CAMLprim value s_new_widget_bc(value* args, int argc)
     {
-        return new_widget(args[0],args[1],args[2],args[3],args[4],args[5]);
+        return s_new_widget(args[0],args[1],args[2],args[3],args[4],args[5]);
     }
 
-    CAMLprim value make_objwidget(value name, value widget)
+    CAMLprim value widget_active(value widget)
     {
-        CAMLparam2(name, widget);
-        value* ocaml_obj = caml_named_value(String_val(name));
-        ((ocaml_widget*) widget)->store_obj(ocaml_obj);
-        CAMLreturn(widget);
+        CAMLparam1(widget);
+        CAMLreturn(Val_bool(((fltk::Widget*)widget) -> active()));
+    }
+
+    CAMLprim value widget_activate(value widget)
+    {
+        CAMLparam1(widget);
+        ((fltk::Widget*)widget) -> activate();
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value widget_deactivate(value widget)
+    {
+        CAMLparam1(widget);
+        ((fltk::Widget*)widget) -> deactivate();
+        CAMLreturn(Val_unit);
     }
 
     CAMLprim value widget_hide(value widget)
     {
         CAMLparam1(widget);
-        ((ocaml_widget*)widget) -> hide();
+        ((fltk::Widget*)widget) -> hide();
         CAMLreturn(Val_unit);
     }
 
-    CAMLprim value widget_show(value widget)
+    CAMLprim value s_widget_show(value widget)
     {
         CAMLparam1(widget);
-        ((ocaml_widget*)widget) -> show();
+        ((fltk::Widget*)widget) -> show();
         CAMLreturn(Val_unit);
     }
 
-    CAMLprim value redraw_widget(value widget)
+    CAMLprim value s_redraw_widget(value widget)
     {
         CAMLparam1(widget);
-        ((ocaml_widget*)widget)->redraw();
+        ((fltk::Widget*)widget)->redraw();
         CAMLreturn(Val_unit);
     }
 
     CAMLprim value widget_get_tooltip(value widget)
     {
         CAMLparam1(widget);
-        CAMLreturn(copy_string(((ocaml_widget*) widget)->tooltip()));
+        CAMLreturn(copy_string(((fltk::Widget*) widget)->tooltip()));
     }
 
     CAMLprim value widget_set_tooltip(value widget, value tooltip)
     {
         CAMLparam2(widget, tooltip);
-        ((ocaml_widget*) widget)->tooltip(String_val(tooltip));
+        ((fltk::Widget*) widget)->tooltip(String_val(tooltip));
         CAMLreturn(Val_unit);
     }
 
-    CAMLprim value widget_handle(value widget, value ev)
+    CAMLprim value s_widget_handle(value widget, value ev)
     {
         CAMLparam2(widget, ev);
-        int r = ((ocaml_widget*) widget) -> default_handle(Int_val(ev));
+        int r = ((o_Widget*) widget) -> default_handle(Int_val(ev));
         CAMLreturn(Val_int(r));
     }
 
-    CAMLprim value widget_draw(value widget)
+    CAMLprim value s_widget_draw(value widget)
     {
         CAMLparam1(widget);
-        ((ocaml_widget*) widget) -> default_draw();
+        ((o_Widget*) widget) -> default_draw();
         CAMLreturn(Val_unit);
     }
 
-    CAMLprim value widget_set_vertical(value widget)
+    CAMLprim value s_widget_set_vertical(value widget)
     {
         CAMLparam1(widget);
-        ((ocaml_widget*) widget) -> set_vertical();
+        ((fltk::Widget*) widget) -> set_vertical();
         CAMLreturn(Val_unit);
     }
 
-    CAMLprim value widget_set_horizontal(value widget)
+    CAMLprim value s_widget_set_horizontal(value widget)
     {
         CAMLparam1(widget);
-        ((ocaml_widget*) widget) -> set_horitontal();
+        ((fltk::Widget*) widget) -> set_horizontal();
         CAMLreturn(Val_unit);
     }
 
-    CAMLprim value widget_set_image(value widget, value image)
+    CAMLprim value s_widget_set_image(value widget, value image)
     {
         CAMLparam2(widget, image);
-        ((ocaml_widget*) widget)->image(((ocaml_symbol*)image));
+        ((fltk::Widget*) widget)->image(((fltk::Symbol*)image));
         CAMLreturn(Val_unit);
     }
 
-    CAMLprim value widget_get_image(value widget)
+    CAMLprim value s_widget_get_image(value widget)
     {
         CAMLparam1(widget);
-        CAMLreturn((value)(((ocaml_widget*) widget)->image()));
+        CAMLreturn((value)(((fltk::Widget*) widget)->image()));
     }
 
     CAMLprim value widget_set_box(value widget, value box)
     {
         CAMLparam2(widget, box);
-        ((ocaml_widget*) widget)->set_box(((ocaml_symbol*)box)->dest_symbol());
+        ((fltk::Widget*) widget)->box((fltk::Symbol*)box);
         CAMLreturn(Val_unit);
     }
 
-    CAMLprim value widget_get_box(value widget)
+    CAMLprim value s_widget_get_box(value widget)
     {
         CAMLparam1(widget);
-        CAMLreturn((value)(((ocaml_widget*) widget)->get_box()));
+        CAMLreturn((value)(((fltk::Widget*) widget)->box()));
     }
 
-    CAMLprim value widget_damage(value widget)
+    CAMLprim value s_widget_damage(value widget)
     {
         CAMLparam1(widget);
-        CAMLreturn(Val_int(((ocaml_widget*) widget)->damage()));
+        CAMLreturn(Val_int(((fltk::Widget*) widget)->damage()));
     }
 
-    CAMLprim value widget_relayout(value widget)
+    CAMLprim value s_widget_relayout(value widget)
     {
         CAMLparam1(widget);
-        ((ocaml_widget*) widget) -> relayout();
+        ((fltk::Widget*) widget) -> relayout();
         CAMLreturn(Val_unit);
     }
 
-    CAMLprim value widget_label(value widget)
+    CAMLprim value s_widget_label(value widget)
     {
         CAMLparam1(widget);
-        CAMLreturn(copy_string(((ocaml_widget*) widget) -> label()));
+        CAMLreturn(copy_string(((fltk::Widget*) widget) -> label()));
     }
 
-    CAMLprim value widget_get_labelsize(value widget)
+    CAMLprim value s_widget_get_labelsize(value widget)
     {
         CAMLparam1(widget);
-        CAMLreturn(caml_copy_double(((ocaml_widget*) widget) -> labelsize()));
+        CAMLreturn(caml_copy_double(((fltk::Widget*) widget) -> labelsize()));
     }
 
-    CAMLprim value widget_set_labelsize(value widget, value size)
+    CAMLprim value s_widget_set_labelsize(value widget, value size)
     {
         CAMLparam2(widget, size);
-        ((ocaml_widget*) widget) -> labelsize(Double_val(size));
+        ((fltk::Widget*) widget) -> labelsize(Double_val(size));
         CAMLreturn(Val_unit);
     }
 
-    CAMLprim value widget_get_type(value widget)
+    CAMLprim value s_widget_get_type(value widget)
     {
         CAMLparam1(widget);
-        CAMLreturn(Val_int(((ocaml_widget*) widget) -> get_type()));
+        CAMLreturn(Val_int(((fltk::Widget*) widget) -> type()));
     }
 
-    CAMLprim value widget_set_type(value widget, value typ)
+    CAMLprim value s_widget_set_type(value widget, value typ)
     {
         CAMLparam2(widget, typ);
-        ((ocaml_widget*) widget) -> set_type(Int_val(typ));
+        ((fltk::Widget*) widget) -> type(Int_val(typ));
         CAMLreturn(Val_unit);
     }
-    CAMLprim value widget_get_when(value widget)
+    CAMLprim value s_widget_get_when(value widget)
     {
         CAMLparam1(widget);
-        CAMLreturn(Val_int(((ocaml_widget*) widget) -> get_when()));
+        CAMLreturn(Val_int(((fltk::Widget*) widget) -> when()));
     }
 
-    CAMLprim value widget_set_when(value widget, value when)
+    CAMLprim value s_widget_set_when(value widget, value when)
     {
         CAMLparam2(widget, when);
-        ((ocaml_widget*) widget) -> set_when(Int_val(when));
+        ((fltk::Widget*) widget) -> when(Int_val(when));
         CAMLreturn(Val_unit);
     }
-    CAMLprim value widget_set_labelfont(value widget, value font)
+    CAMLprim value s_widget_set_labelfont(value widget, value font)
     {
         CAMLparam2(widget, font);
-        ((ocaml_widget*) widget)->labelfont((fltk::Font*) font);
+        ((fltk::Widget*) widget)->labelfont((fltk::Font*) font);
         CAMLreturn(Val_unit);
     }
 
-    CAMLprim value widget_get_labelfont(value widget)
+    CAMLprim value s_widget_get_labelfont(value widget)
     {
         CAMLparam1(widget);
-        CAMLreturn((value)((ocaml_widget*) widget)->labelfont());
+        CAMLreturn((value)((fltk::Widget*) widget)->labelfont());
     }
 
 /*
-    CAMLprim value widget_labeltype(value widget, value typ)
+    CAMLprim value s_widget_labeltype(value widget, value typ)
     {
         CAMLparam2(widget, typ);
-        ((ocaml_widget*) widget)->labeltype((LabelType*) typ);
+        ((fltk::Widget*) widget)->labeltype((LabelType*) typ);
         CAMLreturn(Val_unit);
     }
 
-    CAMLprim value widget_box(value widget, value boxtyp)
+    CAMLprim value s_widget_box(value widget, value boxtyp)
     {
         CAMLparam2(widget, boxtyp);
-        ((ocaml_widget*) widget)->box((Box*)boxtyp);
+        ((fltk::Widget*) widget)->box((Box*)boxtyp);
         CAMLreturn(Val_unit);
     }
 */
     CAMLprim value get_width(value rect)
     {
        CAMLparam1(rect);
-       CAMLreturn(Val_int(((ocaml_rect*) rect)-> w()));
+       CAMLreturn(Val_int(((fltk::Widget*) rect)-> w()));
     }
 
     CAMLprim value get_height(value rect)
     {
        CAMLparam1(rect);
-       CAMLreturn(Val_int(((ocaml_rect*) rect)-> h()));
+       CAMLreturn(Val_int(((fltk::Widget*) rect)-> h()));
     }
 
     CAMLprim value get_x(value rect)
     {
        CAMLparam1(rect);
-       CAMLreturn(Val_int(((ocaml_rect*) rect)-> x()));
+       CAMLreturn(Val_int(((fltk::Widget*) rect)-> x()));
     }
 
     CAMLprim value get_y(value rect)
     {
        CAMLparam1(rect);
-       CAMLreturn(Val_int(((ocaml_rect*) rect)-> y()));
+       CAMLreturn(Val_int(((fltk::Widget*) rect)-> y()));
     }
 
-/*
-    CAMLprim value set_widget_callback(value widget, value fkt)
+    CAMLprim value s_widget_resize(value widget, value xy, value w, value h)
     {
-        CAMLparam2(widget, fkt);
-        ((ocaml_widget*)widget)->set_caml_cb(fkt);
-        CAMLreturn(Val_unit);
+       CAMLparam4(widget, xy, w, h);
+       bool r;
+       if (Is_long(xy)) 
+       {
+           std::cout << "no xy " << std::endl;
+            r = ((fltk::Widget*) widget)->resize(Int_val(w), Int_val(h));
+       }
+       else
+       {
+           value p = Field(xy,0);
+           int x = Int_val(Field(p,0));
+           int y = Int_val(Field(p,1));
+           std::cout << "x: " << x << " y: " << y << std::endl;
+           r = ((fltk::Widget*) widget)->resize(x, y, Int_val(w), Int_val(h));
+       }
+       CAMLreturn(Val_int(r));
     }
-*/
-    
+
     static void widget_cb(fltk::Widget* widget, value* caml_cb)	    
     {
         caml_callback(*caml_cb, Val_unit);
     }
 
+    CAMLprim value s_set_widget_cb(value widget, value fkt)
+    {
+        CAMLparam2(widget, fkt);
+        value* cb = caml_named_value(String_val(fkt));             
+        ((fltk::Widget*) widget)
+            ->callback((fltk::Callback*)widget_cb, (void*)cb);
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value widget_handle(value widget, value ev)
+    {
+        CAMLparam2(widget, ev);
+        int r = ((o_Widget*) widget) -> default_handle(Int_val(ev));
+        CAMLreturn(Val_int(r));
+    }
+
+    CAMLprim value widget_draw(value widget)
+    {
+        CAMLparam1(widget);
+        ((o_Widget*) widget) -> default_draw();
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value widget_set_vertical(value widget)
+    {
+        CAMLparam1(widget);
+        ((fltk::Widget*) widget) -> set_vertical();
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value widget_set_horizontal(value widget)
+    {
+        CAMLparam1(widget);
+        ((fltk::Widget*) widget) -> set_horizontal();
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value widget_set_image(value widget, value image)
+    {
+        CAMLparam2(widget, image);
+        ((fltk::Widget*) widget)->image(((fltk::Symbol*)image));
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value widget_get_image(value widget)
+    {
+        CAMLparam1(widget);
+        CAMLreturn((value)(((fltk::Widget*) widget)->image()));
+    }
+
+    CAMLprim value widget_get_box(value widget)
+    {
+        CAMLparam1(widget);
+        CAMLreturn((value)(((fltk::Widget*) widget)->box()));
+    }
+
+    CAMLprim value widget_damage(value widget)
+    {
+        CAMLparam1(widget);
+        CAMLreturn(Val_int(((fltk::Widget*) widget)->damage()));
+    }
+
+    CAMLprim value widget_relayout(value widget)
+    {
+        CAMLparam1(widget);
+        ((fltk::Widget*) widget) -> relayout();
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value widget_label(value widget)
+    {
+        CAMLparam1(widget);
+        CAMLreturn(copy_string(((fltk::Widget*) widget) -> label()));
+    }
+
+    CAMLprim value widget_get_labelsize(value widget)
+    {
+        CAMLparam1(widget);
+        CAMLreturn(caml_copy_double(((fltk::Widget*) widget) -> labelsize()));
+    }
+
+    CAMLprim value widget_set_labelsize(value widget, value size)
+    {
+        CAMLparam2(widget, size);
+        ((fltk::Widget*) widget) -> labelsize(Double_val(size));
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value widget_get_type(value widget)
+    {
+        CAMLparam1(widget);
+        CAMLreturn(Val_int(((fltk::Widget*) widget) -> type()));
+    }
+
+    CAMLprim value widget_set_type(value widget, value typ)
+    {
+        CAMLparam2(widget, typ);
+        ((fltk::Widget*) widget) -> type(Int_val(typ));
+        CAMLreturn(Val_unit);
+    }
+    CAMLprim value widget_get_when(value widget)
+    {
+        CAMLparam1(widget);
+        CAMLreturn(Val_int(((fltk::Widget*) widget) ->when()));
+    }
+
+    CAMLprim value widget_set_when(value widget, value when)
+    {
+        CAMLparam2(widget, when);
+        ((fltk::Widget*) widget) -> when(Int_val(when));
+        CAMLreturn(Val_unit);
+    }
+    CAMLprim value widget_set_labelfont(value widget, value font)
+    {
+        CAMLparam2(widget, font);
+        ((fltk::Widget*) widget)->labelfont((fltk::Font*) font);
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value widget_get_labelfont(value widget)
+    {
+        CAMLparam1(widget);
+        CAMLreturn((value)((fltk::Widget*) widget)->labelfont());
+    }
+
+/*
+    CAMLprim value widget_labeltype(value widget, value typ)
+    {
+        CAMLparam2(widget, typ);
+        ((fltk::Widget*) widget)->labeltype((LabelType*) typ);
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value widget_box(value widget, value boxtyp)
+    {
+        CAMLparam2(widget, boxtyp);
+        ((fltk::Widget*) widget)->box((Box*)boxtyp);
+        CAMLreturn(Val_unit);
+    }
+*/
+/*
+    CAMLprim value set_widget_callback(value widget, value fkt)
+    {
+        CAMLparam2(widget, fkt);
+        ((fltk::Widget*)widget)->set_caml_cb(fkt);
+        CAMLreturn(Val_unit);
+    }
+*/
+    
     CAMLprim value set_widget_cb(value widget, value fkt)
     {
         CAMLparam2(widget, fkt);
         value* cb = caml_named_value(String_val(fkt));             
-        ((ocaml_widget*) widget)
+        ((fltk::Widget*) widget)
             ->callback((fltk::Callback*)widget_cb, (void*)cb);
         CAMLreturn(Val_unit);
     }
@@ -286,27 +464,27 @@ extern "C" {
     CAMLprim value widget_set_color(value widget, value color)
     {
         CAMLparam2(widget, color);
-        ((ocaml_widget*) widget)->color(Int32_val(color));
+        ((fltk::Widget*) widget)->color(Int32_val(color));
         CAMLreturn(Val_unit);
     }
 
     CAMLprim value widget_set_label(value widget, value label)
     {
         CAMLparam2(widget, label);
-        ((ocaml_widget*) widget)->copy_label(String_val(label));
+        ((fltk::Widget*) widget)->copy_label(String_val(label));
         CAMLreturn(Val_unit);
     }
 
     CAMLprim value widget_get_flags(value widget)
     {
        CAMLparam1(widget);
-       CAMLreturn(Val_int(((ocaml_widget*) widget)-> flags()));
+       CAMLreturn(Val_int(((fltk::Widget*) widget)-> flags()));
     }
 
     CAMLprim value widget_set_flags(value widget, value flags)
     {
        CAMLparam2(widget, flags);
-       ((ocaml_widget*) widget)->flags(Int_val(flags));
+       ((fltk::Widget*) widget)->flags(Int_val(flags));
        CAMLreturn(Val_unit);
     }
 
@@ -317,7 +495,7 @@ extern "C" {
        if (Is_long(xy)) 
        {
            std::cout << "no xy " << std::endl;
-            r = ((ocaml_widget*) widget)->resize(Int_val(w), Int_val(h));
+            r = ((fltk::Widget*) widget)->resize(Int_val(w), Int_val(h));
        }
        else
        {
@@ -325,7 +503,7 @@ extern "C" {
            int x = Int_val(Field(p,0));
            int y = Int_val(Field(p,1));
            std::cout << "x: " << x << " y: " << y << std::endl;
-           r = ((ocaml_widget*) widget)->resize(x, y, Int_val(w), Int_val(h));
+           r = ((fltk::Widget*) widget)->resize(x, y, Int_val(w), Int_val(h));
        }
        CAMLreturn(Val_int(r));
     }
@@ -335,7 +513,7 @@ extern "C" {
     {
         CAMLparam5(x,y,w,h,label);
         CAMLxparam1(name);
-        ocaml_invisiblebox* widget = new ocaml_invisiblebox(caml_named_value(String_val(name)), Int_val(x), Int_val(y), Int_val(w)
+        o_InvisibleBox* widget = new o_InvisibleBox(caml_named_value(String_val(name)), Int_val(x), Int_val(y), Int_val(w)
                 , Int_val(h), String_val(label));
         CAMLreturn((value) widget);
     }
@@ -343,6 +521,20 @@ extern "C" {
     CAMLprim value new_invisible_bc(value* args, int argc)
     {
         return new_invisible(args[0],args[1],args[2],args[3],args[4],args[5]);
+    }
+
+    CAMLprim value invisible_handle(value widget, value ev)
+    {
+        CAMLparam2(widget, ev);
+        int r = ((o_InvisibleBox*) widget) -> default_handle(Int_val(ev));
+        CAMLreturn(Val_int(r));
+    }
+
+    CAMLprim value invisible_draw(value widget)
+    {
+        CAMLparam1(widget);
+        ((o_InvisibleBox*) widget) -> default_draw();
+        CAMLreturn(Val_unit);
     }
 
 
