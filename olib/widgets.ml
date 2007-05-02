@@ -770,6 +770,7 @@ external scrollgroup_handle: widget_ptr -> Event.event_type -> Event.event_type 
 external scrollgroup_xpos: widget_ptr -> int = "scrollgroup_xpos";;
 external scrollgroup_ypos: widget_ptr -> int = "scrollgroup_ypos";;
 external scrollgroup_type: widget_ptr -> scrolltype -> unit = "scrollgroup_type";;
+external scrollgroup_set_position: widget_ptr -> int -> int -> unit = "scrollgroup_set_position";; 
 external scrollgroup_scroll_to: widget_ptr -> int -> int -> unit = "scrollgroup_scroll_to";;
 
 class scrollGroup x y w h label = object
@@ -781,6 +782,7 @@ class scrollGroup x y w h label = object
     method scrolltype t = scrollgroup_type obj t
     method xpos = scrollgroup_xpos obj
     method ypos = scrollgroup_ypos obj
+    method position x y = scrollgroup_set_position obj x y
     method scroll_to x y = scrollgroup_scroll_to obj x y
 end;;
 

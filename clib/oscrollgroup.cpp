@@ -24,6 +24,14 @@ extern "C" {
         CAMLreturn(Val_unit);
     }
 
+    CAMLprim value scrollgroup_set_position(value sc, value x, value y)
+    {
+        CAMLparam3(sc, x, y);
+        fltk::ScrollGroup* b = (fltk::ScrollGroup*) sc;
+        b->position(Int_val(x), Int_val(y));
+        CAMLreturn(Val_unit);
+    }
+
     CAMLprim value scrollgroup_xpos(value sc)
     {
         CAMLparam1(sc);
