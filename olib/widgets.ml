@@ -131,11 +131,35 @@ let or_flags start flag_list =
     List.fold_left (fun erg flag -> erg lor flag) start flag_list
 ;;
 
+let apply v fc = match v with
+	| None -> ()
+	| Some x -> fc x
+;;
+
+
 class widget x y w h title = object(self)
   inherit fltkbase x y w h title
   val mutable cb_name = ""
   method private alloc = new_widget
   method ct = "widget"
+
+  method configure: 'a.
+      ?flags:Flags.flags list ->
+      ?cb:(unit -> unit) ->
+      ?label:string ->
+      ?color:Int32.t ->
+      ?labelcolor:int32 ->
+      ?labelsize:float -> ?box:'a image -> ?tooltip:string -> unit -> unit
+      = fun ?flags ?cb ?label ?color ?labelcolor ?labelsize ?box ?tooltip () ->
+	    apply flags self#set_flags;
+	    apply cb self#callback;
+	    apply color self#set_color;
+	    apply label self#set_label;
+	    apply labelcolor self#set_labelcolor;
+	    apply labelsize self#set_labelsize;
+	    apply box self#set_box;
+	    apply tooltip self#set_tooltip
+
   method set_flags (f:flags list) =
       printf "setting flags %d\n%!" (or_flags 0 f);
       let flags = or_flags (get_flags obj) f in
