@@ -49,6 +49,7 @@ CLIBFILES[] =
    odialogs
    opackedgroup
    otabgroup
+   otiledgroup
    ostatusbar
    ogroup
    ooutput
