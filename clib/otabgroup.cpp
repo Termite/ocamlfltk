@@ -38,7 +38,14 @@ extern "C" {
     {
         CAMLparam2(tabgroup, data);
         fltk::TabGroup* b = (fltk::TabGroup*) tabgroup;
-        CAMLreturn(Val_int(b->value(Int_val(data))));
+        CAMLreturn(Val_bool(b->value(Int_val(data))));
+    }
+
+    CAMLprim value tabgroup_set_selected_child(value tabgroup, value widget)
+    {
+        CAMLparam2(tabgroup, widget);
+        fltk::TabGroup* b = (fltk::TabGroup*) tabgroup;
+        CAMLreturn(Val_bool(b->selected_child((fltk::Widget*)(widget))));
     }
 
 }

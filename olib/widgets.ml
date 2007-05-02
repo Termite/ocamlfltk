@@ -749,8 +749,9 @@ external tabgroup_draw: widget_ptr -> unit = "tabgroup_draw";;
 external tabgroup_handle: widget_ptr -> Event.event_type -> Event.event_type = "tabgroup_handle";;
 external tabgroup_get_value: widget_ptr -> int = "tabgroup_get_value";;
 external tabgroup_set_value: widget_ptr -> int -> bool = "tabgroup_set_value";;
+external tabgroup_set_selected_child: widget_ptr -> widget_ptr -> bool = "tabgroup_set_selected_child";;
 
-class tabGroup x y w h label = object
+class tabGroup x y w h label = object(self)
     inherit group ~x:x ~y:y w h label
     method private alloc = new_tabgroup
     method draw = tabgroup_draw obj
@@ -758,6 +759,12 @@ class tabGroup x y w h label = object
     method ct = "TabGroup"
     method set_value n = tabgroup_set_value obj n
     method get_value = tabgroup_get_value obj
+    method set_selected_child: 'a. (#widget as 'a) -> bool =
+    	fun w -> tabgroup_set_selected_child obj w#obj
+    method selected_child =
+    	let idx = self#get_value in
+	if idx = 0 then None
+	else Some (self#child idx)
 end;;
 
 type scrolltype = NoScroll | Horizontal | Vertical | Both | Always | HorizontalAlways
