@@ -59,7 +59,7 @@ external set_callback: widget_ptr -> string -> unit = "s_set_widget_cb";;
 external widget_label: widget_ptr-> string = "widget_label";;
 external get_labelfont: widget_ptr -> Font.font = "s_widget_get_labelfont";;
 external get_labelsize: widget_ptr -> float = "s_widget_get_labelsize";;
-external set_labelsize: widget_ptr -> float -> unit = "s_widget_get_labelsize";;
+external set_labelsize: widget_ptr -> float -> unit = "s_widget_set_labelsize";;
 external widget_set_box: widget_ptr-> 'a image -> unit = "widget_set_box";;
 external widget_get_box: widget_ptr-> symbol = "widget_get_box";;
 external widget_get_image: widget_ptr-> symbol = "widget_get_image";;
@@ -766,6 +766,22 @@ class tabGroup x y w h label = object(self)
 	if idx = 0 then None
 	else Some (self#child idx)
 end;;
+
+external new_tiledgroup: string -> int -> int -> int -> int -> string -> widget_ptr
+    = "new_TiledGroup_bc" "new_TiledGroup";;
+external tiledgroup_draw: widget_ptr -> unit = "tiledgroup_draw";;
+external tiledgroup_handle: widget_ptr -> Event.event_type -> Event.event_type = "tiledgroup_handle";;
+external tiledgroup_position: widget_ptr -> int -> int -> int -> int -> unit = "tiledgroup_position";;
+
+class tiledGroup x y w h label = object(self)
+    inherit group ~x:x ~y:y w h label
+    method private alloc = new_tiledgroup
+    method draw = tiledgroup_draw obj
+    method handle ev = tiledgroup_handle obj ev
+    method position oldx oldy x y = tiledgroup_position obj oldx oldy x y
+    method ct = "TiledGroup"
+end;;
+
 
 type scrolltype = NoScroll | Horizontal | Vertical | Both | Always | HorizontalAlways
                 | VerticalAlways | BothAlways;;
