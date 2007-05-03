@@ -174,7 +174,7 @@ class widget x y w h title = object(self)
       let flags = get_flags obj lxor (or_flags 0 f) in
       set_flags obj flags
 
-  method is_set (f: flags) = get_flags obj land f
+  method is_set (f: flags) = (get_flags obj land f) = f
   method any_set (f: flags list) = get_flags obj land (or_flags 0 f) <> 0
   method all_set (f: flags list) =
       let flags = or_flags 0 f in
@@ -945,17 +945,30 @@ class divider = object
     method ct = "Divider"
 end;;
 
+module Window = struct 
+	let modal    = 0x80000000;;
+	let noborder = 0x40000000;;
+	let override = 0x20000000;;
+	let non_modal= 0x10000000;;
+	let double   = 0x08000000;;
+end;;
+
 external new_window: string -> int -> int -> int -> int -> string -> widget_ptr
     = "new_window_bc" "new_window";;
 external window_draw: widget_ptr -> unit = "window_draw";;
 external window_handle: widget_ptr -> Event.event_type -> Event.event_type = "window_handle";;
 external window_show: widget_ptr -> unit = "window_show";;
 external window_show_args: widget_ptr -> string array -> unit = "window_show_args";;
-
+external window_hide: widget_ptr -> unit = "window_hide";;
+external window_iconize: widget_ptr -> unit = "window_iconize";;
+external window_iconic: widget_ptr -> bool = "window_iconic";;
+external window_hotspot_xy: widget_ptr -> bool -> int -> int -> unit = "window_hotspot_xy";;
+external window_hotspot_widget: widget_ptr -> bool -> widget_ptr -> unit = "window_hotspot_widget";;
 external window_set_doublebuffer: widget_ptr -> unit = "window_set_doublebuffer";;
 external window_clear_doublebuffer: widget_ptr -> unit = "window_clear_doublebuffer";;
 external widget_damage: widget_ptr -> int = "widget_damage";;
 external window_border: widget_ptr -> bool -> unit = "window_border";;
+external window_borders: widget_ptr -> (int*int*int*int) = "window_borders";;
 
 class window ?(add=true) ?(x=0) ?(y=0) w h title = object(self)
     inherit group ~add ~x ~y w h title    
@@ -964,11 +977,21 @@ class window ?(add=true) ?(x=0) ?(y=0) w h title = object(self)
     method draw = window_draw obj
     method handle ev = window_handle obj ev
     method show = window_show obj
+    method hide = window_hide obj
+    method iconize = window_iconize obj
+    method iconic = window_iconic obj
+    method hotspot_xy ?(offscreen=false) x y = window_hotspot_xy obj offscreen x y
+    method hotspot_widget: 'a. ?offscreen:bool -> (#widget as 'a) -> unit =
+    	fun ?(offscreen=false) widget -> window_hotspot_widget obj offscreen widget#obj
+    (*method size_range a b *)
     method show_args args = window_show_args args
     method set_doublebuffer = window_set_doublebuffer obj
     method clear_doublebuffer = window_clear_doublebuffer obj
     method damage = widget_damage obj
     method border set = window_border obj set
+    method clear_border = self#set_flags [Window.noborder]
+    method has_border = not (self#is_set Window.noborder)
+    method borders = window_borders obj
 end;;
 
 external new_statusbar: string -> int -> int -> int -> int -> string -> widget_ptr

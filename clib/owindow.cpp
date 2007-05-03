@@ -81,5 +81,54 @@ extern "C" {
         CAMLreturn(Val_unit);
     }
 
+    CAMLprim value window_borders(value window)
+    {
+        CAMLparam1(window);
+	CAMLlocal1(e);
+        fltk::Rectangle r;
+	((fltk::Window*) window)->borders(&r);
+	e = caml_alloc_small(4,0);
+	Field(e,0) = r.x();
+	Field(e,1) = r.y();
+	Field(e,2) = r.w();
+	Field(e,3) = r.h();
+        CAMLreturn(e);
+    }
+
+    CAMLprim value window_hide(value window)
+    {
+        CAMLparam1(window);
+        ((fltk::Window*) window)->hide();
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value window_iconize(value window)
+    {
+        CAMLparam1(window);
+        ((fltk::Window*) window)->iconize();
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value window_iconic(value window)
+    {
+        CAMLparam1(window);
+        bool i = ((fltk::Window*) window)->iconic();
+        CAMLreturn(Val_bool(i));
+    }
+
+    CAMLprim value window_hotspot_xy(value window, value off, value x, value y)
+    {
+        CAMLparam4(window, off, x, y);
+        ((fltk::Window*) window)->hotspot(Int_val(x), Int_val(y), Int_val(off));
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value window_hotspot_widget(value window, value off, value widget)
+    {
+        CAMLparam3(window, off, widget);
+        ((fltk::Window*) window)->hotspot((fltk::Widget*) widget, Int_val(off));
+        CAMLreturn(Val_unit);
+    }
+
 
 }
