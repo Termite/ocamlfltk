@@ -136,6 +136,104 @@ let apply v fc = match v with
 	| Some x -> fc x
 ;;
 
+external group_set_resizeable2: widget_ptr -> widget_ptr -> unit = "group_set_resizable";;
+
+class ['a,'b] widget2 x y w h title = object(self)
+    inherit fltkbase x y w h title
+    val mutable cb_name = ""
+    method private alloc = new_widget
+    method ct = "widget"
+    method set_image (image : 'a) = widget_set_image obj image
+    method set_box (box : 'a) = widget_set_box obj box
+    method bigger (wid : 'b) = group_set_resizeable2 obj wid#obj
+    method configure?flags ?cb ?label ?color ?labelcolor ?labelsize ?(box:'a option) ?tooltip () =
+	    apply flags self#set_flags;
+	    apply cb self#callback;
+	    apply color self#set_color;
+	    apply label self#set_label;
+	    apply labelcolor self#set_labelcolor;
+	    apply labelsize self#set_labelsize;
+	    apply box self#set_box;
+	    apply tooltip self#set_tooltip
+  method set_flags (f:flags list) =
+      printf "setting flags %d\n%!" (or_flags 0 f);
+      let flags = or_flags (get_flags obj) f in
+      set_flags obj flags
+
+  method clr_flags (f:flags list) =
+      printf "clearing flags %d\n%!" (or_flags 0 f);
+      let flags = get_flags obj land (lnot (or_flags 0 f)) in
+      set_flags obj flags
+
+  method inv_flags (f: flags list) = 
+      let flags = get_flags obj lxor (or_flags 0 f) in
+      set_flags obj flags
+
+  method is_set (f: flags) = (get_flags obj land f) = f
+  method any_set (f: flags list) = get_flags obj land (or_flags 0 f) <> 0
+  method all_set (f: flags list) =
+      let flags = or_flags 0 f in
+      get_flags obj land flags = flags
+      
+  method relayout = widget_relayout obj
+  method draw = widget_draw obj
+  method handle ev = widget_handle obj ev
+  method redraw = redraw_widget obj
+  method draw_box = widget_draw_box obj
+  method show = widget_show obj
+  method align = widget_align obj
+  method scrollbar_align = widget_scrollbar_align obj
+  method scrollbar_width = widget_scrollbar_width obj
+  method hide = widget_hide obj
+  method active = widget_active obj
+  method activate = widget_activate obj
+  method deactivate = widget_deactivate obj
+  method w = get_width obj
+  method h = get_height obj
+  method x = get_x obj
+  method y = get_y obj
+  method resize ?xy w h = widget_resize obj xy w h
+  method set_vertical = widget_set_vertical obj
+  method set_horizontal = widget_set_horizontal obj
+  method get_when =
+      let f = flags_of_bits [
+          (10, WhenEnterKeyAlways);
+          (8, WhenEnterKey);
+          (6, WhenReleaseAlways);
+          (4, WhenRelease);
+          (1, WhenChanged) ] (get_when obj) []
+      in
+      if f = [] then [WhenNever] else f
+
+  method set_when flags =
+      let n = List.fold_left (fun erg flag -> erg lor (when2int flag)) 0 flags in
+      set_when obj n
+  method get_type = get_type obj
+  method set_type n = set_type obj n
+  method set_label l = set_label obj l
+  method set_labelcolor l = set_labelcolor obj l
+  method set_color c = set_color obj c
+  method set_tooltip t = widget_set_tooltip obj t
+  method get_tooltip = widget_get_tooltip obj
+  method set_box (box: 'a) = widget_set_box obj box
+  method get_box = widget_get_box obj
+  method get_image = widget_get_image obj
+  method set_image (box:'a) = widget_set_image obj box
+  method as_widget = (self :> ('a,'b) widget2)
+(*  method setfont font size = set_font font size*)
+  method labelsize = get_labelsize obj
+  method label = widget_label obj
+  method labelfont = get_labelfont obj
+  method set_labelsize size = set_labelsize obj size
+  method set_labelfont font = widget_set_labelfont obj font
+  (*method conf = conf_label*)
+  method callback (fkt: unit->unit) = 
+      Callback.register cb_name fkt;
+      set_callback obj cb_name
+    initializer
+        cb_name <- "widgetcb" ^ (string_of_int (Oo.id self));
+        PtrHash.add ptr_tbl obj (self :> ('a,'b) widget2)
+end;;
 
 class widget x y w h title = object(self)
   inherit fltkbase x y w h title
