@@ -519,6 +519,15 @@ external intInput_handle: widget_ptr -> Event.event_type -> Event.event_type = "
 
 type mouse_positions = [ `Before | `After | `Chr of char];;
 
+module Input = struct
+    let normal = 0;;
+    let float_input = 1;;
+    let int_input = 2;;
+    let secret = 3;;
+    let multiline = 4;;
+    let wordwrap = 5
+end;;
+
 class input x y w h label = object(self)
     val buf = " "
     inherit widget x y w h label
@@ -553,11 +562,18 @@ class input x y w h label = object(self)
     method word_end i = input_word_end obj i
     method word_start i = input_word_start obj i
 
-     
-
-
 end;;
 
+class multiLineInput x y w h label = object(self)
+    inherit input x y w h label
+    initializer
+        self#set_type Input.multiline
+end;;
+
+class wordwrapInput x y w h label = object(self)
+    inherit input x y w h label
+    initializer self#set_type Input.wordwrap
+end;;
 
 class numInput x y w h label = object(self)
     inherit input x y w h label
@@ -617,16 +633,19 @@ class output x y w h label =
 
 class multiLineOutput x y w h label =
     object
-    inherit input x y w h label
+    inherit output x y w h label
+    (*
     method ct = "multiline"
     method private alloc = new_multiline
     method draw = multiline_draw obj
     method handle ev = multiline_handle obj ev
+    *)
+    initializer self#set_type Input.multiline
     end;;
 
 class wordwrapOutput x y w h label =
     object
-    inherit input x y w h label
+    inherit output x y w h label
     method ct = "wordwrap"
     method private alloc = new_wordwrap
     method draw = wordwrap_draw obj
