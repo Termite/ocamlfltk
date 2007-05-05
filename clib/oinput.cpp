@@ -17,6 +17,13 @@ extern "C" {
     GEN_NEW(Input);
     GEN_NEW(NumericInput);
 
+    CAMLprim value input_draw(value widget)
+    {
+        CAMLparam1(widget);
+        ((o_Input*) widget) -> default_draw();
+        CAMLreturn(Val_unit);
+    }
+
     CAMLprim value input_handle(value widget, value ev)
     {
         CAMLparam2(widget, ev);
@@ -24,11 +31,124 @@ extern "C" {
         CAMLreturn(Val_int(r));
     }
 
-    CAMLprim value input_draw(value widget)
+    CAMLprim value input_cut(value widget)
     {
         CAMLparam1(widget);
-        ((o_Input*) widget) -> default_draw();
+        ((fltk::Input*) widget) -> cut();
         CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value input_position(value widget, value a, value b)
+    {
+        CAMLparam3(widget, a, b);
+        ((fltk::Input*) widget) -> position(Int_val(a), Int_val(b));
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value input_reserve(value widget, value s)
+    {
+        CAMLparam2(widget, s);
+        ((fltk::Input*) widget) -> reserve(Int_val(s));
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value input_undo(value widget)
+    {
+        CAMLparam1(widget);
+        ((fltk::Input*) widget) -> undo();
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value input_cut_chrs(value widget, value n)
+    {
+        CAMLparam2(widget, n);
+        int p = ((fltk::Input*) widget) -> cut(Int_val(n));
+        CAMLreturn(Val_int(p));
+    }
+
+    CAMLprim value input_at(value widget, value pos)
+    {
+        CAMLparam2(widget, pos);
+        int p = ((fltk::Input*) widget) -> at(Int_val(pos));
+        CAMLreturn(Val_int(p));
+    }
+
+    CAMLprim value input_insert(value widget, value text)
+    {
+        CAMLparam2(widget, text);
+        bool p = ((fltk::Input*) widget) -> insert(String_val(text));
+        CAMLreturn(Val_int(p));
+    }
+
+    CAMLprim value input_copy(value widget, value clipboard)
+    {
+        CAMLparam2(widget, clipboard);
+        bool p = ((fltk::Input*) widget) -> copy(Int_val(clipboard));
+        CAMLreturn(Val_int(p));
+    }
+
+    CAMLprim value input_word_start(value widget, value i)
+    {
+        CAMLparam2(widget, i);
+        int p = ((fltk::Input*) widget) -> word_start(Int_val(i));
+        CAMLreturn(Val_int(p));
+    }
+
+    CAMLprim value input_word_end(value widget, value i)
+    {
+        CAMLparam2(widget, i);
+        int p = ((fltk::Input*) widget) -> word_end(Int_val(i));
+        CAMLreturn(Val_int(p));
+    }
+
+    CAMLprim value input_line_end(value widget, value i)
+    {
+        CAMLparam2(widget, i);
+        int p = ((fltk::Input*) widget) -> line_end(Int_val(i));
+        CAMLreturn(Val_int(p));
+    }
+
+    CAMLprim value input_line_start(value widget, value i)
+    {
+        CAMLparam2(widget, i);
+        int p = ((fltk::Input*) widget) -> line_start(Int_val(i));
+        CAMLreturn(Val_int(p));
+    }
+
+    CAMLprim value input_size(value widget)
+    {
+        CAMLparam1(widget);
+        int p = ((fltk::Input*) widget) -> size();
+        CAMLreturn(Val_int(p));
+    }
+
+    CAMLprim value input_get_position(value widget)
+    {
+        CAMLparam1(widget);
+        int p = ((fltk::Input*) widget) -> position();
+        CAMLreturn(Val_int(p));
+    }
+
+    CAMLprim value input_get_mark(value widget)
+    {
+        CAMLparam1(widget);
+        int p = ((fltk::Input*) widget) -> mark();
+        CAMLreturn(Val_int(p));
+    }
+
+    CAMLprim value input_replace(value widget, value b, value e, value text, value ilen)
+    {
+        CAMLparam5(widget, b, e, text, ilen);
+        bool p = ((fltk::Input*) widget) -> replace(Int_val(b), Int_val(e), 
+                String_val(text), Int_val(ilen));
+        CAMLreturn(Val_int(p));
+    }
+
+    CAMLprim value input_set_text(value widget, value txt)
+    {
+        CAMLparam2(widget, txt);
+        bool r = ((fltk::Input*)widget)->text(String_val(txt));
+        CAMLreturn(Val_int(r));
     }
 
 
@@ -38,11 +158,11 @@ extern "C" {
         CAMLreturn(copy_string(((fltk::Input*)widget)->text()));
     }
 
-    CAMLprim value input_set_text(value widget, value txt)
+    CAMLprim value input_set_text_len(value widget, value txt, value len)
     {
-        CAMLparam2(widget, txt);
-        bool r = ((fltk::Input*)widget)->text(String_val(txt));
-        CAMLreturn(Val_int(r));
+        CAMLparam3(widget, txt, len);
+        bool r = ((fltk::Input*)widget)->text(String_val(txt), Int_val(len));
+        CAMLreturn(Val_bool(r));
     }
 
     CAMLprim value new_floatinput(value name, value x, value y, value w, value h, value label)

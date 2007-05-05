@@ -137,7 +137,7 @@ let apply v fc = match v with
 ;;
 
 external group_set_resizeable2: widget_ptr -> widget_ptr -> unit = "group_set_resizable";;
-
+(*
 class ['a,'b] widget2 x y w h title = object(self)
     inherit fltkbase x y w h title
     val mutable cb_name = ""
@@ -234,6 +234,7 @@ class ['a,'b] widget2 x y w h title = object(self)
         cb_name <- "widgetcb" ^ (string_of_int (Oo.id self));
         PtrHash.add ptr_tbl obj (self :> ('a,'b) widget2)
 end;;
+*)
 
 class widget x y w h title = object(self)
   inherit fltkbase x y w h title
@@ -485,6 +486,27 @@ external get_value_f: widget_ptr -> float = "floatinput_get_valued";;
 external get_value_i: widget_ptr -> int = "floatinput_get_valuei";;
 external input_get_text: widget_ptr -> string = "input_get_text";;
 external input_set_text: widget_ptr -> string -> bool = "input_set_text";;
+external input_set_text_len: widget_ptr -> string -> int -> bool =
+    "input_set_text_len";;
+external input_undo: widget_ptr -> bool = "input_undo";;
+external input_at: widget_ptr -> int -> char = "input_at";;
+external input_copy: widget_ptr -> bool -> bool = "input_copy";;
+external input_cut_between: widget_ptr -> int -> int -> bool = "input_cut";;
+external input_cut_chrs: widget_ptr -> int -> bool = "input_cut_chrs";;
+external input_cut: widget_ptr -> bool = "input_cut";;
+external input_insert: widget_ptr -> string -> bool = "input_insert";;
+external input_size: widget_ptr -> int = "input_size";;
+external input_reserve: widget_ptr -> int -> unit = "input_reserve";;
+external input_line_start: widget_ptr -> int -> int = "input_line_start";;
+external input_line_end: widget_ptr -> int -> int = "input_line_end";;
+external input_position: widget_ptr -> int -> int -> unit = "input_position";;
+external input_replace: widget_ptr -> int -> int -> string -> int -> bool =
+    "input_replace";;
+external input_mouse_position: widget_ptr -> int -> int -> int -> int -> int = "input_position";;
+external input_get_position: widget_ptr -> int = "input_get_position";;
+external input_get_mark: widget_ptr -> int = "input_get_mark";;
+external input_word_end:  widget_ptr -> int -> int = "input_word_end";;
+external input_word_start: widget_ptr -> int -> int = "input_word_start";;
 
 external input_draw: widget_ptr -> unit = "input_draw";;
 external input_handle: widget_ptr -> Event.event_type -> Event.event_type = "input_handle";;
@@ -495,13 +517,45 @@ external floatInput_handle: widget_ptr -> Event.event_type -> Event.event_type =
 external intInput_draw: widget_ptr -> unit = "intInput_draw";;
 external intInput_handle: widget_ptr -> Event.event_type -> Event.event_type = "intInput_handle";;
 
+type mouse_positions = [ `Before | `After | `Chr of char];;
+
 class input x y w h label = object(self)
+    val buf = " "
     inherit widget x y w h label
     method private alloc = new_input
     method draw = input_draw obj
     method handle ev = input_handle obj ev
     method set_text txt = input_set_text obj txt
+    method set_text_len txt len = input_set_text_len obj txt len
     method get_text = input_get_text obj
+    method undo = input_undo obj
+    method at pos = input_at obj pos
+    method copy ?(clipboard=true) () = input_copy obj clipboard
+    method replace b e text ilen = input_replace obj b e text ilen
+    method replace_chr a b c = buf.[0] <- c; self#replace a b buf 1
+    method cut_between a b = self#replace a b "" 0
+    method cut_chrs n = input_cut_chrs obj n
+    method cut = input_cut obj
+    method size = input_size obj
+    method insert txt = input_insert obj txt
+    method insert_chrs txt n = input_insert obj (String.sub txt 0 n)
+    method line_start i = input_line_start obj i
+    method line_end i = input_line_end obj i
+    method get_position = input_get_position obj
+    method position pos mark = input_position obj pos mark
+    method mark n = self#position self#get_position n
+    method get_mark = input_get_mark obj
+    method mouse_position x y w h : mouse_positions =
+        let c = input_mouse_position obj x y w h in
+        if c = 0 then `Before else if c = self#size then `After else `Chr(char_of_int c)
+
+    method reserve len = input_reserve obj len
+    method word_end i = input_word_end obj i
+    method word_start i = input_word_start obj i
+
+     
+
+
 end;;
 
 
@@ -1044,7 +1098,7 @@ class divider = object
 end;;
 
 module Window = struct 
-	let modal    = 0x80000000;;
+(*	let modal    = 0x80000000;;*)
 	let noborder = 0x40000000;;
 	let override = 0x20000000;;
 	let non_modal= 0x10000000;;
