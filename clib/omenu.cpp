@@ -43,8 +43,8 @@ extern "C" {
     CAMLprim value menu_set_value(value widget, value v)
     {
         CAMLparam2(widget, v);
-        int r = ((fltk::Menu*) widget) -> value(Int_val(v));
-        CAMLreturn(Val_unit);
+        bool r = ((fltk::Menu*) widget) -> value(Int_val(v));
+        CAMLreturn(Val_bool(r));
     }
 
 

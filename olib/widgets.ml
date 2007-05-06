@@ -632,7 +632,7 @@ class output x y w h label =
     end;;
 
 class multiLineOutput x y w h label =
-    object
+    object (self)
     inherit output x y w h label
     (*
     method ct = "multiline"
@@ -644,7 +644,7 @@ class multiLineOutput x y w h label =
     end;;
 
 class wordwrapOutput x y w h label =
-    object
+    object (self)
     inherit output x y w h label
     method ct = "wordwrap"
     method private alloc = new_wordwrap
@@ -1010,7 +1010,7 @@ external menu_draw: widget_ptr -> unit = "menu_draw";;
 external menu_handle: widget_ptr -> Event.event_type -> Event.event_type = "menu_handle";;
 external menu_children: widget_ptr -> int = "menu_children";;
 external menu_value: widget_ptr -> int = "menu_value";;
-external menu_set_value: widget_ptr -> int -> unit = "menu_set_value";;
+external menu_set_value: widget_ptr -> int -> bool = "menu_set_value";;
 
 class menu x y w h label = object
     inherit group ~x:x ~y:y w h label
