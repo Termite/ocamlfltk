@@ -15,6 +15,8 @@ external yes: unit -> string = "dialog_yes";;
 external ok: unit -> string = "dialog_ok";;
 external cancel: unit -> string = "dialog_cancel";;
 
+external show_colormap: int -> int = "show_colormap";; 
+
 let message fmt = Printf.ksprintf message fmt;;
 let alert fmt = Printf.ksprintf alert fmt ;;
 let ask fmt = Printf.ksprintf ask fmt ;;

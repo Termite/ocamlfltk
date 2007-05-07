@@ -1,16 +1,17 @@
 #include "ocamlfltk.h"
+#include <fltk/show_colormap.h>
 #include <fltk/ask.h>
 
 using namespace Ofltk;
 
 extern "C" {
 
-    CAMLprim value dialog_message(value message)
+
+    CAMLprim value show_colormap(value old_col)
     {
-        CAMLparam1(message);
-        char* m = String_val(message);
-        fltk::message("%s", m);
-        CAMLreturn(Val_unit);
+        CAMLparam1(old_col);
+        int col = fltk::show_colormap(Int_val(old_col));
+        CAMLreturn(Val_int(col));
     }
        
     CAMLprim value dialog_alert(value message)

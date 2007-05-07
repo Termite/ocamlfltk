@@ -1,4 +1,5 @@
 
+external show_colormap: int -> int = "show_colormap";; 
 val message:  ('a, unit, string, unit) format4 -> 'a
 val alert:  ('a, unit, string, unit) format4 -> 'a
 val ask:  ('a, unit, string, int) format4 -> 'a
