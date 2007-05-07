@@ -559,6 +559,8 @@ external intInput_handle: widget_ptr -> Event.event_type -> Event.event_type = "
 
 type mouse_positions = [ `Before | `After | `Chr of char];;
 
+external get_input_defaultstyle: unit -> Style.normal Style.style = "input_default_style";;
+
 module Input = struct
     let normal = 0;;
     let float_input = 1;;
@@ -566,6 +568,7 @@ module Input = struct
     let secret = 3;;
     let multiline = 4;;
     let wordwrap = 5
+    let default_style = get_input_defaultstyle()
 end;;
 
 class input x y w h label = object(self)

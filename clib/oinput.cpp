@@ -17,6 +17,12 @@ extern "C" {
     GEN_NEW(Input);
     GEN_NEW(NumericInput);
 
+    CAMLprim value input_default_style(value button)
+    {
+        CAMLparam1(button);
+        CAMLreturn((value)(fltk::Input::default_style));
+    }
+
     CAMLprim value input_draw(value widget)
     {
         CAMLparam1(widget);
