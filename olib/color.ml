@@ -1,3 +1,5 @@
+type color = Int32.t;;
+
 let no_color	= 0l;;
 let free_color	= 16l;;
 let num_free_color= 16l;;
@@ -40,4 +42,5 @@ let dark_magenta	= 152l;;
 let dark_cyan	= 140l;;
 let windows_blue	= 0x88l;; 
 
-external contrast: Int32.t -> Int32.t -> Int32.t = "color_contrast";;
+external contrast: color -> color -> color = "color_contrast";;
+external show_colormap: color -> color = "show_colormap";; 
