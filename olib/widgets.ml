@@ -5,14 +5,14 @@ type widget_ptr;;
 type 'a image = 'a Symbol.sym constraint 'a = [>Symbol.symbol]
 type symbol = Symbol.symbol Symbol.sym;;
 
-type when_enum = WhenNever | WhenChanged | WhenRelease | WhenReleaseAlways
+type when_enum = WhenNever | WhenChanged | WhenNotChanged | WhenRelease | WhenReleaseAlways
                | WhenEnterKey | WhenEnterKeyAlways
 ;;
 
 external int_of_when: when_enum -> int = "%identity";;
 
 let when2int flag =
-    let tab = [| 0; 1; 4; 6; 8; 10 |] in
+    let tab = [| 0; 1; 2; 4; 6; 8; 10 |] in
     tab.(int_of_when flag)
 ;;
 
@@ -243,13 +243,15 @@ class widget x y w h title = object(self)
   method ct = "widget"
 
   method configure: 'a.
+  	  ?when_flags:when_enum list ->
       ?flags:Flags.flags list ->
       ?cb:(unit -> unit) ->
       ?label:string ->
       ?color:Int32.t ->
       ?labelcolor:int32 ->
       ?labelsize:float -> ?box:'a image -> ?tooltip:string -> unit -> unit
-      = fun ?flags ?cb ?label ?color ?labelcolor ?labelsize ?box ?tooltip () ->
+      = fun ?when_flags ?flags ?cb ?label ?color ?labelcolor ?labelsize ?box ?tooltip () ->
+	    apply when_flags self#set_when;
 	    apply flags self#set_flags;
 	    apply cb self#callback;
 	    apply color self#set_color;
@@ -259,6 +261,8 @@ class widget x y w h title = object(self)
 	    apply box self#set_box;
 	    apply tooltip self#set_tooltip
 
+  method has_changed = self#is_set Flags.changed
+  method clear_changed = self#clr_flags [Flags.changed]
   method set_flags (f:flags list) =
       printf "setting flags %d\n%!" (or_flags 0 f);
       let flags = or_flags (get_flags obj) f in
@@ -312,6 +316,11 @@ class widget x y w h title = object(self)
   method set_when flags =
       let n = List.fold_left (fun erg flag -> erg lor (when2int flag)) 0 flags in
       set_when obj n
+  method clr_when flags =
+  	List.iter (fun flag ->
+	  	let f = get_when obj in
+		set_when obj (f land (lnot (when2int flag)))
+		) flags
   method get_type = get_type obj
   method set_type n = set_type obj n
   method set_label l = set_label obj l
@@ -607,6 +616,11 @@ class intInput x y w h label = object
     method handle ev = intInput_handle obj ev
 end;;
 
+class secretInput x y w h label = object(self)
+	inherit input x y w h label
+	initializer self#set_type Input.secret
+end;;
+
 external new_output: string -> int -> int -> int -> int -> string -> widget_ptr
     = "new_Output_bc" "new_Output";;
 external output_draw: widget_ptr -> unit = "output_draw";;
@@ -632,7 +646,7 @@ class output x y w h label =
     end;;
 
 class multiLineOutput x y w h label =
-    object
+    object(self)
     inherit output x y w h label
     (*
     method ct = "multiline"
@@ -644,7 +658,7 @@ class multiLineOutput x y w h label =
     end;;
 
 class wordwrapOutput x y w h label =
-    object
+    object(self)
     inherit output x y w h label
     method ct = "wordwrap"
     method private alloc = new_wordwrap
