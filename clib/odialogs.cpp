@@ -5,14 +5,7 @@ using namespace Ofltk;
 
 extern "C" {
 
-    CAMLprim value dialog_message(value message)
-    {
-        CAMLparam1(message);
-        char* m = String_val(message);
-        fltk::message("%s", m);
-        CAMLreturn(Val_unit);
-    }
-       
+
     CAMLprim value dialog_alert(value message)
     {
         CAMLparam1(message);
