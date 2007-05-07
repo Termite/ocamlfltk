@@ -559,7 +559,7 @@ external intInput_handle: widget_ptr -> Event.event_type -> Event.event_type = "
 
 type mouse_positions = [ `Before | `After | `Chr of char];;
 
-external get_input_defaultstyle: unit -> Style.normal Style.style = "input_default_style";;
+external get_input_defaultstyle: unit -> Style.named Style.style = "input_default_style";;
 
 module Input = struct
     let normal = 0;;
