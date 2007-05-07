@@ -40,3 +40,4 @@ let dark_magenta	= 152l;;
 let dark_cyan	= 140l;;
 let windows_blue	= 0x88l;; 
 
+external contrast: Int32.t -> Int32.t -> Int32.t = "color_contrast";;
