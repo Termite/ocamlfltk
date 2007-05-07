@@ -491,6 +491,54 @@ extern "C" {
         CAMLreturn(Val_unit);
     }
 
+    CAMLprim value widget_get_color(value widget)
+    {
+        CAMLparam1(widget);
+        CAMLreturn(caml_copy_int32(((fltk::Widget*) widget)->color()));
+    }
+
+    CAMLprim value widget_get_textcolor(value widget)
+    {
+        CAMLparam1(widget);
+        CAMLreturn(caml_copy_int32(((fltk::Widget*) widget)->textcolor()));
+    }
+
+    CAMLprim value widget_get_selection_color(value widget)
+    {
+        CAMLparam1(widget);
+        CAMLreturn(caml_copy_int32(((fltk::Widget*) widget)->selection_color()));
+    }
+
+    CAMLprim value widget_get_selection_textcolor(value widget)
+    {
+        CAMLparam1(widget);
+        CAMLreturn(caml_copy_int32(((fltk::Widget*) widget)->selection_textcolor()));
+    }
+
+    CAMLprim value widget_get_buttoncolor(value widget)
+    {
+        CAMLparam1(widget);
+        CAMLreturn(caml_copy_int32(((fltk::Widget*) widget)->buttoncolor()));
+    }
+
+    CAMLprim value widget_get_labelcolor(value widget)
+    {
+        CAMLparam1(widget);
+        CAMLreturn(caml_copy_int32(((fltk::Widget*) widget)->labelcolor()));
+    }
+
+    CAMLprim value widget_get_highlight_color(value widget)
+    {
+        CAMLparam1(widget);
+        CAMLreturn(caml_copy_int32(((fltk::Widget*) widget)->highlight_color()));
+    }
+
+    CAMLprim value widget_get_highlight_textcolor(value widget)
+    {
+        CAMLparam1(widget);
+        CAMLreturn(caml_copy_int32(((fltk::Widget*) widget)->highlight_textcolor()));
+    }
+
     CAMLprim value widget_set_color(value widget, value color)
     {
         CAMLparam2(widget, color);
@@ -498,10 +546,52 @@ extern "C" {
         CAMLreturn(Val_unit);
     }
 
+    CAMLprim value widget_set_textcolor(value widget, value color)
+    {
+        CAMLparam2(widget, color);
+        ((fltk::Widget*) widget)->textcolor(Int32_val(color));
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value widget_set_selection_color(value widget, value color)
+    {
+        CAMLparam2(widget, color);
+        ((fltk::Widget*) widget)->selection_color(Int32_val(color));
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value widget_set_selection_textcolor(value widget, value color)
+    {
+        CAMLparam2(widget, color);
+        ((fltk::Widget*) widget)->selection_textcolor(Int32_val(color));
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value widget_set_buttoncolor(value widget, value color)
+    {
+        CAMLparam2(widget, color);
+        ((fltk::Widget*) widget)->buttoncolor(Int32_val(color));
+        CAMLreturn(Val_unit);
+    }
+
     CAMLprim value widget_set_labelcolor(value widget, value color)
     {
         CAMLparam2(widget, color);
         ((fltk::Widget*) widget)->labelcolor(Int32_val(color));
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value widget_set_highlight_color(value widget, value color)
+    {
+        CAMLparam2(widget, color);
+        ((fltk::Widget*) widget)->highlight_color(Int32_val(color));
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value widget_set_highlight_textcolor(value widget, value color)
+    {
+        CAMLparam2(widget, color);
+        ((fltk::Widget*) widget)->highlight_textcolor(Int32_val(color));
         CAMLreturn(Val_unit);
     }
 
