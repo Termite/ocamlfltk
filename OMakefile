@@ -92,7 +92,8 @@ BUTTONS:	$(OCamlProgram buttons, $(BUTTONS_FILES))
 BUTTON:  	$(OCamlProgram button, button)	
 GROUPTEST:  $(OCamlProgram grouptest, grouptest)
 TILEDEMO:   $(OCamlProgram tiledemo, tiledemo)
+INPUTDEMO:  $(OCamlProgram inputdemo, inputdemo)
 
-demos: wizard tabdemo scrolldemo pack moin menudemo boxdemo styledemo drawtiming navigation arc resize ask moin sliderdemo buttons button tiledemo
-.DEFAULT: buttons
+demos: wizard tabdemo scrolldemo pack moin menudemo boxdemo styledemo drawtiming navigation arc resize ask moin sliderdemo buttons button tiledemo inputdemo
+.DEFAULT: inputdemo
 
