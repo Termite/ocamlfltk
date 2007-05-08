@@ -39,7 +39,7 @@ extern "C" {
         CAMLreturn(Val_unit);
     }
 
-    CAMLprim value textDisplay_wrap_mode(value widget, value wrap, value margin)
+    CAMLprim value textDisplay_wrap_mode(value widget, value margin, value wrap)
     {
         CAMLparam3(widget, wrap, margin);
         ((fltk::TextDisplay*) widget) -> wrap_mode(Bool_val(wrap), Int_val(margin));
