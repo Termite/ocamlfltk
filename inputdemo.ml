@@ -42,17 +42,18 @@ let _ =
     let color_cb but n () =
         let s = Input.default_style in
         let c = match n with
-        | 0 -> 0l 
-        | 1 -> 1l
-        | _ -> 2l
+        | 0 -> Style.get_color s
+        | 1 -> Style.get_selection_color s
+        | _ -> Style.get_textcolor s
         in
         let c = Color.show_colormap c in
         (match n with
-        | 0 -> Style.set_color c 
-        | 1 -> Style.set_selcol c
-        | _ -> Style.set_textcolor c);
+        | 0 -> Style.set_color s c 
+        | 1 -> Style.set_selection_color s c
+        | _ -> Style.set_textcolor s c);
         but#set_color c;
         but#set_labelcolor (Color.contrast Color.black c);
+        redraw()
     in
 
     let b = new button 10 (y+69+5) 200 23 "&print changed" in
@@ -68,14 +69,17 @@ let _ =
     b#configure ~tooltip:"Color behind the text"
                 ~color:(i#get_color)
                 ~cb:(color_cb b 0) ();
+    b#set_labelcolor (Color.contrast Color.black b#get_color);                
     let b1 = new button 220 (y+23) 100 23 "selection_color" in
     b1#configure ~tooltip:"Color behind selected text"
-                ~color:(i#get_color)
+                ~color:(i#get_selection_color)
                 ~cb:(color_cb b1 1) ();
+    b1#set_labelcolor (Color.contrast Color.black b1#get_color);                
     let b2 =  new button 220 (y+46) 100 23 "textcolor" in
     b2#configure ~tooltip:"Color of the text"
-                ~color:(i#get_color)
+                ~color:(i#get_textcolor)
                 ~cb:(color_cb b2 2) ();
+    b2#set_labelcolor (Color.contrast Color.black b2#get_color);                
     
     window#wend;
     window#show;
