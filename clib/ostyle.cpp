@@ -109,6 +109,24 @@ CAMLprim value style_set_highlight_textcolor(value style, value v)
     CAMLreturn(Val_unit);
 }
 
+CAMLprim value style_get_color(value style)
+{
+    CAMLparam1(style);
+    CAMLreturn(caml_copy_int32(((fltk::Style*)style)->color()));
+}
+
+CAMLprim value style_get_textcolor(value style)
+{
+    CAMLparam1(style);
+    CAMLreturn(caml_copy_int32(((fltk::Style*)style)->textcolor()));
+}
+
+CAMLprim value style_get_selection_color(value style)
+{
+    CAMLparam1(style);
+    CAMLreturn(caml_copy_int32(((fltk::Style*)style)->selection_color()));
+}
+
 CAMLprim value style_set_labelsize(value style, value v)
 {
     CAMLparam2(style, v);
