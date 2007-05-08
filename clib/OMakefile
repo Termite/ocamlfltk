@@ -38,6 +38,8 @@ CLIBFILES[] =
    omonitor
    oinput
    oscrollgroup
+   otextdisplay
+   otexteditor
    osymbols
    oimage
    oxpmimage

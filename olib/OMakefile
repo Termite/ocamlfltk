@@ -52,6 +52,7 @@ LIB_FILES[] =
 	style
 	widgets
 	draw
+	text
 #	labeltype
 
 OLIB = ocamlfltk
