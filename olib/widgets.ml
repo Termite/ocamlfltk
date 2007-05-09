@@ -580,6 +580,10 @@ class input x y w h label = object(self)
     method set_text txt = input_set_text obj txt
     method set_text_len txt len = input_set_text_len obj txt len
     method get_text = input_get_text obj
+	method get_float = float_of_string self#get_text
+	method set_float f = ignore (self#set_text (string_of_float f))
+	method get_int = int_of_string self#get_text
+	method set_int i = ignore (self#set_text (string_of_int i))
     method undo = input_undo obj
     method at pos = input_at obj pos
     method copy ?(clipboard=true) () = input_copy obj clipboard
@@ -903,6 +907,9 @@ class group ?(add=false) ?(x=0) ?(y=0) w h title = object(self)
 	GroupHash.add grp_tbl obj (self :> group)		
 
 end;;
+
+let resizable (g: #group) w = group_set_resizeable g#obj w#obj;;
+
 
 class groupProxy ptr = object(self)
 	inherit group 0 0 ""

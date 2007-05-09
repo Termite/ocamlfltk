@@ -60,6 +60,20 @@ extern "C" {
         CAMLreturn(caml_copy_string(t));
     }
 
+    CAMLprim value textDisplay_set_buffer(value widget, value buffer)
+    {
+        CAMLparam2(widget, buffer);
+        ((fltk::TextDisplay*) widget) -> buffer((fltk::TextBuffer*) buffer); 
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value textDisplay_get_buffer(value widget)
+    {
+        CAMLparam1(widget);
+        const fltk::TextBuffer* b = ((fltk::TextDisplay*) widget) -> buffer();
+        CAMLreturn((value) b);
+    }
+
 
 
 }
