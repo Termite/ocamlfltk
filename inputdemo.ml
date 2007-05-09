@@ -30,18 +30,15 @@ let _ =
 
     let window = new window 400 (350 + 105) "" in
     let inputs =
-        List.map (fun ((w:input),t) ->
-            w#configure ~cb:(cb w) ~tooltip:t ~when_flags:[WhenNever] (); w) [
-            new input 70 10 300 23 "Normal",
-                "Normal input field";
-            (new floatInput 70 (10+27) 300 23 "Float" :> input),
-                "Input field for floating points";
-            (new intInput 70 (10+2*27) 300 23 "Int" :> input),
-                "Input field for integers";
-            new secretInput 70 (10+3*27) 300 23 "Secret",
-                "Input field for password";
-            new wordwrapInput 70 (10+4*27) 300 100 "Wordwrap",
-                "Inputfield for *short* text" ]
+        List.map (fun (make, y, l, tt) ->
+            let w = (make 70 y 300 23 l :> input) in
+            w#configure ~cb:(cb w) ~tooltip:tt ~when_flags:[WhenNever] (); w) [
+            new input, 10, "Normal", "Normal intput field";
+            new floatInput, 37, "Float", "Input field for floating point";
+            new intInput, 64, "Int", "Input field for integer input";
+            new secretInput, (10+3*27), "Secret", "Input field for password";
+            new wordwrapInput, (10+4*27), "Wordwrap", "Inputfield for *short* text"
+            ]
     in
     let editor = new Text.textEditor 70 (10+4*27+105) 300 100 "TextEditor" in
     editor#wrap_mode true;
@@ -51,7 +48,7 @@ let _ =
         ~tooltip:"Texteditor for editing small programs and email"
         ()
         ;
-    window#resizable editor;
+    resizable window editor;
 
     let y = 10 + 4 * 27 + 210 in
     let buttons = List.map (fun (y, label, tt, wf) ->
@@ -65,8 +62,14 @@ let _ =
     in
 
     let b = new button 10 (y+92+5) 200 23 "&print changed" in
-    b#configure ~tooltip:"Print widget that have changed() flag set"
-                ~cb:(fun () -> List.iter (fun i ->
+    let buf = ref (Text.TextBuffer.make_textbuffer 0) in
+    b#configure ~tooltip:"Switch Textbuffer / Print widget that have changed() flag set"
+                ~cb:(fun () -> 
+                    let b = editor#get_buffer in
+                    editor#set_buffer !buf;
+                    buf := b;
+                    redraw;
+                    List.iter (fun i ->
                         if i#has_changed then (
                             i#clear_changed;
                             printf "%s '%s'\n%!" i#label i#get_text)
