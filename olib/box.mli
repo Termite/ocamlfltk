@@ -24,7 +24,7 @@ val oval_box : box;;
 val oshadow_box : box;;
 val oflat_box : box;;
 val border_frame : box;;
-val focus_frame : box;;
+(*val focus_frame : box;;*)
 val plastic_up_box : box;;
 val plastic_down_box : box;;
 

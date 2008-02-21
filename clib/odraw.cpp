@@ -118,7 +118,8 @@ extern "C" {
         CAMLparam4(x, y, w, h);
         CAMLlocal1(e);
         fltk::Rectangle r;
-        fltk::transform(Int_val(x), Int_val(y), Int_val(w), Int_val(h), r);
+		fltk::Rectangle from(Int_val(x), Int_val(y), Int_val(w), Int_val(h));
+        fltk::transform(from, r);
         e = caml_alloc_small(4,0);
         Field(e,0) = Val_int(r.x()); 
         Field(e,1) = Val_int(r.y());

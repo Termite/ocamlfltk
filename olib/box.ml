@@ -27,7 +27,7 @@ let oval_box = boxes.(19);;
 let oshadow_box = boxes.(20);;
 let oflat_box = boxes.(21);;
 let border_frame = boxes.(22);;
-let focus_frame = boxes.(23);;
-let plastic_up_box = boxes.(24);;
-let plastic_down_box = boxes.(25);;
+(*let focus_frame = boxes.(23);;*)
+let plastic_up_box = boxes.(23);;
+let plastic_down_box = boxes.(24);;
 

@@ -38,7 +38,7 @@ extern "C" {
             fltk::OSHADOW_BOX,
             fltk::OFLAT_BOX,
             fltk::BORDER_FRAME,
-            fltk::FOCUS_FRAME,
+            //fltk::FOCUS_FRAME,
             fltk::PLASTIC_UP_BOX,
             fltk::PLASTIC_DOWN_BOX
             };

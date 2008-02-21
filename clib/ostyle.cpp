@@ -25,12 +25,14 @@ CAMLprim value style_set_buttonbox(value style, value v)
     CAMLreturn(Val_unit);
 }
 
+/*
 CAMLprim value style_set_focusbox(value style, value v)
 {
     CAMLparam2(style, v);
     ((fltk::Style*)style)->focusbox((fltk::Box*)v);
     CAMLreturn(Val_unit);
 }
+*/
 
 CAMLprim value style_set_glyph(value style, value v)
 {

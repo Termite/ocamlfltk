@@ -10,7 +10,7 @@ external default_style: unit -> cstyle = "style_default_style";;
 external set_box: cstyle -> 'a box -> unit = "style_set_box";;
 
 external set_buttonbox: [> normal ] style -> 'a box -> unit = "style_set_buttonbox";;
-external set_focusbox:  [> normal ] style -> 'a box -> unit = "style_set_focusbox";;
+(*external set_focusbox:  [> normal ] style -> 'a box -> unit = "style_set_focusbox";;*)
 external set_glyph: [>normal] style -> 'a box -> unit = "style_set_glyph";;
 external set_labelfont: [>normal] style -> Font.font -> unit = "style_set_labelfont";;
 external set_textfont:  [>normal] style -> Font.font -> unit = "style_set_textfont";;
