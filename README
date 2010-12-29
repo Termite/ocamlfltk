@@ -1,0 +1,3 @@
+This began as an experiment of writing a c++ binding to ocaml.
+fltk2 (allthough not released) seemed a nice play ground.
+Maybe it works with newer fltk2 builds
